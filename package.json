@@ -11,9 +11,13 @@
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean",
     "db:push": "turbo -F @acme/db push",
+    "db:push:wsa": "turbo -F @acme/db-wsa push",
+    "db:push:monday": "turbo -F @acme/db-monday push",
     "db:studio": "turbo -F @acme/db studio",
     "dev": "turbo watch dev --continue",
     "dev:next": "turbo watch dev -F @acme/nextjs...",
+    "dev:wsa": "turbo watch dev -F @acme/wsa...",
+    "dev:monday": "turbo watch dev -F @acme/monday...",
     "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
     "format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/.prettiercache",
     "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
@@ -21,7 +25,8 @@
     "lint:ws": "pnpm dlx sherif@latest",
     "postinstall": "pnpm lint:ws",
     "typecheck": "turbo run typecheck",
-    "ui-add": "turbo run ui-add"
+    "ui-add": "turbo run ui-add",
+    "tcopy": "turbo gen workspace --copy"
   },
   "devDependencies": {
     "@acme/prettier-config": "workspace:*",
