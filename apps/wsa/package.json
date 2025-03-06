@@ -30,6 +30,8 @@
     "next": "^14.2.23",
     "react": "catalog:react18",
     "react-dom": "catalog:react18",
+    "react-player": "^2.16.0",
+    "react-reverse-portal": "^2.2.0",
     "superjson": "2.2.2",
     "zod": "catalog:"
   },

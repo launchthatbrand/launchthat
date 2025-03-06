@@ -39,6 +39,23 @@ export const GET_COURSES = `
   }
 `;
 
+export const GET_RELATED_LESSONS = `
+  query GetRelatedLessons($currentLessonId: ID!) {
+    lessons(first: 3, where: { notIn: [$currentLessonId] }) {
+      nodes {
+        id
+        title
+        date
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const GET_COURSE = `
   query GetCourse($id: ID!) {
     course(id: $id) {

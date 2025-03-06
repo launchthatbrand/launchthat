@@ -40,9 +40,7 @@ export function CourseHeader({ courseId, lessonId }: CourseHeaderProps) {
 
   // Use the Learndash hook for course data
   const { useCourse } = useLearndash();
-  const courseResult = useCourse(courseId);
-  const course = courseResult?.course;
-  const isCourseLoading = courseResult?.isLoading || false;
+  const { course, isLoading: isCourseLoading } = useCourse(courseId);
 
   // Fetch lesson data if on a lesson page
   const { data: lessonData, isLoading: isLessonLoading } = useQuery({
@@ -68,10 +66,11 @@ export function CourseHeader({ courseId, lessonId }: CourseHeaderProps) {
     : isCourseLoading;
 
   // Determine title and image to display
-  const courseTitle = course?.title || "Course";
-  const courseImage = course?.featuredImage?.node?.sourceUrl;
-  const lessonTitle = lessonData?.lesson?.title;
-  const lessonImage = lessonData?.lesson?.featuredImage?.node?.sourceUrl;
+  const courseTitle = course?.title ?? "Course";
+  const courseImage = course?.featuredImage?.node.sourceUrl;
+  const lesson = lessonData?.lesson;
+  const lessonTitle = lesson?.title;
+  const lessonImage = lesson?.featuredImage?.node.sourceUrl;
 
   const displayTitle = isLessonPage && lessonTitle ? lessonTitle : courseTitle;
   const displayImage = isLessonPage && lessonImage ? lessonImage : courseImage;

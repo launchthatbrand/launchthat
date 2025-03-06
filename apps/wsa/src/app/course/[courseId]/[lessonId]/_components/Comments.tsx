@@ -381,35 +381,32 @@ export function Comments() {
   const [activeReplyId, setActiveReplyId] = useState<string | null>(null);
 
   return (
-    <Card className="mt-8 border-muted bg-white/50">
-      <div className="p-4">
-        <h2 className="mb-4 text-xl font-semibold">Comments</h2>
-        <div className="mb-6 rounded-lg bg-muted/50 p-3">
-          <Textarea
-            placeholder="Write a comment..."
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            className="border-muted-foreground/20 bg-background"
-          />
-          <div className="mt-2 flex justify-end">
-            <Button disabled={!newComment.trim()}>
-              <Send className="mr-2 h-4 w-4" />
-              Post Comment
-            </Button>
-          </div>
+    <Card className="mt-8 border-none bg-transparent p-0 shadow-none">
+      <h2 className="mb-4 text-xl font-semibold">Comments</h2>
+      <div className="mb-6 rounded-lg bg-muted/50 p-3">
+        <Textarea
+          placeholder="Write a comment..."
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          className="border-muted-foreground/20 bg-background"
+        />
+        <div className="mt-2 flex justify-end">
+          <Button disabled={!newComment.trim()}>
+            <Send className="mr-2 h-4 w-4" />
+            Post Comment
+          </Button>
         </div>
-        <ScrollArea className="h-[800px] pr-4">
-          <div className="flex flex-col gap-4 pb-4">
-            {mockComments.map((comment) => (
-              <CommentComponent
-                key={comment.id}
-                comment={comment}
-                activeReplyId={activeReplyId}
-                onReplyClick={setActiveReplyId}
-              />
-            ))}
-          </div>
-        </ScrollArea>
+      </div>
+
+      <div className="flex flex-col gap-4 pb-4">
+        {mockComments.map((comment) => (
+          <CommentComponent
+            key={comment.id}
+            comment={comment}
+            activeReplyId={activeReplyId}
+            onReplyClick={setActiveReplyId}
+          />
+        ))}
       </div>
     </Card>
   );

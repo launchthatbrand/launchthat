@@ -16,28 +16,16 @@ interface GraphQLResponse<T> {
 export async function fetchWordPress<T>(
   query: string,
   variables?: Record<string, unknown>,
-): Promise<T> {
+): Promise<T | null> {
   const user = await currentUser();
-  console.log("user", user);
-
-  if (!user) {
-    throw new Error("Not authenticated");
-  }
-
-  console.log("user.privateMetadata", user.privateMetadata);
-
-  const wpAuthToken = user.privateMetadata.wpAuthToken as string;
-
-  if (!wpAuthToken) {
-    throw new Error("WordPress authentication token not found");
-  }
+  const wpAuthToken = user?.privateMetadata.wpAuthToken as string | undefined;
 
   const response = await fetch(env.NEXT_PUBLIC_WORDPRESS_API_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: `Bearer ${wpAuthToken}`,
+      ...(wpAuthToken && { Authorization: `Bearer ${wpAuthToken}` }),
     },
     body: JSON.stringify({
       query,
