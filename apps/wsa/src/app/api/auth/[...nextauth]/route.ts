@@ -1,97 +1,131 @@
-import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { createClerkClient } from "@clerk/backend";
 
-import { handlers, isSecureContext } from "@acme/auth";
+import { env } from "~/env";
 
-const EXPO_COOKIE_NAME = "__acme-expo-redirect-state";
-const AUTH_COOKIE_PATTERN = /authjs\.session-token=([^;]+)/;
+const clerkClient = createClerkClient({
+  secretKey: env.CLERK_SECRET_KEY,
+});
+const WORDPRESS_API = env.NEXT_PUBLIC_WORDPRESS_API_URL;
 
-/**
- * Noop in production.
- *
- * In development, rewrite the request URL to use localhost instead of host IP address
- * so that Expo Auth works without getting trapped by Next.js CSRF protection.
- * @param req The request to modify
- * @returns The modified request.
- */
-function rewriteRequestUrlInDevelopment(req: NextRequest) {
-  if (isSecureContext) return req;
-
-  const host = req.headers.get("host");
-  const newURL = new URL(req.url);
-  newURL.host = host ?? req.nextUrl.host;
-  return new NextRequest(newURL, req);
-}
-
-async function handleExpoSigninCallback(req: NextRequest, redirectURL: string) {
-  cookies().delete(EXPO_COOKIE_NAME);
-
-  // Run original handler, then extract the session token from the response
-  // Send it back via a query param in the Expo deep link. The Expo app
-  // will then get that and set it in the session storage.
-  const authResponse = await handlers.POST(req);
-  const setCookie = authResponse.headers
-    .getSetCookie()
-    .find((cookie) => AUTH_COOKIE_PATTERN.test(cookie));
-  const match = setCookie?.match(AUTH_COOKIE_PATTERN)?.[1];
-
-  if (!match)
-    throw new Error(
-      "Unable to find session cookie: " +
-        JSON.stringify(authResponse.headers.getSetCookie()),
-    );
-
-  const url = new URL(redirectURL);
-  url.searchParams.set("session_token", match);
-
-  return NextResponse.redirect(url);
-}
-
-export const POST = async (
-  _req: NextRequest,
-  props: { params: { nextauth: string[] } },
-) => {
-  // First step must be to correct the request URL.
-  const req = rewriteRequestUrlInDevelopment(_req);
-
-  const nextauthAction = props.params.nextauth[0];
-  const isExpoCallback = cookies().get(EXPO_COOKIE_NAME);
-
-  // callback handler required separately in the POST handler
-  // since Apple sends a POST request instead of a GET
-  if (nextauthAction === "callback" && !!isExpoCallback) {
-    return handleExpoSigninCallback(req, isExpoCallback.value);
+const LOGIN_MUTATION = `
+  mutation LoginUser($username: String!, $password: String!) {
+    login(input: {
+      clientMutationId: "uniqueId",
+      username: $username,
+      password: $password
+    }) {
+      authToken
+      user {
+        id
+        name
+        email
+      }
+    }
   }
+`;
 
-  return handlers.POST(req);
-};
+interface LoginResponse {
+  data: {
+    login: {
+      authToken: string;
+      user: {
+        id: string;
+        name: string;
+        email: string;
+      };
+    };
+  };
+  errors?: { message: string }[];
+}
 
-export const GET = async (
-  _req: NextRequest,
-  props: { params: { nextauth: string[] } },
-) => {
-  // First step must be to correct the request URL.
-  const req = rewriteRequestUrlInDevelopment(_req);
+interface LoginRequest {
+  username: string;
+  password: string;
+}
 
-  const nextauthAction = props.params.nextauth[0];
-  const isExpoSignIn = req.nextUrl.searchParams.get("expo-redirect");
-  const isExpoCallback = cookies().get(EXPO_COOKIE_NAME);
+export async function POST(request: Request) {
+  try {
+    const { username, password } = (await request.json()) as LoginRequest;
 
-  if (nextauthAction === "signin" && !!isExpoSignIn) {
-    // set a cookie we can read in the callback
-    // to know to send the user back to expo
-    cookies().set({
-      name: EXPO_COOKIE_NAME,
-      value: isExpoSignIn,
-      maxAge: 60 * 10, // 10 min
-      path: "/",
+    if (!username || !password) {
+      return NextResponse.json(
+        { message: "Username and password are required" },
+        { status: 400 },
+      );
+    }
+
+    if (!WORDPRESS_API) {
+      return NextResponse.json(
+        { message: "WordPress API URL not configured" },
+        { status: 500 },
+      );
+    }
+
+    // First, authenticate with WordPress
+    const response = await fetch(WORDPRESS_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: LOGIN_MUTATION,
+        variables: {
+          username,
+          password,
+        },
+      }),
     });
-  }
+    console.log("Response:", response);
 
-  if (nextauthAction === "callback" && !!isExpoCallback) {
-    return handleExpoSigninCallback(req, isExpoCallback.value);
-  }
+    const data = (await response.json()) as LoginResponse;
 
-  // Every other request just calls the default handler
-  return handlers.GET(req);
-};
+    if (data.errors) {
+      return NextResponse.json(
+        { message: data.errors[0]?.message ?? "Login failed" },
+        { status: 401 },
+      );
+    }
+
+    const { authToken, user } = data.data.login;
+
+    // Check if user exists in Clerk
+    let clerkUser;
+    try {
+      const users = await clerkClient.users.getUserList({
+        emailAddress: [user.email],
+      });
+      clerkUser = users.data[0];
+
+      // If user doesn't exist in Clerk, create them
+      if (!clerkUser) {
+        clerkUser = await clerkClient.users.createUser({
+          emailAddress: [user.email],
+          password: password,
+          firstName: user.name.split(" ")[0],
+          lastName: user.name.split(" ").slice(1).join(" ") || undefined,
+          externalId: user.id,
+        });
+      }
+
+      // Return the user information needed for frontend login
+      return NextResponse.json({
+        email: user.email,
+        password: password,
+        wordpressToken: authToken,
+      });
+    } catch (error) {
+      console.error("Clerk error:", error);
+      return NextResponse.json(
+        { message: "Error managing user account" },
+        { status: 500 },
+      );
+    }
+  } catch (error) {
+    console.error("Login error:", error);
+    return NextResponse.json(
+      { message: "An error occurred during login" },
+      { status: 500 },
+    );
+  }
+}

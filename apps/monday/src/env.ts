@@ -1,7 +1,8 @@
-import { env as authEnv } from "@acme/auth-monday/env";
 import { createEnv } from "@t3-oss/env-nextjs";
 import { vercel } from "@t3-oss/env-nextjs/presets-zod";
 import { z } from "zod";
+
+import { env as authEnv } from "@acme/auth-monday/env";
 
 export const env = createEnv({
   extends: [authEnv, vercel()],
@@ -15,7 +16,7 @@ export const env = createEnv({
    * This way you can ensure the app isn't built with invalid env vars.
    */
   server: {
-    WSA_POSTGRES_URL: z.string().url(),
+    POSTGRES_URL_MONDAY: z.string().url(),
   },
 
   /**

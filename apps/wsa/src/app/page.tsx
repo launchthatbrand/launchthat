@@ -1,24 +1,26 @@
+import { Suspense } from "react";
+
+import { NavUser } from "@acme/ui/general/nav-user";
+
+import { HydrateClient, prefetch, trpc } from "~/trpc/server";
+import { AuthShowcase } from "./_components/auth-showcase";
 import {
   CreatePostForm,
   PostCardSkeleton,
   PostList,
 } from "./_components/posts";
-import { HydrateClient, prefetch, trpc } from "~/trpc/server";
-
-import { AuthShowcase } from "./_components/auth-showcase";
-import { Suspense } from "react";
 
 export default function HomePage() {
   prefetch(trpc.post.all.queryOptions());
 
   return (
     <HydrateClient>
-      <main className="container h-screen py-16">
-        <div className="flex flex-col items-center justify-center gap-4">
+      <main className="TEST2 container flex flex-1 py-16">
+        <div className="flex flex-1 flex-col items-center justify-center gap-4">
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
             <span className="text-primary">Wall Street</span> Academy
           </h1>
-          <AuthShowcase />
+          <NavUser />
 
           <CreatePostForm />
           <div className="w-full max-w-2xl overflow-y-scroll">

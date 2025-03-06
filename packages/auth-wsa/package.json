@@ -6,9 +6,12 @@
   "exports": {
     ".": {
       "react-server": "./src/index.rsc.ts",
+      "client": "./src/client.ts",
       "default": "./src/index.ts"
     },
-    "./env": "./env.ts"
+    "./env": "./env.ts",
+    "./client": "./src/client.ts",
+    "./actions": "./src/actions.ts"
   },
   "license": "MIT",
   "scripts": {
@@ -21,6 +24,7 @@
     "@acme/db-wsa": "workspace:*",
     "@auth/core": "0.37.2",
     "@auth/drizzle-adapter": "1.7.4",
+    "@clerk/nextjs": "^6.12.3",
     "@t3-oss/env-nextjs": "^0.12.0",
     "next": "^14.2.23",
     "next-auth": "5.0.0-beta.25",

@@ -1,5 +1,14 @@
 {
   "extends": "@acme/tsconfig/base.json",
-  "include": ["src", "*.ts"],
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "moduleResolution": "bundler",
+    "tsBuildInfoFile": ".tsbuildinfo",
+    "lib": ["ES2022", "dom", "dom.iterable"],
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "target": "ESNext"
+  },
+  "include": ["src", "env.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

@@ -3,5 +3,11 @@
     {
       "mode": "auto"
     }
+  ],
+  "favorites.resources": [
+    {
+      "filePath": "packages/ui",
+      "group": "Default"
+    }
   ]
 }

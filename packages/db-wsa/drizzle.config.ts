@@ -1,10 +1,10 @@
 import type { Config } from "drizzle-kit";
 
-if (!process.env.WSA_POSTGRES_URL) {
-  throw new Error("Missing WSA_POSTGRES_URL");
+if (!process.env.POSTGRES_URL_WSA) {
+  throw new Error("Missing POSTGRES_URL_WSA");
 }
-
-const nonPoolingUrl = process.env.WSA_POSTGRES_URL.replace(":6543", ":5432");
+console.log("process.env.POSTGRES_URL_WSA", process.env.POSTGRES_URL_WSA);
+const nonPoolingUrl = process.env.POSTGRES_URL_WSA.replace(":6543", ":5432");
 
 export default {
   schema: "./src/schema.ts",

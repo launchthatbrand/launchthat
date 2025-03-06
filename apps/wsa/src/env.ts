@@ -1,7 +1,8 @@
-import { env as authEnv } from "@acme/auth-wsa/env";
 import { createEnv } from "@t3-oss/env-nextjs";
 import { vercel } from "@t3-oss/env-nextjs/presets-zod";
 import { z } from "zod";
+
+import { env as authEnv } from "@acme/auth-wsa/env";
 
 export const env = createEnv({
   extends: [authEnv, vercel()],
@@ -9,6 +10,7 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "production", "test"])
       .default("development"),
+    NEXT_PUBLIC_WORDPRESS_API_URL: z.string().url(),
   },
   /**
    * Specify your server-side environment variables schema here.
@@ -16,6 +18,7 @@ export const env = createEnv({
    */
   server: {
     WSA_POSTGRES_URL: z.string().url(),
+    CLERK_SECRET_KEY: z.string(),
   },
 
   /**
@@ -30,9 +33,7 @@ export const env = createEnv({
    */
   experimental__runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
-
-    // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
+    NEXT_PUBLIC_WORDPRESS_API_URL: process.env.NEXT_PUBLIC_WORDPRESS_API_URL,
   },
-  skipValidation:
-    !!process.env.CI || process.env.npm_lifecycle_event === "lint",
+  skipValidation: !!process.env.CI,
 });

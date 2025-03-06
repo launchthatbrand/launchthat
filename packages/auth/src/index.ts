@@ -13,3 +13,5 @@ export {
   validateToken,
   isSecureContext,
 } from "./config";
+
+export { AuthProvider } from "./AuthProvider";

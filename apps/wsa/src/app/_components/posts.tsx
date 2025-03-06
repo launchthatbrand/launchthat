@@ -1,31 +1,34 @@
 "use client";
 
+import type { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import type { RouterOutputs } from "@acme/api-wsa";
+import { CreatePostSchema } from "@acme/db-wsa/schema";
+import { Button } from "@acme/ui/components/button";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-  useForm,
-} from "@acme/ui/form";
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
+} from "@acme/ui/components/form";
+import { Input } from "@acme/ui/components/input";
+import { cn } from "@acme/ui/lib/utils";
 
-import { Button } from "@acme/ui/button";
-import { CreatePostSchema } from "@acme/db-wsa/schema";
-import { Input } from "@acme/ui/input";
-import type { RouterOutputs } from "@acme/api-wsa";
-import { cn } from "@acme/ui";
-import { toast } from "@acme/ui/toast";
 import { useTRPC } from "~/trpc/react";
 
 export function CreatePostForm() {
   const trpc = useTRPC();
-  const form = useForm({
-    schema: CreatePostSchema,
+  const form = useForm<z.infer<typeof CreatePostSchema>>({
+    resolver: zodResolver(CreatePostSchema),
     defaultValues: {
       content: "",
       title: "",

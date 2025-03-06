@@ -1,7 +1,7 @@
-import * as schema from "./schema";
-
 import { createPool } from "@vercel/postgres";
 import { drizzle } from "drizzle-orm/vercel-postgres";
+
+import * as schema from "./schema";
 
 if (!process.env.WSA_POSTGRES_URL) {
   throw new Error("Missing WSA_POSTGRES_URL environment variable");

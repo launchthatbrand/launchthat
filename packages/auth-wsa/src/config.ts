@@ -26,19 +26,51 @@ const adapter = DrizzleAdapter(db, {
   sessionsTable: Session,
 });
 
-export const isSecureContext = env.NODE_ENV !== "development";
+// Use a function to determine secure context to avoid direct env access
+export const getIsSecureContext = () => {
+  try {
+    // Only access env in a try-catch to avoid client-side errors
+    return env.NODE_ENV !== "development";
+  } catch {
+    // Default to secure on client-side
+    return true;
+  }
+};
 
-export const authConfig = {
-  adapter,
-  // In development, we need to skip checks to allow Expo to work
-  ...(!isSecureContext
-    ? {
-        skipCSRFCheck: skipCSRFCheck,
-        trustHost: true,
-      }
-    : {}),
-  secret: env.AUTH_SECRET,
-  providers: [Discord],
+// Factory function to create auth config, only called server-side
+export const createAuthConfig = (): NextAuthConfig => {
+  const isSecure = getIsSecureContext();
+
+  return {
+    adapter,
+    // In development, we need to skip checks to allow Expo to work
+    ...(!isSecure
+      ? {
+          skipCSRFCheck: skipCSRFCheck,
+          trustHost: true,
+        }
+      : {}),
+    secret: env.AUTH_SECRET,
+    providers: [Discord],
+    callbacks: {
+      session: (opts) => {
+        if (!("user" in opts))
+          throw new Error("unreachable with session strategy");
+
+        return {
+          ...opts.session,
+          user: {
+            ...opts.session.user,
+            id: opts.user.id,
+          },
+        };
+      },
+    },
+  };
+};
+
+// Base config without environment variables for client-side
+export const authConfig: NextAuthConfig = {
   callbacks: {
     session: (opts) => {
       if (!("user" in opts))
@@ -53,7 +85,8 @@ export const authConfig = {
       };
     },
   },
-} satisfies NextAuthConfig;
+  providers: [Discord],
+};
 
 export const validateToken = async (
   token: string,
