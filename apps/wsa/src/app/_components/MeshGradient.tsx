@@ -2,8 +2,9 @@
 
 import { useEffect, useRef } from "react";
 
+import { cn } from "@acme/ui/lib/utils";
+
 import { Gradient } from "./gradient";
-import { cn } from "@/lib/utils";
 
 declare module "./gradient" {
   interface Gradient {

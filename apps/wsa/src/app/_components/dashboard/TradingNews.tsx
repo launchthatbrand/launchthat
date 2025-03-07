@@ -1,13 +1,19 @@
-import { Bell, Heart, Search, Star } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Toggle } from "@/components/ui/toggle";
-import { cn } from "@/lib/utils";
-import { useFavoritePairs } from "./stores/useFavoritePairs";
 import { useState } from "react";
+import { Bell, Heart, Search, Star } from "lucide-react";
+
+import { Badge } from "@acme/ui/components/badge";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@acme/ui/components/card";
+import { Input } from "@acme/ui/components/input";
+import { ScrollArea } from "@acme/ui/components/scroll-area";
+import { Toggle } from "@acme/ui/components/toggle";
+import { cn } from "@acme/ui/lib/utils";
+
+import { useFavoritePairs } from "./stores/useFavoritePairs";
 
 interface NewsItem {
   id: number;

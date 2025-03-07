@@ -17,6 +17,8 @@ import { SidebarHeader } from "@acme/ui/components/sidebar";
 import { NavMain } from "@acme/ui/general/nav-main";
 import { TeamSwitcher } from "@acme/ui/general/team-switcher";
 
+import { useLearndash } from "../hooks/useLearndash";
+
 // This is sample data.
 const data = {
   user: {
@@ -41,38 +43,6 @@ const data = {
       plan: "Free",
     },
   ],
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: TerminalSquare,
-      isActive: true,
-    },
-    {
-      title: "Courses",
-      url: "/courses",
-      icon: Bot,
-      items: [
-        {
-          title: "Auth",
-          url: "monday/auth",
-        },
-        {
-          title: "Workspaces",
-          url: "/monday/workspaces",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Templates & Downloads",
-      url: "/downloads",
-      icon: BookOpen,
-    },
-  ],
   projects: [
     {
       name: "Design Engineering",
@@ -93,12 +63,37 @@ const data = {
 };
 
 export default function DefaultSidebar() {
+  const { courses } = useLearndash();
+
+  const navMain = [
+    {
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: TerminalSquare,
+      isActive: true,
+    },
+    {
+      title: "Courses",
+      url: "/courses",
+      icon: Bot,
+      items: courses.map((course) => ({
+        title: course.title,
+        url: `/course/${course.id}`,
+      })),
+    },
+    {
+      title: "Templates & Downloads",
+      url: "/downloads",
+      icon: BookOpen,
+    },
+  ];
+
   return (
     <>
       <SidebarHeader>
         <TeamSwitcher />
       </SidebarHeader>
-      <NavMain items={data.navMain} />
+      <NavMain items={navMain} />
       {/* <div className="px-2 py-2">
         <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
           Discover

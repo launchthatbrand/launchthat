@@ -1,8 +1,12 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Image from "next/image";
 import { Instagram, Twitter, Youtube } from "lucide-react";
 
-import Image from "next/image";
-import { cn } from "@/lib/utils";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@acme/ui/components/card";
 
 interface SocialPost {
   id: number;

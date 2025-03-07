@@ -1,9 +1,10 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useMemo, useState } from "react";
 import { animated, useSpring } from "@react-spring/web";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+import { cn } from "@acme/ui/lib/utils";
 
 import { PerspectiveGrid } from "../PerspectiveGrid";
-import { cn } from "@/lib/utils";
 
 interface Carousel3DProps<T> {
   items: T[];
@@ -86,7 +87,7 @@ export function Carousel3D<T>({
       <PerspectiveGrid className="opacity-20" />
 
       {/* Carousel Container */}
-      <div className="perspective-[1000px] relative mx-auto h-[400px] w-[600px] transform-gpu preserve-3d">
+      <div className="perspective-[1000px] preserve-3d relative mx-auto h-[400px] w-[600px] transform-gpu">
         {items.map((item, index) => {
           const styles = getSlideStyles(index);
           return (

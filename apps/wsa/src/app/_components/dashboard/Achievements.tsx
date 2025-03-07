@@ -1,7 +1,12 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Medal, Star } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@acme/ui/components/card";
+import { cn } from "@acme/ui/lib/utils";
 
 interface Achievement {
   id: number;

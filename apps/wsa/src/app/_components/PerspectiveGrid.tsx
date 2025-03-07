@@ -1,5 +1,6 @@
 import React from "react";
-import { cn } from "@/lib/utils";
+
+import { cn } from "@acme/ui/lib/utils";
 
 interface PerspectiveGridProps {
   className?: string;
@@ -13,7 +14,7 @@ export function PerspectiveGrid({
 }: PerspectiveGridProps) {
   return (
     <div className={cn("absolute inset-0 overflow-hidden", className)}>
-      <div className="grid-container absolute bottom-0 left-0  w-full">
+      <div className="grid-container absolute bottom-0 left-0 w-full">
         <div
           className="absolute bottom-0 left-0 right-0 h-[100vh] w-full"
           style={{

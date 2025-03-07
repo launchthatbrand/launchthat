@@ -1,11 +1,17 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React from "react";
+import Image from "next/image";
 import { Clock, PlayCircle, ThumbsUp, Users } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger } from "~/app/_components/ui/tabs";
+
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@acme/ui/components/card";
+import { Tabs, TabsList, TabsTrigger } from "@acme/ui/components/tabs";
+import { cn } from "@acme/ui/lib/utils";
 
 import { Carousel3D } from "./Carousel3D";
-import Image from "next/image";
-import React from "react";
-import { cn } from "@/lib/utils";
 
 interface ContentItem {
   id: string;

@@ -1,8 +1,13 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 import { CheckCircle2, ChevronRight, CircleDashed } from "lucide-react";
 
-import Link from "next/link";
-import { cn } from "@/lib/utils";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@acme/ui/components/card";
+import { cn } from "@acme/ui/lib/utils";
 
 interface OnboardingStep {
   id: string;

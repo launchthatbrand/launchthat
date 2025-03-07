@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { TerminalSquare } from "lucide-react";
+import { BookOpen, LayoutDashboard, TerminalSquare } from "lucide-react";
 
 import { NavMain } from "@acme/ui/general/nav-main";
 
@@ -28,6 +28,11 @@ export default function CourseSidebar() {
 
   const navItems = [
     {
+      title: "Dashboard",
+      url: `/dashboard`,
+      icon: LayoutDashboard,
+    },
+    {
       title: "All Courses",
       url: `/courses`,
       icon: TerminalSquare,
@@ -42,6 +47,11 @@ export default function CourseSidebar() {
           title: lesson.title,
           url: `/course/${courseId}/${lesson.id}`,
         })) ?? [],
+    },
+    {
+      title: "Templates & Downloads",
+      url: "/downloads",
+      icon: BookOpen,
     },
   ];
 

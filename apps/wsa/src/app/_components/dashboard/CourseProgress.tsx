@@ -1,14 +1,18 @@
+import React from "react";
 import { Book, Clock } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@acme/ui/components/card";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/hover-card";
-
-import { Progress } from "@/components/ui/progress";
-import React from "react";
-import { cn } from "@/lib/utils";
+} from "@acme/ui/components/hover-card";
+import { Progress } from "@acme/ui/components/progress";
 
 interface MilestoneProps {
   percent: number;
