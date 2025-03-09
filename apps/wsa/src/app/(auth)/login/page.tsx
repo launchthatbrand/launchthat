@@ -1,17 +1,23 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { useRouter, useSearchParams } from "next/navigation";
 
-import { useSignIn } from "@acme/auth-wsa/client";
-import { LoginForm } from "@acme/ui/general/LoginForm";
 import { DiscordIcon } from "@acme/ui/icons/index";
-
+import { LoginForm } from "@acme/ui/general/LoginForm";
 import { loginWithWordPress } from "./actions";
+import { toast } from "sonner";
+import { useSignIn } from "@acme/auth-wsa/client";
 
 export default function LoginPage() {
   const { signIn, setActive } = useSignIn();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Get the redirect URL from search params
+  const redirectUrl = searchParams.get("redirect");
+  const decodedRedirectUrl = redirectUrl
+    ? decodeURIComponent(redirectUrl)
+    : "/";
 
   const handleSignIn = async () => {
     if (!signIn) return;
@@ -19,7 +25,7 @@ export default function LoginPage() {
       await signIn.authenticateWithRedirect({
         strategy: "oauth_discord",
         redirectUrl: "/sso-callback",
-        redirectUrlComplete: "/",
+        redirectUrlComplete: decodedRedirectUrl,
       });
     } catch (err) {
       console.error("Monday auth error", err);
@@ -41,7 +47,8 @@ export default function LoginPage() {
 
       if (result.status === "complete") {
         await setActive({ session: result.createdSessionId });
-        router.push("/");
+        // Redirect to the original URL if available, otherwise to home
+        router.push(decodedRedirectUrl);
       } else {
         console.error("Unexpected Clerk response:", result);
         throw new Error("Failed to complete login");

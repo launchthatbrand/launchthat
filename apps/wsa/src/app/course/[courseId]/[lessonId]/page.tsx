@@ -1,21 +1,20 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import { SignInButton } from "@clerk/nextjs";
+import { Card, CardContent } from "@acme/ui/components/card";
 import { CheckCircle, ChevronLeft, ChevronRight, Star } from "lucide-react";
-import { toast } from "sonner";
+import { GeneralCard, GeneralCardSkeleton } from "@acme/ui/general/GeneralCard";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@acme/ui/components/button";
-import { Card, CardContent } from "@acme/ui/components/card";
-import { Skeleton } from "@acme/ui/components/skeleton";
-import { GeneralCard, GeneralCardSkeleton } from "@acme/ui/general/GeneralCard";
-
-import { useLearndash } from "~/app/hooks/useLearndash";
 import { Comments } from "./_components/Comments";
 import { ProgressSidebar } from "./_components/ProgressSidebar";
+import { Skeleton } from "@acme/ui/components/skeleton";
 import { VideoPlayer } from "./_components/VideoPlayer";
 import { detectVideoInfo } from "./utils";
+import { toast } from "sonner";
+import { useAuth } from "@clerk/nextjs";
+import { useLearndash } from "~/app/hooks/useLearndash";
+import { useRouter } from "next/navigation";
 
 // Rating component for lessons
 function LessonRating({ onRate }: { onRate: (rating: number) => void }) {
@@ -104,6 +103,17 @@ function LoadingSkeleton() {
 }
 
 function AuthenticationRequired() {
+  const router = useRouter();
+
+  // Get the current URL for redirection after login
+  const currentUrl = typeof window !== "undefined" ? window.location.href : "";
+
+  const handleSignInClick = () => {
+    // Redirect to login page with current URL as redirect parameter
+    const loginUrl = `/login?redirect=${encodeURIComponent(currentUrl)}`;
+    router.push(loginUrl);
+  };
+
   return (
     <GeneralCard
       layout="stacked"
@@ -115,9 +125,7 @@ function AuthenticationRequired() {
           <p className="text-muted-foreground">
             Please sign in to view this lesson content
           </p>
-          <SignInButton mode="modal">
-            <Button>Sign In</Button>
-          </SignInButton>
+          <Button onClick={handleSignInClick}>Sign In</Button>
         </>
       }
     />
@@ -130,6 +138,7 @@ export default function LessonPage({
   params: { courseId: string; lessonId: string };
 }) {
   const router = useRouter();
+  const { isLoaded, isSignedIn } = useAuth();
   const stickyContainerRef = useRef<HTMLDivElement>(null);
   const { useLesson, useRelatedLessons } = useLearndash();
   const decodedLessonId = decodeURIComponent(params.lessonId);
@@ -139,13 +148,25 @@ export default function LessonPage({
   const [isCompleted, setIsCompleted] = useState(false);
   const [_lessonRating, setLessonRating] = useState<number>(0);
 
-  // Fetch current lesson
-  const { data: lesson, isLoading: isLoadingLesson } =
-    useLesson(decodedLessonId);
+  // State to track authentication status for client-side rendering
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
-  // Fetch related lessons
+  // Update authentication state when Clerk loads
+  useEffect(() => {
+    if (isLoaded) {
+      setIsAuthenticated(!!isSignedIn);
+    }
+  }, [isLoaded, isSignedIn]);
+
+  // Use a key that changes when auth state changes to force query refetch
+  const queryKey = `${decodedLessonId}_${isSignedIn ? "auth" : "unauth"}_${isAuthenticated ? "true" : "false"}`;
+
+  // Fetch current lesson with updated key to force refetch when auth changes
+  const { data: lesson, isLoading: isLoadingLesson } = useLesson(queryKey);
+
+  // Fetch related lessons with updated key
   const { data: relatedLessons, isLoading: isLoadingRelated } =
-    useRelatedLessons(decodedLessonId);
+    useRelatedLessons(queryKey);
 
   // Function to handle lesson rating
   const handleRateLesson = (rating: number) => {
@@ -213,7 +234,8 @@ export default function LessonPage({
     router.push(`/course/${params.courseId}/${lessonId}`);
   };
 
-  if (isLoadingLesson || isLoadingRelated) {
+  // Show loading skeleton while loading data or auth state
+  if (isLoadingLesson || isLoadingRelated || !isLoaded) {
     return <LoadingSkeleton />;
   }
 
@@ -234,72 +256,75 @@ export default function LessonPage({
               className="overflow-hidden"
               contentClassName="p-0"
               content={
-                lesson && videoInfo ? (
-                  <>
-                    <VideoPlayer
-                      videoInfo={videoInfo}
-                      stickyContainerRef={stickyContainerRef}
-                    />
-                    <div className="flex flex-col border-t bg-background p-4">
-                      {/* Navigation and rating in flex container */}
-                      <div className="mb-4 flex flex-col items-center justify-between md:flex-row">
-                        {/* Navigation buttons */}
-                        <div className="mb-4 flex space-x-2 md:mb-0">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() =>
-                              prevLesson && navigateToLesson(prevLesson.id)
-                            }
-                            disabled={!prevLesson}
-                            className="flex items-center"
-                          >
-                            <ChevronLeft className="mr-1 h-4 w-4" />
-                            Previous
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() =>
-                              nextLesson && navigateToLesson(nextLesson.id)
-                            }
-                            disabled={!nextLesson}
-                            className="flex items-center"
-                          >
-                            Next
-                            <ChevronRight className="ml-1 h-4 w-4" />
-                          </Button>
+                // Show content if authenticated or clerk says we're signed in
+                isAuthenticated || isSignedIn ? (
+                  lesson && videoInfo ? (
+                    <div>
+                      <VideoPlayer
+                        videoInfo={videoInfo}
+                        stickyContainerRef={stickyContainerRef}
+                      />
+                      <div className="flex flex-col border-t bg-background p-4">
+                        {/* Navigation and rating in flex container */}
+                        <div className="mb-4 flex flex-col items-center justify-between md:flex-row">
+                          {/* Navigation buttons */}
+                          <div className="mb-4 flex space-x-2 md:mb-0">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() =>
+                                prevLesson && navigateToLesson(prevLesson.id)
+                              }
+                              disabled={!prevLesson}
+                              className="flex items-center"
+                            >
+                              <ChevronLeft className="mr-1 h-4 w-4" />
+                              Previous
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() =>
+                                nextLesson && navigateToLesson(nextLesson.id)
+                              }
+                              disabled={!nextLesson}
+                              className="flex items-center"
+                            >
+                              Next
+                              <ChevronRight className="ml-1 h-4 w-4" />
+                            </Button>
+                          </div>
+
+                          {/* Rating Component */}
+                          <LessonRating onRate={handleRateLesson} />
                         </div>
 
-                        {/* Rating Component */}
-                        <LessonRating onRate={handleRateLesson} />
-                      </div>
-
-                      {/* Complete button in full width container */}
-                      <div className="flex justify-center">
-                        <Button
-                          size="lg"
-                          className="min-w-[200px] font-medium"
-                          onClick={handleCompleteLesson}
-                          disabled={isCompleting || isCompleted}
-                        >
-                          {isCompleting ? (
-                            <span className="flex items-center">
-                              <Skeleton className="mr-2 h-4 w-4 animate-spin rounded-full" />
-                              Completing...
-                            </span>
-                          ) : isCompleted ? (
-                            <span className="flex items-center">
-                              <CheckCircle className="mr-2 h-4 w-4 text-green-500" />
-                              Lesson Completed
-                            </span>
-                          ) : (
-                            "Complete Lesson"
-                          )}
-                        </Button>
+                        {/* Complete button in full width container */}
+                        <div className="flex justify-center">
+                          <Button
+                            size="lg"
+                            className="min-w-[200px] font-medium"
+                            onClick={handleCompleteLesson}
+                            disabled={isCompleting || isCompleted}
+                          >
+                            {isCompleting ? (
+                              <span className="flex items-center">
+                                <Skeleton className="mr-2 h-4 w-4 animate-spin rounded-full" />
+                                Completing...
+                              </span>
+                            ) : isCompleted ? (
+                              <span className="flex items-center">
+                                <CheckCircle className="mr-2 h-4 w-4 text-green-500" />
+                                Lesson Completed
+                              </span>
+                            ) : (
+                              "Complete Lesson"
+                            )}
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </>
+                  ) : null
                 ) : (
                   <AuthenticationRequired />
                 )
