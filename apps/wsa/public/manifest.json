@@ -1,0 +1,17 @@
+{
+  "name": "WSA Learning Platform",
+  "short_name": "WSA",
+  "description": "Learn at your own pace with WSA's online learning platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ]
+}

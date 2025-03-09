@@ -1,18 +1,17 @@
 import "~/app/globals.css";
 
 import type { Metadata, Viewport } from "next";
-import { Roboto } from "next/font/google";
+import { ThemeProvider, ThemeToggle } from "@acme/ui/components/theme";
+
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
-
-import { Toaster } from "@acme/ui/components/sonner";
-import { ThemeProvider, ThemeToggle } from "@acme/ui/components/theme";
-import StandardLayout from "@acme/ui/layout/StandardLayout";
-import { cn } from "@acme/ui/lib/utils";
-
-import { env } from "~/env";
-import { TRPCReactProvider } from "~/trpc/react";
 import { Providers } from "./providers";
+import { Roboto } from "next/font/google";
+import StandardLayout from "@acme/ui/layout/StandardLayout";
+import { TRPCReactProvider } from "~/trpc/react";
+import { Toaster } from "@acme/ui/components/sonner";
+import { cn } from "@acme/ui/lib/utils";
+import { env } from "~/env";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -29,18 +28,28 @@ export const metadata: Metadata = {
       ? "https://turbo.t3.gg"
       : "http://localhost:3000",
   ),
-  title: "Create T3 Turbo",
-  description: "Simple monorepo with shared backend for web & mobile apps",
+  title: "WSA Learning Platform",
+  description: "Learn at your own pace with WSA's online learning platform",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "WSA App",
+  },
+  applicationName: "WSA Learning Platform",
+  formatDetection: {
+    telephone: false,
+  },
   openGraph: {
-    title: "Create T3 Turbo",
-    description: "Simple monorepo with shared backend for web & mobile apps",
+    title: "WSA Learning Platform",
+    description: "Learn at your own pace with WSA's online learning platform",
     url: "https://create-t3-turbo.vercel.app",
-    siteName: "Create T3 Turbo",
+    siteName: "WSA",
   },
   twitter: {
     card: "summary_large_image",
-    site: "@jullerino",
-    creator: "@jullerino",
+    site: "@WSA",
+    creator: "@WSA",
   },
 };
 

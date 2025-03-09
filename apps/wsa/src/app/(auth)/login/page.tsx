@@ -4,11 +4,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { DiscordIcon } from "@acme/ui/icons/index";
 import { LoginForm } from "@acme/ui/general/LoginForm";
+import { Suspense } from "react";
 import { loginWithWordPress } from "./actions";
 import { toast } from "sonner";
 import { useSignIn } from "@acme/auth-wsa/client";
 
-export default function LoginPage() {
+// Create a client component that uses the search params
+function LoginContent() {
   const { signIn, setActive } = useSignIn();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -73,14 +75,23 @@ export default function LoginPage() {
   ];
 
   return (
+    <LoginForm
+      className="w-[400px]"
+      providers={providers}
+      title="Welcome to WSA"
+      description="Sign in to your account using Discord"
+      onSubmit={onSubmit}
+    />
+  );
+}
+
+// Main page component with Suspense
+export default function LoginPage() {
+  return (
     <div className="container flex h-screen w-full items-center justify-center">
-      <LoginForm
-        className="w-[400px]"
-        providers={providers}
-        title="Welcome to WSA"
-        description="Sign in to your account using Discord"
-        onSubmit={onSubmit}
-      />
+      <Suspense fallback={<div>Loading...</div>}>
+        <LoginContent />
+      </Suspense>
     </div>
   );
 }
