@@ -3,7 +3,6 @@ import { Suspense } from "react";
 import { NavUser } from "@acme/ui/general/nav-user";
 
 import { HydrateClient, prefetch, trpc } from "~/trpc/server";
-import { AuthShowcase } from "./_components/auth-showcase";
 import {
   CreatePostForm,
   PostCardSkeleton,

@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "./themes/agressive.css";
+@import "./themes/glass.css";
+@import "./themes/brutalist.css";
+
+@layer base {
+  /* Only keep transition properties in root */
+  :root {
+    --theme-transition-duration: 100ms;
+    --theme-transition-timing: ;
+  }
+
+  /* Move all base theme variables to a default theme */
+  .theme-default {
+    /* Base theme variables */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    /* Default fonts */
+    --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      "Liberation Mono", "Courier New", monospace;
+  }
+
+  /* Apply default theme to html by default */
+  html {
+    @apply theme-default;
+  }
+
+  /* Add transitions to elements that use theme variables */
+  *,
+  *::before,
+  *::after {
+    transition:
+      background-color var(--theme-transition-duration)
+        var(--theme-transition-timing),
+      border-color var(--theme-transition-duration)
+        var(--theme-transition-timing),
+      color var(--theme-transition-duration) var(--theme-transition-timing),
+      box-shadow var(--theme-transition-duration) var(--theme-transition-timing),
+      transform var(--theme-transition-duration) var(--theme-transition-timing);
+  }
+}
+
+/* Font imports */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto+Condensed:wght@400;700&display=swap");

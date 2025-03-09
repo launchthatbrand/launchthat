@@ -7,7 +7,7 @@ export function AppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar> & { sidebar: React.ReactNode }) {
   return (
-    <Sidebar collapsible="icon" {...props} variant="inset" className="bg-white">
+    <Sidebar collapsible="icon" {...props} variant="inset">
       {sidebar}
       <SidebarRail />
     </Sidebar>

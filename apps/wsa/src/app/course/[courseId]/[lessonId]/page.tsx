@@ -6,6 +6,7 @@ import { SignInButton } from "@clerk/nextjs";
 import { Button } from "@acme/ui/components/button";
 import { Card, CardContent } from "@acme/ui/components/card";
 import { Skeleton } from "@acme/ui/components/skeleton";
+import { GeneralCard, GeneralCardSkeleton } from "@acme/ui/general/GeneralCard";
 
 import { useLearndash } from "~/app/hooks/useLearndash";
 import { Comments } from "./_components/Comments";
@@ -18,20 +19,15 @@ function LoadingSkeleton() {
     <div className="container py-8">
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
         <div className="lg:col-span-3">
-          <Card className="mx-auto">
-            <CardContent className="space-y-4 p-6">
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-[100px]" />
-                <Skeleton className="h-8 w-[300px]" />
-              </div>
-              <Skeleton className="aspect-video w-full rounded-lg" />
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-2/3" />
-              </div>
-            </CardContent>
-          </Card>
+          <GeneralCardSkeleton
+            layout="stacked"
+            hasImage={true}
+            hasTitle={true}
+            hasSubtitle={false}
+            hasContent={true}
+            contentLines={3}
+            className="overflow-hidden"
+          />
         </div>
 
         <div>
@@ -61,15 +57,22 @@ function LoadingSkeleton() {
 
 function AuthenticationRequired() {
   return (
-    <div className="flex min-h-[300px] flex-col items-center justify-center gap-4 rounded-lg border bg-background p-8 text-center">
-      <h2 className="text-xl font-semibold">Authentication Required</h2>
-      <p className="text-muted-foreground">
-        Please sign in to view this lesson content
-      </p>
-      <SignInButton mode="modal">
-        <Button>Sign In</Button>
-      </SignInButton>
-    </div>
+    <GeneralCard
+      layout="stacked"
+      className="flex min-h-[300px] flex-col items-center justify-center gap-4 border-none"
+      contentClassName="p-8 text-center flex flex-col items-center justify-center gap-4"
+      content={
+        <>
+          <h2 className="text-xl font-semibold">Authentication Required</h2>
+          <p className="text-muted-foreground">
+            Please sign in to view this lesson content
+          </p>
+          <SignInButton mode="modal">
+            <Button>Sign In</Button>
+          </SignInButton>
+        </>
+      }
+    />
   );
 }
 
@@ -106,18 +109,21 @@ export default function LessonPage({
         <div className="order-2 md:order-1 lg:col-span-3">
           <div className="space-y-8">
             {/* Video Section */}
-            <Card>
-              <CardContent className="p-0">
-                {lesson && videoInfo ? (
+            <GeneralCard
+              layout="stacked"
+              className="overflow-hidden"
+              contentClassName="p-0"
+              content={
+                lesson && videoInfo ? (
                   <VideoPlayer
                     videoInfo={videoInfo}
                     stickyContainerRef={stickyContainerRef}
                   />
                 ) : (
                   <AuthenticationRequired />
-                )}
-              </CardContent>
-            </Card>
+                )
+              }
+            />
 
             {/* Comments Section */}
             <Comments />

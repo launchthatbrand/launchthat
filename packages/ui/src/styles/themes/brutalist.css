@@ -1,0 +1,136 @@
+.brutalist {
+  /* Brutalist theme variables */
+  --brutalist-border: 4px solid #000;
+  --brutalist-shadow: 8px 8px 0px #000;
+  --brutalist-scale: 1;
+  --brutalist-bg: #f0f0f0;
+  --brutalist-accent: #ff3333;
+
+  /* Override base variables */
+  /* --background: 0 0% 94%; */
+  --foreground: 0 0% 0%;
+  --card: 0 0% 94%;
+  --card-foreground: 0 0% 0%;
+  --popover: 0 0% 94%;
+  --popover-foreground: 0 0% 0%;
+  --primary: 0 85% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 90%;
+  --secondary-foreground: 0 0% 0%;
+  --muted: 0 0% 90%;
+  --muted-foreground: 0 0% 40%;
+  --accent: 0 85% 60%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 85% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 0%;
+  --input: 0 0% 0%;
+  --ring: 0 85% 60%;
+  --radius: 0; /* Remove border radius */
+
+  /* Brutalist theme fonts */
+  --font-sans: "Space Mono", monospace;
+  --font-mono: "Space Grotesk", sans-serif;
+  --font-display: "Space Mono", monospace;
+  --font-body: "Space Mono", monospace;
+}
+
+/* Card specific styles - target shadcn classes */
+.brutalist [class*="bg-card"] {
+  background-color: var(--brutalist-bg) !important;
+  border: var(--brutalist-border) !important;
+  box-shadow: var(--brutalist-shadow) !important;
+  transform: none !important;
+  border-radius: 0 !important;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.brutalist [class*="bg-card"]:hover {
+  transform: translate(-4px, -4px) !important;
+  box-shadow: 12px 12px 0px #000 !important;
+}
+
+/* Target card header */
+.brutalist [class*="bg-card"] h3 {
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
+  border-bottom: 4px solid #000;
+  padding-bottom: 0.5rem;
+  font-family: "Space Mono", monospace;
+}
+
+/* Target card content */
+.brutalist [class*="bg-card"] p {
+  font-family: "Space Mono", monospace;
+  line-height: 1.7;
+}
+
+.dark.brutalist {
+  --brutalist-border: 4px solid #fff;
+  --brutalist-shadow: 8px 8px 0px #fff;
+  --brutalist-bg: #111111;
+  --brutalist-accent: #ff6666;
+
+  --background: 0 0% 7%;
+  --foreground: 0 0% 100%;
+  --card: 0 0% 7%;
+  --card-foreground: 0 0% 100%;
+  --popover: 0 0% 7%;
+  --popover-foreground: 0 0% 100%;
+  --primary: 0 85% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 15%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 60%;
+  --accent: 0 85% 60%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 85% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 100%;
+  --input: 0 0% 100%;
+  --ring: 0 85% 60%;
+}
+
+/* Button styles */
+.brutalist button {
+  background: #000 !important;
+  color: #fff !important;
+  border: var(--brutalist-border) !important;
+  /* padding: 1rem 2rem !important; */
+  font-family: var(--font-mono) !important;
+  /* font-size: 1rem !important; */
+  text-transform: uppercase !important;
+  letter-spacing: 2px !important;
+  transform: translate(-4px, -4px) !important;
+  box-shadow: 5px 5px 0 #5a5a5a !important;
+  transition: all 0.2s ease !important;
+  position: relative !important;
+}
+
+.brutalist button:hover {
+  transform: translate(-2px, -2px) !important;
+  box-shadow: 6px 6px 0 #000 !important;
+}
+
+.brutalist button:active {
+  transform: translate(0, 0) !important;
+  box-shadow: 0 0 0 #000 !important;
+}
+
+/* Dark mode button styles */
+.dark.brutalist button {
+  background: #fff !important;
+  color: #000 !important;
+  box-shadow: 8px 8px 0 #fff !important;
+}
+
+.dark.brutalist button:hover {
+  box-shadow: 6px 6px 0 #fff !important;
+}
+
+.dark.brutalist button:active {
+  box-shadow: 0 0 0 #fff !important;
+}

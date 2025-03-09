@@ -1,0 +1,27 @@
+/* Import all theme files */
+@import "./glass.css";
+@import "./brutalist.css";
+@import "./aggressive.css";
+@import "./retro.css";
+@import "./cyberpunk.css";
+@import "./minimal.css";
+@import "./terminal.css";
+@import "./handwritten.css";
+
+/* Add transitions to elements that use theme variables */
+*,
+*::before,
+*::after {
+  transition:
+    background-color var(--theme-transition-duration)
+      var(--theme-transition-timing),
+    border-color var(--theme-transition-duration) var(--theme-transition-timing),
+    color var(--theme-transition-duration) var(--theme-transition-timing),
+    box-shadow var(--theme-transition-duration) var(--theme-transition-timing),
+    transform var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+/* Font imports */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto+Condensed:wght@400;700&display=swap");

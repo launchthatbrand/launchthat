@@ -7,32 +7,32 @@ import {
   Globe,
   Heart,
   Linkedin,
-  MessageCircle,
+  MessageSquare,
   MoreHorizontal,
   Send,
   Twitter,
+  User,
 } from "lucide-react";
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@acme/ui/components/accordion";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "@acme/ui/components/avatar";
 import { Button } from "@acme/ui/components/button";
-import { Card } from "@acme/ui/components/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@acme/ui/components/dropdown-menu";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@acme/ui/components/hover-card";
-import { ScrollArea } from "@acme/ui/components/scroll-area";
 import { Textarea } from "@acme/ui/components/textarea";
+import { GeneralCard } from "@acme/ui/general/GeneralCard";
 import { cn } from "@acme/ui/lib/utils";
 
 interface AuthorInfo {
@@ -165,72 +165,6 @@ const mockComments: Comment[] = [
   },
 ];
 
-function AuthorCard({ author }: { author: AuthorInfo }) {
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2">
-        <Avatar>
-          <AvatarImage src={author.avatar} />
-          <AvatarFallback>{author.name[0]}</AvatarFallback>
-        </Avatar>
-        <div className="flex flex-col">
-          <span className="font-semibold">{author.name}</span>
-          {author.role && (
-            <span className="text-sm text-muted-foreground">
-              {author.role} {author.company && `at ${author.company}`}
-            </span>
-          )}
-        </div>
-      </div>
-      {author.bio && (
-        <p className="text-sm text-muted-foreground">{author.bio}</p>
-      )}
-      <div className="flex gap-2">
-        {author.website && (
-          <a
-            href={author.website}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-primary"
-          >
-            <Globe className="h-4 w-4" />
-          </a>
-        )}
-        {author.twitter && (
-          <a
-            href={`https://twitter.com/${author.twitter}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-[#1DA1F2]"
-          >
-            <Twitter className="h-4 w-4" />
-          </a>
-        )}
-        {author.linkedin && (
-          <a
-            href={`https://linkedin.com/in/${author.linkedin}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-[#0077B5]"
-          >
-            <Linkedin className="h-4 w-4" />
-          </a>
-        )}
-        {author.github && (
-          <a
-            href={`https://github.com/${author.github}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-black dark:hover:text-white"
-          >
-            <Github className="h-4 w-4" />
-          </a>
-        )}
-      </div>
-    </div>
-  );
-}
-
 function CommentComponent({
   comment,
   isReply = false,
@@ -253,126 +187,196 @@ function CommentComponent({
   };
 
   return (
-    <div
+    <GeneralCard
+      title=""
       className={cn(
-        "flex flex-col gap-4 rounded-lg border bg-white/50 p-4 shadow-md transition-all duration-200",
-        isReply ? "ml-8 border-muted/50" : "border-muted",
+        "overflow-visible",
+        isReply ? "ml-8" : "",
         isReplying && "shadow-lg ring-2 ring-primary/20",
       )}
-    >
-      <div className="flex items-start justify-between">
-        <HoverCard>
-          <HoverCardTrigger asChild>
-            <div className="flex cursor-pointer items-center gap-2">
-              <Avatar className="h-8 w-8 ring-2 ring-background">
-                <AvatarImage src={comment.author.avatar} />
-                <AvatarFallback>{comment.author.name[0]}</AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col">
-                <span className="font-medium transition-colors hover:text-primary">
-                  {comment.author.name}
-                </span>
-                <span className="text-xs text-muted-foreground">
-                  {formatDistanceToNow(comment.createdAt, { addSuffix: true })}
-                </span>
-              </div>
-            </div>
-          </HoverCardTrigger>
-          <HoverCardContent className="w-80 shadow-lg">
-            <AuthorCard author={comment.author} />
-          </HoverCardContent>
-        </HoverCard>
-        <Button variant="ghost" size="icon" className="hover:bg-muted/50">
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
-      </div>
+      contentClassName="p-4"
+      content={
+        <>
+          <div className="flex items-start justify-between">
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <div className="flex cursor-pointer items-center gap-2">
+                  <Avatar className="h-8 w-8 ring-2 ring-background">
+                    <AvatarImage src={comment.author.avatar} />
+                    <AvatarFallback>{comment.author.name[0]}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <span className="font-medium transition-colors hover:text-primary">
+                      {comment.author.name}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {formatDistanceToNow(comment.createdAt, {
+                        addSuffix: true,
+                      })}
+                    </span>
+                  </div>
+                </div>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80">
+                <div className="flex justify-between space-x-4">
+                  <Avatar className="h-16 w-16">
+                    <AvatarImage src={comment.author.avatar} />
+                    <AvatarFallback>
+                      <User className="h-8 w-8" />
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="space-y-1 text-sm">
+                    <h4 className="text-lg font-semibold">
+                      {comment.author.name}
+                    </h4>
+                    {comment.author.role && (
+                      <p className="text-muted-foreground">
+                        {comment.author.role}
+                      </p>
+                    )}
+                    {comment.author.company && (
+                      <p className="text-muted-foreground">
+                        {comment.author.company}
+                      </p>
+                    )}
+                    {comment.author.bio && (
+                      <p className="line-clamp-2 text-muted-foreground">
+                        {comment.author.bio}
+                      </p>
+                    )}
+                    <div className="flex gap-2 pt-2">
+                      {comment.author.website && (
+                        <a
+                          href={comment.author.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground transition-colors hover:text-primary"
+                        >
+                          <Globe className="h-4 w-4" />
+                        </a>
+                      )}
+                      {comment.author.twitter && (
+                        <a
+                          href={`https://twitter.com/${comment.author.twitter}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground transition-colors hover:text-primary"
+                        >
+                          <Twitter className="h-4 w-4" />
+                        </a>
+                      )}
+                      {comment.author.linkedin && (
+                        <a
+                          href={comment.author.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground transition-colors hover:text-primary"
+                        >
+                          <Linkedin className="h-4 w-4" />
+                        </a>
+                      )}
+                      {comment.author.github && (
+                        <a
+                          href={`https://github.com/${comment.author.github}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground transition-colors hover:text-primary"
+                        >
+                          <Github className="h-4 w-4" />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
 
-      <p className="text-sm text-foreground/90">{comment.content}</p>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <MoreHorizontal className="h-4 w-4" />
+                  <span className="sr-only">More</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>Report</DropdownMenuItem>
+                <DropdownMenuItem>Block User</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
 
-      <div className="flex items-center gap-4">
-        <Button
-          variant="ghost"
-          size="sm"
-          className={cn(
-            "gap-2 hover:bg-muted/50",
-            isLiked && "text-red-500 hover:text-red-600",
-          )}
-          onClick={() => setIsLiked(!isLiked)}
-        >
-          <Heart className={cn("h-4 w-4", isLiked && "fill-current")} />
-          <span>{comment.likes + (isLiked ? 1 : 0)}</span>
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className={cn(
-            "gap-2 hover:bg-muted/50",
-            isReplying && "text-primary hover:text-primary/90",
-          )}
-          onClick={() => onReplyClick(isReplying ? null : comment.id)}
-        >
-          <MessageCircle className="h-4 w-4" />
-          <span>{isReplying ? "Cancel" : "Reply"}</span>
-        </Button>
-      </div>
+          <div className="mt-2 text-sm">{comment.content}</div>
 
-      {isReplying && (
-        <div className="flex flex-col gap-2 rounded-md bg-muted/50 p-3">
-          <Textarea
-            placeholder="Write a reply..."
-            value={replyText}
-            onChange={(e) => setReplyText(e.target.value)}
-            autoFocus
-            className="border-muted-foreground/20"
-          />
-          <div className="flex justify-end gap-2">
+          <div className="mt-4 flex items-center gap-4">
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
-              onClick={() => {
-                setReplyText("");
-                onReplyClick(null);
-              }}
-              className="hover:bg-muted"
+              className="h-7 gap-1 px-2 text-xs"
+              onClick={() => setIsLiked(!isLiked)}
             >
-              Cancel
+              <Heart
+                className={cn(
+                  "h-3.5 w-3.5",
+                  isLiked && "fill-current text-primary",
+                )}
+              />
+              <span>{comment.likes + (isLiked ? 1 : 0)}</span>
             </Button>
             <Button
+              variant="ghost"
               size="sm"
-              onClick={handleReplySubmit}
-              disabled={!replyText.trim()}
+              className="h-7 gap-1 px-2 text-xs"
+              onClick={() => onReplyClick(isReplying ? null : comment.id)}
             >
-              <Send className="mr-2 h-4 w-4" />
-              Send
+              <MessageSquare className="h-3.5 w-3.5" />
+              <span>Reply</span>
             </Button>
           </div>
-        </div>
-      )}
 
-      {comment.replies.length > 0 && (
-        <Accordion type="single" collapsible>
-          <AccordionItem value="replies" className="border-0">
-            <AccordionTrigger className="rounded-md px-2 text-sm font-normal hover:bg-muted/50">
-              {comment.replies.length}{" "}
-              {comment.replies.length === 1 ? "Reply" : "Replies"}
-            </AccordionTrigger>
-            <AccordionContent>
-              <div className="flex flex-col gap-3 pt-2">
-                {comment.replies.map((reply) => (
-                  <CommentComponent
-                    key={reply.id}
-                    comment={reply}
-                    isReply
-                    activeReplyId={activeReplyId}
-                    onReplyClick={onReplyClick}
-                  />
-                ))}
+          {isReplying && (
+            <div className="mt-4 space-y-2">
+              <Textarea
+                placeholder="Write a reply..."
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
+                className="min-h-20 resize-none bg-background"
+              />
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onReplyClick(null)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={handleReplySubmit}
+                  disabled={!replyText.trim()}
+                >
+                  Reply
+                </Button>
               </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      )}
-    </div>
+            </div>
+          )}
+
+          {/* Render nested replies */}
+          {comment.replies.length > 0 && (
+            <div className="mt-4 space-y-4">
+              {comment.replies.map((reply) => (
+                <CommentComponent
+                  key={reply.id}
+                  comment={reply}
+                  isReply={true}
+                  activeReplyId={activeReplyId}
+                  onReplyClick={onReplyClick}
+                />
+              ))}
+            </div>
+          )}
+        </>
+      }
+    />
   );
 }
 
@@ -381,33 +385,47 @@ export function Comments() {
   const [activeReplyId, setActiveReplyId] = useState<string | null>(null);
 
   return (
-    <Card className="mt-8 border-none bg-transparent p-0 shadow-none">
-      <h2 className="mb-4 text-xl font-semibold">Comments</h2>
-      <div className="mb-6 rounded-lg bg-muted/50 p-3">
-        <Textarea
-          placeholder="Write a comment..."
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          className="border-muted-foreground/20 bg-background"
-        />
-        <div className="mt-2 flex justify-end">
-          <Button disabled={!newComment.trim()}>
-            <Send className="mr-2 h-4 w-4" />
-            Post Comment
-          </Button>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-4 pb-4">
-        {mockComments.map((comment) => (
-          <CommentComponent
-            key={comment.id}
-            comment={comment}
-            activeReplyId={activeReplyId}
-            onReplyClick={setActiveReplyId}
+    <GeneralCard
+      title="Comments"
+      layout="stacked"
+      className="mt-8 border-none bg-transparent shadow-none"
+      contentClassName="space-y-6"
+      content={
+        <>
+          <GeneralCard
+            layout="stacked"
+            className="mt-8 space-y-6"
+            contentClassName="p-0 "
+            content={
+              <div className="mb-14 rounded-lg bg-muted/50 p-3">
+                <Textarea
+                  placeholder="Write a comment..."
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  className="border-muted-foreground/20 bg-background"
+                />
+                <div className="mt-2 flex justify-end">
+                  <Button disabled={!newComment.trim()}>
+                    <Send className="mr-2 h-4 w-4" />
+                    Post Comment
+                  </Button>
+                </div>
+              </div>
+            }
           />
-        ))}
-      </div>
-    </Card>
+
+          <div className="TEST3 space-y-6">
+            {mockComments.map((comment) => (
+              <CommentComponent
+                key={comment.id}
+                comment={comment}
+                activeReplyId={activeReplyId}
+                onReplyClick={setActiveReplyId}
+              />
+            ))}
+          </div>
+        </>
+      }
+    />
   );
 }

@@ -43,6 +43,9 @@ const config = {
       {
         hostname: "i.pravatar.cc",
       },
+      {
+        hostname: "*",
+      },
     ],
   },
 };

@@ -7,13 +7,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@acme/ui/components/accordion";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@acme/ui/components/card";
 import { Progress } from "@acme/ui/components/progress";
+import { GeneralCard } from "@acme/ui/general/GeneralCard";
 
 import { VideoInfo } from "../types";
 
@@ -99,42 +94,49 @@ export function ProgressSidebar({
     <div className="order-1 md:order-2">
       {/* Mobile View - Accordion */}
       <div className="md:hidden">
-        <Card className="border-0">
-          <Accordion
-            type="single"
-            collapsible
-            className="rounded-lg border-0 bg-white shadow-none"
-          >
-            <AccordionItem
-              value="progress"
-              className="border-0 px-6 py-4 [&[data-state=open]]:pb-6"
+        <GeneralCard
+          layout="stacked"
+          className="border-0"
+          content={
+            <Accordion
+              type="single"
+              collapsible
+              className="rounded-lg border-0 bg-white shadow-none"
             >
-              <AccordionTrigger className="flex flex-col items-stretch gap-4 p-0 hover:no-underline [&[data-state=open]>div]:mb-0">
-                <div className="flex flex-col items-stretch justify-between gap-3">
-                  <h2 className="text-lg font-medium">Lesson Details</h2>
-                  <div className="text-sm text-muted-foreground">
-                    {progressContent}
+              <AccordionItem
+                value="progress"
+                className="border-0 px-6 py-4 [&[data-state=open]]:pb-6"
+              >
+                <AccordionTrigger className="flex flex-col items-stretch gap-4 p-0 hover:no-underline [&[data-state=open]>div]:mb-0">
+                  <div className="flex flex-col items-stretch justify-between gap-3">
+                    <h2 className="text-lg font-medium">Lesson Details</h2>
+                    <div className="text-sm text-muted-foreground">
+                      {progressContent}
+                    </div>
                   </div>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="pt-6 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-                {relatedContent}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </Card>
+                </AccordionTrigger>
+                <AccordionContent className="pt-6 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+                  {relatedContent}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          }
+        />
       </div>
 
       {/* Desktop View - Card */}
-      <Card className="sticky top-24 hidden space-y-6 border-0 bg-white md:-mt-32 md:block">
-        <CardHeader className="pb-2">
-          <CardTitle>Lesson Info</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {progressContent}
-          {relatedContent}
-        </CardContent>
-      </Card>
+      <GeneralCard
+        layout="stacked"
+        title="Lesson Info"
+        className="sticky top-24 hidden space-y-6 md:-mt-32 md:block"
+        contentClassName="space-y-6"
+        content={
+          <>
+            {progressContent}
+            {relatedContent}
+          </>
+        }
+      />
     </div>
   );
 }

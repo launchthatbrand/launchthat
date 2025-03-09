@@ -81,6 +81,8 @@
     "./general/*": "./src/general/*.tsx",
     "./globals.css": "./src/styles/globals.css",
     "./icons/*": "./src/icons/*.tsx",
-    "./animations/*": "./src/animations/*.tsx"
+    "./animations/*": "./src/animations/*.tsx",
+    "./themes/*": "./src/themes/*.ts",
+    "./styles/globals.css": "./src/styles/globals.css"
   }
 }

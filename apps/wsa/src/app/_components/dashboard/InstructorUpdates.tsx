@@ -1,12 +1,18 @@
 import Image from "next/image";
-import { Instagram, Twitter, Youtube } from "lucide-react";
-
+import { formatDistanceToNow } from "date-fns";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@acme/ui/components/card";
+  ExternalLink,
+  Heart,
+  Instagram,
+  MessageCircle,
+  PlayCircle,
+  Repeat2,
+  Twitter,
+  Youtube,
+} from "lucide-react";
+
+import { GeneralCard } from "@acme/ui/general/GeneralCard";
+import { cn } from "@acme/ui/lib/utils";
 
 interface SocialPost {
   id: number;
@@ -33,6 +39,7 @@ interface SocialPost {
 
 interface InstructorUpdatesProps {
   posts: SocialPost[];
+  enableHover?: boolean;
 }
 
 const PlatformIcon = {
@@ -41,93 +48,167 @@ const PlatformIcon = {
   youtube: Youtube,
 };
 
-export function InstructorUpdates({ posts }: InstructorUpdatesProps) {
+export function InstructorUpdates({
+  posts,
+  enableHover = true,
+}: InstructorUpdatesProps) {
   return (
-    <Card className="overflow-hidden border border-slate-200 bg-white shadow-sm">
-      <CardHeader className="border-b bg-[#2b0e4d] pb-8 text-white">
-        <CardTitle className="flex items-center justify-between">
-          <div>
-            <p className="text-xs font-medium text-[#FC653C]">
-              ▬ LATEST UPDATES ▬
-            </p>
-            <h3 className="mt-2 text-xl font-bold">From Your Mentor</h3>
-            <p className="mt-1 text-sm font-normal text-gray-300">
-              Stay updated with Quillan's latest content
-            </p>
-          </div>
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="grid gap-4 p-4">
-        {posts.map((post) => {
-          const Icon = PlatformIcon[post.platform];
-          return (
-            <div
-              key={post.id}
-              className="group relative space-y-4 rounded-lg border border-slate-200 p-4 transition-all hover:border-[#FC653C]/20 hover:bg-slate-50"
-            >
-              <div className="flex items-center gap-3">
-                <div className="relative h-10 w-10 overflow-hidden rounded-full">
-                  <Image
-                    src={post.avatar}
-                    alt={post.author}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="flex-1">
-                  <p className="font-medium text-[#2b0e4d]">{post.author}</p>
-                  <p className="text-sm text-slate-500">{post.handle}</p>
-                </div>
-                <Icon className="h-5 w-5 text-slate-400" />
+    <GeneralCard
+      title="From Your Mentor"
+      layout="stacked"
+      className="!translate-y-0 overflow-hidden"
+      enableHoverEffects={enableHover}
+      content={
+        <div className="flex flex-col">
+          {/* Header section with purple background */}
+          <div className="border-b bg-[#2b0e4d] p-6 text-white">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-medium text-[#FC653C]">
+                  ▬ LATEST UPDATES ▬
+                </p>
+                <h3 className="mt-2 text-xl font-bold">From Your Mentor</h3>
+                <p className="mt-1 text-sm font-normal text-gray-300">
+                  Stay updated with Quillan's latest content
+                </p>
               </div>
+            </div>
+          </div>
 
-              <p className="text-sm text-slate-600">{post.content}</p>
+          {/* Posts content */}
+          <div className="grid gap-4 p-4">
+            {posts.map((post) => {
+              const Icon = PlatformIcon[post.platform];
+              return (
+                <div
+                  key={post.id}
+                  className={cn(
+                    "rounded-lg border border-slate-200 bg-white p-4 shadow-sm",
+                    enableHover &&
+                      "transition-all duration-200 hover:shadow-md",
+                  )}
+                >
+                  {/* Post header with author info */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="relative h-10 w-10 overflow-hidden rounded-full">
+                        <Image
+                          src={post.avatar}
+                          alt={post.author}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-1">
+                          <span className="font-medium">{post.author}</span>
+                          <span className="text-sm text-slate-500">
+                            @{post.handle}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1 text-xs text-slate-500">
+                          <span>
+                            {formatDistanceToNow(new Date(post.timestamp))} ago
+                          </span>
+                          <span>•</span>
+                          <Icon className="h-3 w-3" />
+                        </div>
+                      </div>
+                    </div>
+                    <a
+                      href="#"
+                      className={cn(
+                        "rounded-full p-1.5 text-slate-400",
+                        enableHover && "hover:bg-slate-50 hover:text-[#FC653C]",
+                      )}
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+                  </div>
 
-              {post.media && (
-                <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-slate-100">
-                  <Image
-                    src={post.media.thumbnail}
-                    alt=""
-                    fill
-                    className="object-cover"
-                  />
-                  {post.media.type === "video" && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                      <Youtube className="h-12 w-12 text-white" />
-                      {post.media.duration && (
-                        <span className="absolute bottom-2 right-2 rounded bg-black/70 px-2 py-1 text-xs text-white">
-                          {post.media.duration}
-                        </span>
+                  {/* Post content */}
+                  <div className="mt-3">
+                    <p className="text-sm text-slate-800">{post.content}</p>
+                  </div>
+
+                  {/* Media (if any) */}
+                  {post.media && (
+                    <div className="mt-3 overflow-hidden rounded-lg border border-slate-200">
+                      <div className="relative aspect-video">
+                        <Image
+                          src={post.media.thumbnail}
+                          alt={post.media.title ?? "Post media"}
+                          fill
+                          className="object-cover"
+                        />
+                        {post.media.type === "video" && (
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                            <PlayCircle className="h-12 w-12 text-white" />
+                          </div>
+                        )}
+                      </div>
+                      {post.media.title && (
+                        <div className="border-t border-slate-200 bg-slate-50 p-2">
+                          <p className="text-sm font-medium text-slate-800">
+                            {post.media.title}
+                          </p>
+                          {post.media.views && (
+                            <p className="text-xs text-slate-500">
+                              {post.media.views}
+                              {post.media.duration
+                                ? ` • ${post.media.duration}`
+                                : ""}
+                            </p>
+                          )}
+                        </div>
                       )}
                     </div>
                   )}
-                </div>
-              )}
 
-              {post.stats && (
-                <div className="flex items-center gap-4 text-xs text-slate-500">
-                  <span>{post.stats.likes.toLocaleString()} likes</span>
-                  {post.stats.retweets && (
-                    <span>{post.stats.retweets.toLocaleString()} retweets</span>
-                  )}
-                  {post.stats.replies && (
-                    <span>{post.stats.replies.toLocaleString()} replies</span>
+                  {/* Stats */}
+                  {post.stats && (
+                    <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-3">
+                      <div className="flex items-center gap-4">
+                        <button
+                          className={cn(
+                            "flex items-center gap-1 text-xs text-slate-500",
+                            enableHover && "hover:text-[#FC653C]",
+                          )}
+                        >
+                          <Heart className="h-4 w-4" />
+                          <span>{post.stats.likes}</span>
+                        </button>
+                        {post.stats.replies !== undefined && (
+                          <button
+                            className={cn(
+                              "flex items-center gap-1 text-xs text-slate-500",
+                              enableHover && "hover:text-[#FC653C]",
+                            )}
+                          >
+                            <MessageCircle className="h-4 w-4" />
+                            <span>{post.stats.replies}</span>
+                          </button>
+                        )}
+                        {post.stats.retweets !== undefined && (
+                          <button
+                            className={cn(
+                              "flex items-center gap-1 text-xs text-slate-500",
+                              enableHover && "hover:text-[#FC653C]",
+                            )}
+                          >
+                            <Repeat2 className="h-4 w-4" />
+                            <span>{post.stats.retweets}</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   )}
                 </div>
-              )}
-
-              <time className="text-xs text-slate-400">
-                {new Date(post.timestamp).toLocaleDateString(undefined, {
-                  month: "short",
-                  day: "numeric",
-                  hour: "numeric",
-                  minute: "2-digit",
-                })}
-              </time>
-            </div>
-          );
-        })}
-      </CardContent>
-    </Card>
+              );
+            })}
+          </div>
+        </div>
+      }
+    />
   );
 }

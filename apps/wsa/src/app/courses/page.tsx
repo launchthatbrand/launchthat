@@ -3,7 +3,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { BookOpen, GraduationCap, Trophy } from "lucide-react";
 
-import { Badge } from "@acme/ui/components/badge";
 import {
   Card,
   CardContent,
@@ -12,14 +11,16 @@ import {
 } from "@acme/ui/components/card";
 import { Progress } from "@acme/ui/components/progress";
 import { Skeleton } from "@acme/ui/components/skeleton";
+import { GeneralCard, GeneralCardSkeleton } from "@acme/ui/general/GeneralCard";
 
+import { CardLoop } from "../../../../../packages/ui/src/general/CardLoop";
 import { fetchWordPress } from "../utils/api";
-import { CourseCard } from "./_components/CourseCard";
 import { GET_COURSES } from "./queries";
 
-interface Course {
+export interface Course {
   id: string;
   title: string;
+  isCompleted?: boolean;
   featuredImage?: {
     node: {
       sourceUrl: string;
@@ -32,7 +33,7 @@ interface Course {
   };
 }
 
-interface CoursesData {
+export interface CoursesData {
   published?: {
     nodes: Course[];
   };
@@ -42,7 +43,7 @@ interface CoursesData {
 }
 
 // Interface for achievement items
-interface AchievementItem {
+export interface AchievementItem {
   id: string;
   title: string;
   description: string;
@@ -55,21 +56,22 @@ function LoadingSkeleton() {
     <div className="container py-8">
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
         <div className="lg:col-span-3">
+          <Skeleton className="mb-8 h-10 w-36" /> {/* Page title skeleton */}
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {Array(6)
               .fill(0)
               .map((_, i) => (
-                <Card key={i} className="overflow-hidden">
-                  <Skeleton className="aspect-[2/1] w-full" />
-                  <div className="space-y-3 p-4">
-                    <Skeleton className="h-4 w-1/4" />
-                    <Skeleton className="h-6 w-3/4" />
-                    <div className="flex items-center gap-2">
-                      <Skeleton className="h-8 w-8 rounded-full" />
-                      <Skeleton className="h-4 w-24" />
-                    </div>
-                  </div>
-                </Card>
+                <GeneralCardSkeleton
+                  key={i}
+                  layout="stacked"
+                  hasImage={true}
+                  hasTitle={true}
+                  hasSubtitle={false}
+                  hasContent={true}
+                  hasFooter={false}
+                  contentLines={1}
+                  className="overflow-hidden"
+                />
               ))}
           </div>
         </div>
@@ -81,17 +83,47 @@ function LoadingSkeleton() {
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Skeleton className="h-4 w-1/3" />
+                <div className="flex justify-between">
+                  <Skeleton className="h-4 w-1/3" />
+                  <Skeleton className="h-4 w-10" />
+                </div>
                 <Skeleton className="h-2 w-full" />
               </div>
 
               <div className="space-y-2">
                 <Skeleton className="h-5 w-1/2" />
                 <div className="grid grid-cols-2 gap-2">
+                  {Array(2)
+                    .fill(0)
+                    .map((_, i) => (
+                      <Card key={i} className="p-3">
+                        <div className="flex flex-col items-center gap-1 text-center">
+                          <Skeleton className="h-6 w-6 rounded-full" />
+                          <Skeleton className="h-4 w-16" />
+                          <Skeleton className="h-6 w-12" />
+                        </div>
+                      </Card>
+                    ))}
+                </div>
+              </div>
+
+              {/* Achievements section */}
+              <div className="space-y-2">
+                <Skeleton className="h-5 w-1/2" />
+                <div className="space-y-2">
                   {Array(4)
                     .fill(0)
                     .map((_, i) => (
-                      <Skeleton key={i} className="h-16 w-full rounded-md" />
+                      <div
+                        key={i}
+                        className="flex items-center gap-2 rounded-md border border-gray-100 p-2"
+                      >
+                        <Skeleton className="h-10 w-10 rounded-full" />
+                        <div className="flex-1">
+                          <Skeleton className="mb-1 h-4 w-24" />
+                          <Skeleton className="h-3 w-36" />
+                        </div>
+                      </div>
                     ))}
                 </div>
               </div>
@@ -110,7 +142,10 @@ export default function CoursesPage() {
     error,
   } = useQuery<CoursesData>({
     queryKey: ["courses"],
-    queryFn: () => fetchWordPress(GET_COURSES),
+    queryFn: async () => {
+      const result = await fetchWordPress(GET_COURSES);
+      return result as CoursesData;
+    },
   });
 
   // Mock data for learning stats
@@ -190,16 +225,51 @@ export default function CoursesPage() {
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
         <div className="lg:col-span-3">
           <h1 className="mb-8 text-3xl font-bold">Courses</h1>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {allCourses.map((course: Course) => (
-              <CourseCard key={course.id} course={course} />
-            ))}
-            {allCourses.length === 0 && (
-              <div className="col-span-full text-center text-muted-foreground">
-                No courses found
-              </div>
+          <CardLoop
+            items={allCourses}
+            renderItem={(course: Course) => (
+              <GeneralCard
+                key={course.id}
+                title={course.title}
+                layout="stacked"
+                className="overflow-hidden"
+                enableHoverEffects={true}
+                image={
+                  course.featuredImage?.node?.sourceUrl
+                    ? {
+                        src: course.featuredImage.node.sourceUrl,
+                        alt: course.title,
+                      }
+                    : {
+                        src: "https://app.wsatraining.com/wp-content/uploads/2018/05/thumbnailsArtboard-1.jpg",
+                        alt: course.title,
+                      }
+                }
+                badge={
+                  course.isCompleted
+                    ? {
+                        text: "COMPLETED",
+                        variant: "default",
+                        position: "top-left",
+                      }
+                    : undefined
+                }
+                navigation={{
+                  path: `/course/${course.id}`,
+                  type: "card",
+                }}
+                content={
+                  <div className="mt-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">
+                        {course.siblings?.pageInfo.total ?? 0} Lessons
+                      </span>
+                    </div>
+                  </div>
+                }
+              />
             )}
-          </div>
+          />
         </div>
 
         <div>
@@ -247,26 +317,32 @@ export default function CoursesPage() {
               {/* Achievements */}
               <div className="space-y-3">
                 <h3 className="text-lg font-medium">Achievements</h3>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-2">
                   {achievements.map((achievement) => (
-                    <Card
+                    <div
                       key={achievement.id}
-                      className={`p-3 ${!achievement.earned ? "opacity-50" : ""}`}
+                      className="flex items-center gap-2 rounded-md border border-gray-100 p-2"
                     >
-                      <div className="flex flex-col items-center gap-1 text-center">
+                      <div
+                        className={`flex h-10 w-10 items-center justify-center rounded-full ${
+                          achievement.earned ? "bg-amber-100" : "bg-gray-100"
+                        }`}
+                      >
                         <Trophy
-                          className={`h-6 w-6 ${achievement.earned ? "text-yellow-500" : "text-gray-400"}`}
+                          className={`h-5 w-5 ${
+                            achievement.earned
+                              ? "text-amber-600"
+                              : "text-gray-400"
+                          }`}
                         />
-                        <span className="text-sm font-medium">
-                          {achievement.title}
-                        </span>
-                        {achievement.earned && (
-                          <Badge variant="outline" className="text-xs">
-                            Earned
-                          </Badge>
-                        )}
                       </div>
-                    </Card>
+                      <div>
+                        <div className="font-medium">{achievement.title}</div>
+                        <div className="text-xs text-gray-500">
+                          {achievement.description}
+                        </div>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>

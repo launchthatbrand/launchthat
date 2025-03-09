@@ -42,7 +42,7 @@ const SidebarTriggerWrapper = () => {
   // ) : null;
 
   return !isFromMonday ? (
-    <SidebarTrigger className="absolute left-3 top-[50%] -translate-y-1/2 rounded-lg bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 p-2 text-white transition-colors hover:from-orange-500 hover:via-pink-600 hover:to-purple-700" />
+    <SidebarTrigger className="rounded-lg bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 p-2 text-white transition-colors hover:from-orange-500 hover:via-pink-600 hover:to-purple-700" />
   ) : null;
 };
 
@@ -56,13 +56,13 @@ function AppHeader({
   return (
     <header
       className={cn(
-        "left-0 z-50 flex w-full items-center border-b border-white/[0.08] bg-[#edeff8] p-2 backdrop-blur-xl",
+        "left-0 z-50 flex w-full items-center gap-5 border-b border-white/[0.08] bg-[#edeff8] p-2 backdrop-blur-xl",
         className,
       )}
     >
       <SidebarTriggerWrapper />
-      <div className="container flex h-[48px] items-center justify-between">
-        <div className="flex items-center gap-8">
+      <div className="container flex h-[48px] w-full items-center justify-between">
+        <div className="-ml-7 flex items-center gap-8">
           <Link href="/" className="flex items-center gap-2">
             <Logo appName={appName} />
           </Link>

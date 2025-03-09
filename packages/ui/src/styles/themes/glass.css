@@ -1,0 +1,163 @@
+.glass {
+  /* Glass theme variables */
+  --glass-opacity: 0.7;
+  --glass-blur: 12px;
+  --glass-border: 1px;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.1);
+  --glass-gradient: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.05)
+  );
+
+  /* Override only what's different from base theme */
+  --background: 48 33% 97%;
+  --foreground: 200 50% 10%;
+  --card: 0 0% 100%;
+  --card-foreground: 200 50% 10%;
+  --primary: 200 80% 50%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 200 30% 95%;
+  --accent: 200 80% 50%;
+  --radius: 16px;
+
+  /* Glass theme specific layout overrides */
+  --sidebar-background: rgba(255, 255, 255, 0.7);
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+
+  /* Glass theme fonts */
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "Space Grotesk", sans-serif;
+  --font-display: "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+/* Card specific styles - target shadcn classes */
+.glass [class*="bg-card"] {
+  background: var(--glass-gradient) !important;
+  backdrop-filter: blur(var(--glass-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) !important;
+  border: var(--glass-border) solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: var(--glass-shadow) !important;
+  border-radius: var(--radius) !important;
+  /* position: relative !important; */
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
+}
+
+/* .glass [class*="bg-card"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--glass-highlight);
+  transform: skewX(-15deg);
+  transition: 0.5s;
+} */
+
+/* .glass [class*="bg-card"]:hover::before {
+  left: 100%;
+} */
+
+.glass [class*="bg-card"]:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Target card header */
+.glass [class*="bg-card"] h3 {
+  background: var(--glass-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+}
+
+/* Button styles */
+.glass button {
+  background: var(--glass-gradient) !important;
+  backdrop-filter: blur(var(--glass-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) !important;
+  border: var(--glass-border) solid rgba(255, 255, 255, 0.4) !important;
+  box-shadow: var(--glass-shadow) !important;
+  border-radius: var(--radius) !important;
+  color: var(--foreground) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.5px !important;
+  padding: 0.75rem 1.5rem !important;
+  /* position: relative !important; */
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
+}
+
+.glass button::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: -100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: var(--glass-highlight) !important;
+  transform: skewX(-15deg) !important;
+  transition: 0.5s !important;
+}
+
+.glass button:hover {
+  /* transform: translateY(-2px) !important; */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.glass button:hover::before {
+  left: 100% !important;
+}
+
+.glass button:active {
+  transform: translateY(1px) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Dark mode button styles */
+.dark.glass button {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dark.glass button:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Dark mode modifiers */
+.dark.glass {
+  --glass-opacity: 0.15;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --glass-highlight: rgba(255, 255, 255, 0.05);
+  --glass-gradient: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.02)
+  );
+
+  --background: 200 50% 5%;
+  --foreground: 200 50% 90%;
+  --card: 200 50% 5%;
+  --card-foreground: 200 50% 90%;
+  --popover: 200 50% 5%;
+  --popover-foreground: 200 50% 90%;
+  --primary: 200 80% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 200 30% 10%;
+  --secondary-foreground: 200 50% 90%;
+  --muted: 200 30% 10%;
+  --muted-foreground: 200 30% 60%;
+  --accent: 200 80% 60%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 80% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 200 50% 10%;
+  --input: 200 50% 10%;
+  --ring: 200 80% 60%;
+}

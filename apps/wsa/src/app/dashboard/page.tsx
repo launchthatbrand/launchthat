@@ -66,8 +66,8 @@ export default function TradingDashboard() {
 
           {/* Right Column - 1/3 width */}
           <div className="space-y-8">
-            <OnboardingChecklist steps={onboardingSteps} />
-            <Achievements achievements={achievements} />
+            <OnboardingChecklist steps={onboardingSteps} enableHover={false} />
+            <Achievements achievements={achievements} enableHover={false} />
             <InstructorUpdates posts={socialPosts} />
           </div>
         </div>

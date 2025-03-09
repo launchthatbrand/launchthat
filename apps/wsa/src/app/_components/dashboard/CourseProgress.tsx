@@ -1,26 +1,15 @@
 import React from "react";
-import { Book, Clock } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@acme/ui/components/card";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@acme/ui/components/hover-card";
 import { Progress } from "@acme/ui/components/progress";
+import { GeneralCard } from "@acme/ui/general/GeneralCard";
 
-interface MilestoneProps {
-  percent: number;
-  title: string;
-  description: string;
-}
-
-const milestones: MilestoneProps[] = [
+const milestones = [
+  {
+    percent: 0,
+    title: "Getting Started",
+    description: "Begin your trading journey with basic concepts",
+  },
   {
     percent: 25,
     title: "Trading Fundamentals",
@@ -66,99 +55,94 @@ export function CourseProgress({
     return () => clearTimeout(timer);
   }, [targetProgress]);
 
+  // Find the current milestone based on progress
+  const currentMilestone =
+    milestones.find(
+      (milestone, index) =>
+        progress >= milestone.percent ||
+        (index === 0 && progress < milestone.percent),
+    ) ?? milestones[0];
+
+  // Set default milestone data in case there's an issue
+  const milestoneTitle = currentMilestone
+    ? currentMilestone.title
+    : "Getting Started";
+  const milestoneDescription = currentMilestone
+    ? currentMilestone.description
+    : "Begin your trading journey with basic concepts";
+
   return (
-    <Card className="overflow-visible border border-slate-200 bg-white shadow-sm">
-      <CardHeader className="rounded-t-lg border-b bg-[#2b0e4d] pb-8 text-white">
-        <CardTitle className="flex items-center justify-between">
-          <div>
-            <p className="text-xs font-medium text-[#FC653C]">
-              ▬ YOUR PROGRESS ▬
-            </p>
-            <h3 className="mt-2 text-xl font-bold">Course Completion</h3>
-            <p className="mt-1 text-sm font-normal text-gray-300">
-              Track your learning journey
-            </p>
+    <GeneralCard
+      title="Course Progress"
+      layout="stacked"
+      className="!translate-y-0 overflow-visible"
+      content={
+        <div className="flex flex-col">
+          {/* Header section with purple background */}
+          <div className="rounded-t-lg border-b bg-[#2b0e4d] p-6 text-white">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-medium text-[#FC653C]">
+                  ▬ YOUR PROGRESS ▬
+                </p>
+                <h3 className="mt-1 text-2xl font-bold tracking-tight">
+                  {milestoneTitle}
+                </h3>
+                <p className="text-sm text-gray-300">{milestoneDescription}</p>
+              </div>
+              <div className="text-center">
+                <div className="relative flex h-24 w-24 items-center justify-center rounded-full border-4 border-[#FC653C] bg-[#2b0e4d]">
+                  <div className="text-center">
+                    <span className="text-2xl font-bold">
+                      {Math.round(progress)}%
+                    </span>
+                    <p className="text-xs text-gray-300">Complete</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <Progress value={progress} className="h-2 bg-gray-700" />
+              <div className="mt-1 flex justify-between text-xs text-gray-300">
+                <span>
+                  {completedLessons} of {totalLessons} lessons completed
+                </span>
+                <span>{Math.round(progress)}% Complete</span>
+              </div>
+            </div>
           </div>
-          <span className="rounded-full bg-white/10 px-3 py-1 text-sm">
-            {completedLessons}/{totalLessons} lessons
-          </span>
-        </CardTitle>
-        {/* Progress bar with milestones */}
-        <div className="relative mt-4">
-          <div className="relative h-2 w-full">
-            <Progress value={progress} className="h-2 [&>div]:bg-[#FC653C]" />
-            {/* Milestone ticks */}
-            <div className="absolute inset-0 flex">
-              {milestones.map((milestone, index) => (
-                <div
-                  key={index}
-                  className="relative"
-                  style={{ left: `${milestone.percent}%`, marginLeft: "-1px" }}
-                >
-                  <HoverCard openDelay={0} closeDelay={0}>
-                    <HoverCardTrigger asChild>
-                      <button className="group absolute">
-                        {/* Visual tick line */}
-                        <div className="absolute bottom-[-8px] h-6 w-1 -translate-x-1/2 rounded-full bg-white/30 transition-colors group-hover:bg-white/50" />
-                      </button>
-                    </HoverCardTrigger>
-                    <HoverCardContent
-                      className="w-64 bg-white p-3"
-                      align="center"
-                      sideOffset={20}
-                      side="top"
-                    >
-                      <div className="space-y-1">
-                        <p className="font-medium text-[#2b0e4d]">
-                          {milestone.title}
-                        </p>
-                        <p className="text-xs text-slate-500">
-                          {milestone.description}
-                        </p>
-                        <div className="mt-2 text-xs font-medium text-[#FC653C]">
-                          {milestone.percent}% Completion
-                        </div>
-                      </div>
-                    </HoverCardContent>
-                  </HoverCard>
+
+          {/* Recent lessons section */}
+          <div className="p-6">
+            <h4 className="font-semibold">Recent Lessons</h4>
+            <div className="mt-4 space-y-4">
+              {recentLessons.map((lesson, i) => (
+                <div key={i} className="flex justify-between border-b pb-2">
+                  <div>
+                    <h5 className="font-medium">{lesson.title}</h5>
+                    {lesson.completedAt ? (
+                      <p className="text-xs text-gray-500">
+                        Completed{" "}
+                        {formatDistanceToNow(new Date(lesson.completedAt))} ago
+                      </p>
+                    ) : (
+                      <p className="text-xs text-gray-500">In progress</p>
+                    )}
+                  </div>
+                  <div className="flex items-center">
+                    <Progress
+                      value={lesson.progress}
+                      className="h-2 w-20 bg-gray-100"
+                    />
+                    <span className="ml-2 text-xs">{lesson.progress}%</span>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
-      </CardHeader>
-      <CardContent className="p-0">
-        <div className="divide-y divide-slate-100">
-          {recentLessons.map((lesson, index) => (
-            <div
-              key={index}
-              className="grid grid-cols-[1fr_auto] items-center gap-4 p-4"
-            >
-              <div className="space-y-1">
-                <p className="font-medium text-[#2b0e4d]">{lesson.title}</p>
-                <div className="flex items-center gap-2">
-                  {lesson.completedAt ? (
-                    <span className="flex items-center gap-1 text-xs text-slate-500">
-                      <Clock className="h-3 w-3" />
-                      {new Date(lesson.completedAt).toLocaleDateString()}
-                    </span>
-                  ) : (
-                    <span className="flex items-center gap-1 text-xs text-[#FC653C]">
-                      <Book className="h-3 w-3" />
-                      In Progress
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="min-w-[100px] text-right">
-                <div className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium">
-                  {lesson.progress}% Complete
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+      }
+    />
   );
 }

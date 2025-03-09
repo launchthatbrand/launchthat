@@ -1,0 +1,115 @@
+.minimal {
+  /* Minimal theme variables */
+  --minimal-spacing: 1.5rem;
+  --minimal-border: 1px solid rgba(0, 0, 0, 0.1);
+  --minimal-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --minimal-radius: 4px;
+  --minimal-transition: all 0.2s ease;
+
+  /* Override base variables */
+  --background: 0 0% 100%;
+  --foreground: 0 0% 10%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 10%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 10%;
+  --primary: 0 0% 9%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 96%;
+  --secondary-foreground: 0 0% 9%;
+  --muted: 0 0% 96%;
+  --muted-foreground: 0 0% 45%;
+  --accent: 0 0% 96%;
+  --accent-foreground: 0 0% 9%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 90%;
+  --input: 0 0% 90%;
+  --ring: 0 0% 90%;
+  --radius: 4px;
+
+  /* Minimal theme fonts */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "SF Mono", SFMono-Regular, ui-monospace, monospace;
+  --font-display: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Clean background */
+  background-color: hsl(var(--background));
+}
+
+/* Import minimal fonts */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+
+/* Card specific styles */
+.minimal [class*="bg-card"] {
+  background: hsl(var(--card)) !important;
+  border: var(--minimal-border) !important;
+  border-radius: var(--minimal-radius) !important;
+  box-shadow: var(--minimal-shadow) !important;
+  transition: var(--minimal-transition) !important;
+  padding: var(--minimal-spacing) !important;
+}
+
+.minimal [class*="bg-card"]:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Typography */
+.minimal [class*="bg-card"] h3 {
+  font-family: var(--font-display) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+  color: hsl(var(--card-foreground)) !important;
+  margin-bottom: 0.75rem !important;
+}
+
+.minimal [class*="bg-card"] p {
+  font-family: var(--font-body) !important;
+  font-weight: 400 !important;
+  line-height: 1.6 !important;
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+/* Button styles */
+.minimal button {
+  background: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  border: none !important;
+  border-radius: var(--minimal-radius) !important;
+  padding: 0.5rem 1rem !important;
+  font-weight: 500 !important;
+  transition: var(--minimal-transition) !important;
+}
+
+.minimal button:hover {
+  opacity: 0.9 !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Dark mode adjustments */
+.dark.minimal {
+  --minimal-border: 1px solid rgba(255, 255, 255, 0.1);
+  --minimal-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+  --background: 0 0% 5%;
+  --foreground: 0 0% 90%;
+  --card: 0 0% 7%;
+  --card-foreground: 0 0% 90%;
+  --popover: 0 0% 7%;
+  --popover-foreground: 0 0% 90%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 0 0% 9%;
+  --secondary: 0 0% 15%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 65%;
+  --accent: 0 0% 15%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 15%;
+  --input: 0 0% 15%;
+  --ring: 0 0% 15%;
+}

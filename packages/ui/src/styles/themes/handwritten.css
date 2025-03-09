@@ -1,0 +1,151 @@
+.handwritten {
+  /* Handwritten theme variables */
+  --paper-color: #fffdf7;
+  --ink-color: #2c3e50;
+  --accent-color: #3498db;
+  --highlight-color: #f1c40f;
+  --paper-texture: url("data:image/png;base64,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");
+
+  /* Override base variables */
+  --background: 48 33% 97%;
+  --foreground: 222 47% 24%;
+  --card: 48 33% 97%;
+  --card-foreground: 222 47% 24%;
+  --popover: 48 33% 97%;
+  --popover-foreground: 222 47% 24%;
+  --primary: 210 79% 46%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 48 96% 50%;
+  --secondary-foreground: 222 47% 24%;
+  --muted: 210 40% 93%;
+  --muted-foreground: 222 47% 40%;
+  --accent: 48 96% 50%;
+  --accent-foreground: 222 47% 24%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 222 47% 24%;
+  --input: 222 47% 24%;
+  --ring: 210 79% 46%;
+  --radius: 0;
+
+  /* Handwritten theme fonts */
+  --font-sans: "Architects Daughter", "Comic Sans MS", cursive;
+  --font-mono: "Architects Daughter", "Comic Sans MS", cursive;
+  --font-display: "Architects Daughter", "Comic Sans MS", cursive;
+  --font-body: "Architects Daughter", "Comic Sans MS", cursive;
+
+  /* Paper background */
+  background-color: var(--paper-color);
+  background-image: var(--paper-texture);
+  position: relative;
+}
+
+/* Import handwritten font */
+@import url("https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap");
+
+/* Card specific styles */
+.handwritten [class*="bg-card"] {
+  background: var(--paper-color) !important;
+  border: 2px solid var(--ink-color) !important;
+  border-radius: 8px !important;
+  box-shadow: 4px 4px 0 var(--ink-color) !important;
+  padding: 1.5rem !important;
+  /* position: relative !important; */
+  transition: all 0.2s ease !important;
+}
+
+.handwritten [class*="bg-card"]:hover {
+  transform: translate(-2px, -2px) !important;
+  box-shadow: 6px 6px 0 var(--ink-color) !important;
+}
+
+/* Typography */
+.handwritten [class*="bg-card"] h3 {
+  font-family: var(--font-display) !important;
+  font-size: 1.75rem !important;
+  color: var(--ink-color) !important;
+  margin-bottom: 1rem !important;
+  text-decoration: underline wavy var(--accent-color) !important;
+  text-underline-offset: 4px !important;
+}
+
+.handwritten [class*="bg-card"] p {
+  font-family: var(--font-body) !important;
+  font-size: 1.1rem !important;
+  line-height: 1.6 !important;
+  color: var(--ink-color) !important;
+}
+
+/* Button styles */
+.handwritten button {
+  background: var(--paper-color) !important;
+  border: 2px solid var(--ink-color) !important;
+  border-radius: 4px !important;
+  color: var(--ink-color) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 1.1rem !important;
+  padding: 0.5rem 1.5rem !important;
+  position: relative !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 2px 2px 0 var(--ink-color) !important;
+}
+
+.handwritten button:hover {
+  transform: translate(-1px, -1px) !important;
+  box-shadow: 3px 3px 0 var(--ink-color) !important;
+}
+
+.handwritten button:active {
+  transform: translate(1px, 1px) !important;
+  box-shadow: 1px 1px 0 var(--ink-color) !important;
+}
+
+/* Input styles */
+.handwritten input {
+  background: transparent !important;
+  border: 2px solid var(--ink-color) !important;
+  border-radius: 4px !important;
+  color: var(--ink-color) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 1.1rem !important;
+  padding: 0.5rem !important;
+  background-image: linear-gradient(
+    transparent,
+    transparent 31px,
+    var(--ink-color) 31px
+  ) !important;
+  background-size: 100% 32px !important;
+  line-height: 32px !important;
+}
+
+.handwritten input::placeholder {
+  color: var(--muted-foreground) !important;
+}
+
+/* Dark mode adjustments */
+.dark.handwritten {
+  --paper-color: #2c3e50;
+  --ink-color: #ecf0f1;
+  --accent-color: #3498db;
+  --highlight-color: #f1c40f;
+
+  --background: 210 47% 24%;
+  --foreground: 192 15% 94%;
+  --card: 210 47% 24%;
+  --card-foreground: 192 15% 94%;
+  --popover: 210 47% 24%;
+  --popover-foreground: 192 15% 94%;
+  --primary: 210 79% 46%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 48 96% 50%;
+  --secondary-foreground: 210 47% 24%;
+  --muted: 210 40% 30%;
+  --muted-foreground: 192 15% 80%;
+  --accent: 48 96% 50%;
+  --accent-foreground: 210 47% 24%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 192 15% 94%;
+  --input: 192 15% 94%;
+  --ring: 210 79% 46%;
+}

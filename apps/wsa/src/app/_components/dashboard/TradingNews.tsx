@@ -1,17 +1,7 @@
 import { useState } from "react";
-import { Bell, Heart, Search, Star } from "lucide-react";
+import { CalendarX, Search, X } from "lucide-react";
 
-import { Badge } from "@acme/ui/components/badge";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@acme/ui/components/card";
-import { Input } from "@acme/ui/components/input";
-import { ScrollArea } from "@acme/ui/components/scroll-area";
-import { Toggle } from "@acme/ui/components/toggle";
-import { cn } from "@acme/ui/lib/utils";
+import { GeneralCard } from "@acme/ui/general/GeneralCard";
 
 import { useFavoritePairs } from "./stores/useFavoritePairs";
 
@@ -30,15 +20,10 @@ interface TradingNewsProps {
   news: NewsItem[];
 }
 
-const SEVERITY_COLORS = {
-  low: "bg-blue-100 text-blue-800",
-  medium: "bg-yellow-100 text-yellow-800",
-  high: "bg-red-100 text-red-800",
-};
-
 function formatTime(dateString: string) {
   const date = new Date(dateString);
   const now = new Date();
+
   const diffHours = (date.getTime() - now.getTime()) / (1000 * 60 * 60);
 
   if (diffHours < 0) {
@@ -91,169 +76,188 @@ export function TradingNews({ news }: TradingNewsProps) {
   });
 
   return (
-    <Card className="lg:col-span-2">
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
-            <Bell className="h-5 w-5" />
-            Trading News
-          </CardTitle>
-          <Toggle
-            variant="outline"
-            aria-label="Show favorites only"
-            pressed={showFavoritesOnly}
-            onPressedChange={setShowFavoritesOnly}
-          >
-            <Star
-              className={cn(
-                "h-4 w-4",
-                showFavoritesOnly && "fill-current text-yellow-500",
-              )}
-            />
-          </Toggle>
-        </div>
+    <GeneralCard
+      title="Trading News & Events"
+      layout="stacked"
+      className="!translate-y-0"
+      content={
+        <div className="flex flex-col">
+          {/* Filters header */}
+          <div className="border-b p-4">
+            <div className="flex flex-col space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex space-x-2">
+                  {/* Severity filter */}
+                  <select
+                    className="rounded-md border border-gray-300 px-2 py-1 text-sm"
+                    value={selectedSeverity}
+                    onChange={(e) => {
+                      const values: string[] = [];
+                      for (const option of Array.from(e.target.options)) {
+                        if (option.selected) {
+                          values.push(option.value);
+                        }
+                      }
+                      setSelectedSeverity(values);
+                    }}
+                    multiple
+                  >
+                    <option value="high">High Impact</option>
+                    <option value="medium">Medium Impact</option>
+                    <option value="low">Low Impact</option>
+                  </select>
 
-        <div className="mt-4 space-y-4">
-          {/* Search */}
-          <div className="relative">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search news or currency pairs..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-8"
-            />
-          </div>
+                  {/* Favorites toggle */}
+                  <button
+                    className={`rounded-md border px-2 py-1 text-sm ${
+                      showFavoritesOnly
+                        ? "border-primary bg-primary text-white"
+                        : "border-gray-300"
+                    }`}
+                    onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+                  >
+                    <span className="mr-1">★</span>
+                    Favorites
+                  </button>
+                </div>
+              </div>
 
-          {/* Severity Filters */}
-          <div className="flex flex-wrap gap-2">
-            {["low", "medium", "high"].map((severity) => (
-              <Toggle
-                key={severity}
-                pressed={selectedSeverity.includes(severity)}
-                onPressedChange={(pressed) => {
-                  setSelectedSeverity((prev) =>
-                    pressed
-                      ? [...prev, severity]
-                      : prev.filter((s) => s !== severity),
-                  );
-                }}
-                className={cn(
-                  "capitalize",
-                  selectedSeverity.includes(severity) &&
-                    SEVERITY_COLORS[severity as keyof typeof SEVERITY_COLORS],
+              {/* Search input */}
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search news or currency pairs..."
+                  className="w-full rounded-md border border-gray-300 py-2 pl-8 pr-4 text-sm"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2">
+                  <Search className="h-4 w-4 text-gray-400" />
+                </div>
+                {searchTerm && (
+                  <button
+                    className="absolute inset-y-0 right-0 flex items-center pr-2"
+                    onClick={() => setSearchTerm("")}
+                  >
+                    <X className="h-4 w-4 text-gray-400" />
+                  </button>
                 )}
-              >
-                {severity}
-              </Toggle>
-            ))}
+              </div>
+
+              {/* Currency pair filters */}
+              <div className="flex flex-wrap gap-1">
+                {allPairs.map((pair) => (
+                  <button
+                    key={pair}
+                    className={`rounded-full px-2 py-1 text-xs ${
+                      favoritePairs.includes(pair)
+                        ? "bg-primary text-white"
+                        : "bg-gray-100"
+                    }`}
+                    onClick={() => toggleFavoritePair(pair)}
+                  >
+                    {favoritePairs.includes(pair) ? "★ " : ""}
+                    {pair}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* Currency Pair Quick Filters */}
-          <ScrollArea className="max-h-20">
-            <div className="flex flex-wrap gap-2">
-              {allPairs.map((pair) => (
-                <Toggle
-                  key={pair}
-                  pressed={favoritePairs.includes(pair)}
-                  onPressedChange={() => toggleFavoritePair(pair)}
-                  className={cn(
-                    "text-xs",
-                    favoritePairs.includes(pair) &&
-                      "bg-yellow-100 text-yellow-800",
-                  )}
-                >
-                  <Heart
-                    className={cn(
-                      "mr-1 h-3 w-3",
-                      favoritePairs.includes(pair) && "fill-current",
-                    )}
-                  />
-                  {pair}
-                </Toggle>
-              ))}
-            </div>
-          </ScrollArea>
-        </div>
-      </CardHeader>
-
-      <CardContent>
-        <ScrollArea className="h-[400px] pr-4">
-          <div className="space-y-4">
-            {filteredNews.map((item) => {
-              const timeInfo = formatTime(item.timestamp);
-              return (
-                <div
-                  key={item.id}
-                  className={cn(
-                    "relative rounded-lg border p-4",
-                    timeInfo.status === "upcoming" &&
-                      "border-gray-200 bg-white",
-                    timeInfo.status === "soon" &&
-                      "border-orange-200 bg-orange-50",
-                    timeInfo.status === "past" && "border-red-200 bg-red-50",
-                  )}
-                >
-                  {timeInfo.status !== "past" && (
-                    <Badge
-                      className={cn(
-                        "absolute right-2 top-2",
-                        timeInfo.status === "upcoming" && "bg-gray-500",
-                        timeInfo.status === "soon" && "bg-orange-500",
-                      )}
-                      variant="secondary"
-                    >
-                      {timeInfo.status === "upcoming" ? "Upcoming" : "Today"}
-                    </Badge>
-                  )}
-
-                  <div className="space-y-1">
-                    <div className="font-medium">{item.title}</div>
-                    <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-2">
-                        <Badge
-                          variant="outline"
-                          className={cn(
-                            "capitalize",
+          {/* News content */}
+          <div className="flex-1 overflow-auto">
+            {filteredNews.length === 0 ? (
+              <div className="flex h-64 items-center justify-center text-center text-gray-500">
+                <div>
+                  <CalendarX className="mx-auto h-8 w-8 text-gray-300" />
+                  <p className="mt-2">No matching news or events found</p>
+                  <button
+                    className="mt-2 text-sm text-primary underline"
+                    onClick={() => {
+                      setSearchTerm("");
+                      setSelectedSeverity([]);
+                      setShowFavoritesOnly(false);
+                    }}
+                  >
+                    Reset filters
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="divide-y">
+                {filteredNews.map((item) => {
+                  const time = formatTime(item.timestamp);
+                  return (
+                    <div key={item.id} className="p-4 hover:bg-gray-50">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <span
+                              className={`inline-flex h-2 w-2 rounded-full ${
+                                item.severity === "high"
+                                  ? "bg-red-500"
+                                  : item.severity === "medium"
+                                    ? "bg-yellow-500"
+                                    : "bg-green-500"
+                              }`}
+                            />
+                            <span
+                              className={`text-xs ${
+                                time.status === "soon"
+                                  ? "font-medium text-orange-600"
+                                  : time.status === "upcoming"
+                                    ? "text-gray-500"
+                                    : "text-gray-400"
+                              }`}
+                            >
+                              {time.text}
+                            </span>
+                            <span className="text-xs text-gray-400">
+                              • {item.source}
+                            </span>
+                          </div>
+                          <h4 className="mt-1 font-medium">{item.title}</h4>
+                          <div className="mt-2 flex flex-wrap gap-1">
+                            {item.pairs.map((pair) => (
+                              <span
+                                key={pair}
+                                className={`rounded-full px-2 py-0.5 text-xs ${
+                                  favoritePairs.includes(pair)
+                                    ? "bg-primary/10 text-primary"
+                                    : "bg-gray-100"
+                                }`}
+                                onClick={() => toggleFavoritePair(pair)}
+                              >
+                                {favoritePairs.includes(pair) ? "★ " : ""}
+                                {pair}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <span
+                          className={`rounded-full px-2 py-1 text-xs ${
                             item.severity === "high"
-                              ? "border-red-500 text-red-500"
+                              ? "bg-red-100 text-red-800"
                               : item.severity === "medium"
-                                ? "border-yellow-500 text-yellow-500"
-                                : "border-green-500 text-green-500",
-                          )}
+                                ? "bg-yellow-100 text-yellow-800"
+                                : "bg-green-100 text-green-800"
+                          }`}
                         >
-                          {item.severity}
-                        </Badge>
-                        <span className="text-sm text-muted-foreground">
-                          {item.source}
+                          {item.severity === "high"
+                            ? "High Impact"
+                            : item.severity === "medium"
+                              ? "Medium Impact"
+                              : "Low Impact"}
                         </span>
                       </div>
-                      <span className="text-sm text-muted-foreground">
-                        {timeInfo.text}
-                      </span>
                     </div>
-                    <div className="flex flex-wrap gap-1">
-                      {item.pairs.map((pair) => (
-                        <Badge
-                          key={pair}
-                          variant="secondary"
-                          className={cn(
-                            "text-xs",
-                            favoritePairs.includes(pair) &&
-                              "bg-yellow-100 text-yellow-800",
-                          )}
-                        >
-                          {pair}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                  );
+                })}
+              </div>
+            )}
           </div>
-        </ScrollArea>
-      </CardContent>
-    </Card>
+        </div>
+      }
+    />
   );
 }

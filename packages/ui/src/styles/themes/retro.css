@@ -1,0 +1,218 @@
+.retro {
+  /* Retro theme variables */
+  --retro-primary: #ff00ff;
+  --retro-secondary: #00ffff;
+  --retro-border: 4px;
+  --retro-shadow: 0.4rem 0.4rem 0 #000;
+  --retro-pattern: repeating-linear-gradient(
+    45deg,
+    #ff00ff 0%,
+    #ff00ff 2%,
+    #00ffff 2%,
+    #00ffff 4%
+  );
+  --retro-grid: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+  --retro-grid-size: 20px;
+
+  /* Override base variables */
+  --background: 280 50% 95%;
+  --foreground: 280 60% 20%;
+  --card: 280 50% 98%;
+  --card-foreground: 280 60% 20%;
+  --popover: 280 50% 98%;
+  --popover-foreground: 280 60% 20%;
+  --primary: 300 100% 50%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 180 100% 50%;
+  --secondary-foreground: 0 0% 0%;
+  --muted: 280 30% 90%;
+  --muted-foreground: 280 30% 40%;
+  --accent: 300 100% 50%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 100% 50%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 280 60% 20%;
+  --input: 280 60% 20%;
+  --ring: 300 100% 50%;
+  --radius: 0; /* Sharp corners for pixel effect */
+
+  /* Retro theme fonts */
+  --font-sans: "Press Start 2P", system-ui;
+  --font-mono: "VT323", monospace;
+  --font-display: "Press Start 2P", system-ui;
+  --font-body: "VT323", monospace;
+
+  /* Background grid */
+  background-image: var(--retro-grid);
+  background-size: var(--retro-grid-size) var(--retro-grid-size);
+}
+
+/* Import retro fonts */
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap");
+
+/* Card specific styles - target shadcn classes */
+.retro [class*="bg-card"] {
+  background: #fff !important;
+  border: var(--retro-border) solid #000 !important;
+  box-shadow: var(--retro-shadow) !important;
+  /* position: relative !important; */
+  transition: all 0.2s ease !important;
+  image-rendering: pixelated;
+}
+
+/* Retro stripe decoration */
+.retro [class*="bg-card"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: var(--retro-pattern);
+  z-index: 1;
+}
+
+/* CRT screen effect */
+.retro [class*="bg-card"]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.02) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+}
+
+.retro [class*="bg-card"]:hover {
+  transform: translate(-4px, -4px) !important;
+  box-shadow: 0.8rem 0.8rem 0 #000 !important;
+}
+
+/* Target card header */
+.retro [class*="bg-card"] h3 {
+  font-family: "Press Start 2P", system-ui;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  color: var(--retro-primary);
+  text-shadow: 2px 2px 0 #000;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  line-height: 1.5;
+}
+
+/* Target card content */
+.retro [class*="bg-card"] p {
+  font-family: "VT323", monospace;
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+/* Button styles */
+.retro button {
+  background: var(--retro-primary) !important;
+  color: var(--retro-text) !important;
+  border: 4px solid var(--retro-border) !important;
+  border-left-color: var(--retro-border-light) !important;
+  border-top-color: var(--retro-border-light) !important;
+  border-right-color: var(--retro-border-dark) !important;
+  border-bottom-color: var(--retro-border-dark) !important;
+  padding: 0.75rem 1.5rem !important;
+  font-family: var(--font-pixel) !important;
+  text-transform: uppercase !important;
+  text-shadow: 2px 2px var(--retro-shadow) !important;
+  position: relative !important;
+  transition: all 0.1s !important;
+  image-rendering: pixelated !important;
+}
+
+.retro button:hover {
+  filter: brightness(1.1) !important;
+  transform: translateY(-2px) !important;
+}
+
+.retro button:active {
+  border-left-color: var(--retro-border-dark) !important;
+  border-top-color: var(--retro-border-dark) !important;
+  border-right-color: var(--retro-border-light) !important;
+  border-bottom-color: var(--retro-border-light) !important;
+  transform: translateY(2px) !important;
+}
+
+/* Dark mode */
+.dark.retro {
+  --retro-primary: #0ff;
+  --retro-secondary: #f0f;
+  --retro-shadow: 0.4rem 0.4rem 0 #0ff;
+  --retro-pattern: repeating-linear-gradient(
+    45deg,
+    #0ff 0%,
+    #0ff 2%,
+    #f0f 2%,
+    #f0f 4%
+  );
+
+  --background: 280 50% 5%;
+  --foreground: 280 50% 95%;
+  --card: 280 50% 10%;
+  --card-foreground: 280 50% 95%;
+  --popover: 280 50% 10%;
+  --popover-foreground: 280 50% 95%;
+  --primary: 180 100% 50%;
+  --primary-foreground: 0 0% 0%;
+  --secondary: 300 100% 50%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 280 30% 20%;
+  --muted-foreground: 280 30% 70%;
+  --accent: 180 100% 50%;
+  --accent-foreground: 0 0% 0%;
+  --destructive: 0 100% 50%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 180 100% 50%;
+  --input: 180 100% 50%;
+  --ring: 180 100% 50%;
+
+  /* Dark mode specific styles */
+  background-image: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+/* Dark mode card styles */
+.dark.retro [class*="bg-card"] {
+  background: #000 !important;
+  border: var(--retro-border) solid #0ff !important;
+  box-shadow: var(--retro-shadow) !important;
+}
+
+.dark.retro [class*="bg-card"]:hover {
+  box-shadow: 0.8rem 0.8rem 0 #0ff !important;
+}
+
+.dark.retro [class*="bg-card"] h3 {
+  color: var(--retro-primary);
+  text-shadow: 2px 2px 0 #f0f;
+}
+
+/* Dark mode button styles */
+.dark.retro button {
+  background: var(--retro-primary-dark) !important;
+  color: var(--retro-text-dark) !important;
+  text-shadow: 2px 2px var(--retro-shadow-dark) !important;
+}
+
+.dark.retro button:hover {
+  box-shadow: 6px 6px 0 #0ff !important;
+}
+
+.dark.retro button:active {
+  box-shadow: 2px 2px 0 #0ff !important;
+}

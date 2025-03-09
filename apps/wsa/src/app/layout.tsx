@@ -1,6 +1,7 @@
 import "~/app/globals.css";
 
 import type { Metadata, Viewport } from "next";
+import { Roboto } from "next/font/google";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 
@@ -12,6 +13,13 @@ import { cn } from "@acme/ui/lib/utils";
 import { env } from "~/env";
 import { TRPCReactProvider } from "~/trpc/react";
 import { Providers } from "./providers";
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700"],
+  variable: "--font-roboto",
+  display: "swap",
+});
 
 //import "@acme/ui/globals.css";
 
@@ -52,6 +60,7 @@ export default function RootLayout(props: {
       <body
         className={cn(
           "min-h-screen bg-background font-sans text-foreground antialiased",
+          roboto.variable,
           GeistSans.variable,
           GeistMono.variable,
         )}

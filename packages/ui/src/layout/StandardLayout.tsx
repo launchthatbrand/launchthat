@@ -26,13 +26,11 @@ export default function StandardLayout(props: {
   return (
     <div className="flex flex-1">
       <AppSidebar sidebar={props.sidebar} />
-      <SidebarInset className="overflow-hidden">
-        <main className="flex max-h-[calc(100vh-20px)] flex-1 flex-col overflow-auto">
-          <AppHeader appName={props.appName} className="sticky top-0" />
-          <div className="TEST flex flex-1 flex-col items-center justify-center">
-            {props.children}
-          </div>
-        </main>
+      <SidebarInset className="flex max-h-[calc(100vh-20px)] flex-1 flex-col overflow-auto overflow-y-scroll">
+        <AppHeader appName={props.appName} className="sticky top-0" />
+        <div className="TEST flex flex-1 flex-col items-center justify-center">
+          {props.children}
+        </div>
       </SidebarInset>
     </div>
   );

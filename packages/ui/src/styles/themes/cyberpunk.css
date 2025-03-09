@@ -1,0 +1,168 @@
+.cyberpunk {
+  /* Cyberpunk theme variables */
+  --cyberpunk-primary: #00ff9f;
+  --cyberpunk-secondary: #ff00ff;
+  --cyberpunk-accent: #00ffff;
+  --cyberpunk-border: 2px solid var(--cyberpunk-primary);
+  --cyberpunk-shadow: 0 0 20px rgba(0, 255, 159, 0.5);
+  --cyberpunk-glitch-timing: 4s;
+
+  /* Override base variables */
+  /* --background: 180 2% 8%; */
+  --foreground: 180 100% 60%;
+  --card: 180 5% 12%;
+  --card-foreground: 180 100% 60%;
+  --popover: 180 5% 12%;
+  --popover-foreground: 180 100% 60%;
+  --primary: 156 100% 50%;
+  --primary-foreground: 0 0% 0%;
+  --secondary: 300 100% 50%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 180 5% 15%;
+  --muted-foreground: 180 50% 50%;
+  --accent: 180 100% 50%;
+  --accent-foreground: 0 0% 0%;
+  --destructive: 0 100% 50%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 156 100% 50%;
+  --input: 156 100% 50%;
+  --ring: 156 100% 50%;
+  --radius: 0;
+
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 240 5.3% 26.1%;
+
+  /* Cyberpunk theme fonts */
+  --font-sans: "Rajdhani", sans-serif;
+  --font-mono: "Share Tech Mono", monospace;
+  --font-display: "Rajdhani", sans-serif;
+  --font-body: "Share Tech Mono", monospace;
+
+  /* Background grid */
+  background-image: linear-gradient(
+      to right,
+      rgba(0, 255, 159, 0.1) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(0, 255, 159, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Import cyberpunk fonts */
+@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap");
+
+/* Card specific styles */
+.cyberpunk [class*="bg-card"] {
+  background: rgba(18, 21, 24, 0.8) !important;
+  border: var(--cyberpunk-border) !important;
+  box-shadow: var(--cyberpunk-shadow) !important;
+  /* position: relative !important; */
+  overflow: hidden !important;
+}
+
+/* Glitch effect on hover */
+.cyberpunk [class*="bg-card"]::before,
+.cyberpunk [class*="bg-card"]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 255, 159, 0.2),
+    transparent
+  );
+  animation: cyberpunk-glitch var(--cyberpunk-glitch-timing) infinite;
+}
+
+.cyberpunk [class*="bg-card"]::after {
+  animation-delay: calc(var(--cyberpunk-glitch-timing) / -2);
+}
+
+@keyframes cyberpunk-glitch {
+  0% {
+    transform: translateX(-100%) skewX(-15deg);
+  }
+  50% {
+    transform: translateX(100%) skewX(-15deg);
+  }
+  100% {
+    transform: translateX(100%) skewX(-15deg);
+  }
+}
+
+/* Neon text effect for headings */
+.cyberpunk [class*="bg-card"] h3 {
+  color: var(--cyberpunk-primary) !important;
+  text-shadow:
+    0 0 5px var(--cyberpunk-primary),
+    0 0 10px var(--cyberpunk-primary),
+    0 0 20px var(--cyberpunk-primary) !important;
+  font-family: "Rajdhani", sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+}
+
+/* Scanline effect */
+.cyberpunk [class*="bg-card"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    transparent 0%,
+    rgba(0, 255, 159, 0.05) 0.5%,
+    transparent 1%
+  );
+  animation: scanline 10s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+/* Button styles */
+.cyberpunk button {
+  background: transparent !important;
+  border: 2px solid var(--cyberpunk-primary) !important;
+  color: var(--cyberpunk-primary) !important;
+  text-shadow: 0 0 5px var(--cyberpunk-primary) !important;
+  box-shadow: 0 0 10px rgba(0, 255, 159, 0.2) !important;
+  transition: all 0.3s ease !important;
+}
+
+.cyberpunk button:hover {
+  background: var(--cyberpunk-primary) !important;
+  color: #000 !important;
+  text-shadow: none !important;
+  box-shadow:
+    0 0 20px var(--cyberpunk-primary),
+    0 0 40px var(--cyberpunk-primary) !important;
+}
+
+/* Dark mode adjustments */
+.dark.cyberpunk {
+  --cyberpunk-primary: #00ff9f;
+  --cyberpunk-secondary: #ff00ff;
+  --cyberpunk-accent: #00ffff;
+  --cyberpunk-shadow: 0 0 30px rgba(0, 255, 159, 0.7);
+
+  background-image: linear-gradient(
+      to right,
+      rgba(0, 255, 159, 0.15) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(0, 255, 159, 0.15) 1px, transparent 1px);
+}
