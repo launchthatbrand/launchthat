@@ -42,6 +42,9 @@ export const transitions = {
   },
 } satisfies Record<string, Transition>;
 
+// Direct transition export for convenience
+export const smoothTransition = transitions.smooth;
+
 // Existing variants
 export const containerVariants: Variants = {
   animate: {

@@ -55,7 +55,8 @@
     "AUTH_DISCORD_SECRET",
     "AUTH_REDIRECT_PROXY_URL",
     "AUTH_SECRET",
-    "PORT"
+    "PORT",
+    "WSA_POSTGRES_URL"
   ],
   "globalPassThroughEnv": [
     "NODE_ENV",
