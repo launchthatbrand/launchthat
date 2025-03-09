@@ -1,12 +1,14 @@
 "use client";
 
-import { RadioGroup, RadioGroupItem } from "~/app/_components/ui/radio-group";
-import { Card } from "~/app/_components/ui/card";
-import { Label } from "~/app/_components/ui/label";
-import { type Question } from "~/app/wordpress/hooks/useLearndash";
-import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+
+import { Card } from "@acme/ui/components/card";
+import { Label } from "@acme/ui/components/label";
+import { RadioGroup, RadioGroupItem } from "@acme/ui/components/radio-group";
+import { cn } from "@acme/ui/lib/utils";
+
+import type { Question } from "~/app/hooks/useLearndash";
 
 interface QuestionCardProps {
   question: Question;

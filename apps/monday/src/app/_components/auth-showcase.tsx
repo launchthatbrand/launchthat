@@ -1,6 +1,5 @@
 import { auth, signIn, signOut } from "@acme/auth-monday";
-
-import { Button } from "@acme/ui/button";
+import { Button } from "@acme/ui/components/button";
 
 export async function AuthShowcase() {
   const session = await auth();

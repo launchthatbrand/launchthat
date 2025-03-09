@@ -1,11 +1,17 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Image from "next/image";
+import { useQuery } from "@tanstack/react-query";
+
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@acme/ui/components/card";
+import { Skeleton } from "@acme/ui/components/skeleton";
 
 import { GET_TOPIC } from "../../../../queries";
-import Image from "next/image";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useQuery } from "@tanstack/react-query";
 
 interface Topic {
   id: string;
@@ -21,7 +27,7 @@ interface Topic {
 function LoadingSkeleton() {
   return (
     <div className="container py-8">
-      <Card className="border-0 bg-theme-card/40">
+      <Card className="bg-theme-card/40 border-0">
         <CardHeader>
           <Skeleton className="h-8 w-[300px]" />
         </CardHeader>
@@ -96,7 +102,7 @@ export default function TopicPage({
 
   return (
     <div className="container py-8">
-      <Card className="border-0 bg-theme-card/40">
+      <Card className="bg-theme-card/40 border-0">
         <CardHeader>
           <CardTitle>{topic.title}</CardTitle>
         </CardHeader>

@@ -1,14 +1,16 @@
 import "~/app/globals.css";
 
 import type { Metadata, Viewport } from "next";
-import { ThemeProvider, ThemeToggle } from "@acme/ui/theme";
-
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
-import { TRPCReactProvider } from "~/trpc/react";
-import { Toaster } from "@acme/ui/toast";
-import { cn } from "@acme/ui";
+
+import { ThemeToggle } from "@acme/ui/components/theme";
+import StandardLayout from "@acme/ui/layout/StandardLayout";
+import { cn } from "@acme/ui/lib/utils";
+
 import { env } from "~/env";
+import { TRPCReactProvider } from "~/trpc/react";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -51,15 +53,11 @@ export default function RootLayout(props: {
           GeistMono.variable,
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TRPCReactProvider>
-            <div>{props.children}</div>
-          </TRPCReactProvider>
-          <div className="absolute bottom-4 right-4">
-            <ThemeToggle />
-          </div>
-          <Toaster />
-        </ThemeProvider>
+        <Providers>
+          <StandardLayout sidebar={props.sidebar} appName="Monday">
+            {props.children}
+          </StandardLayout>
+        </Providers>
       </body>
     </html>
   );

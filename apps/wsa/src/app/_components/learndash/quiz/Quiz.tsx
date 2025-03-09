@@ -1,15 +1,17 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { Button } from "~/app/_components/ui/button";
-import { Card } from "~/app/_components/ui/card";
-import { Form } from "~/app/_components/ui/form";
-import { Progress } from "~/app/_components/ui/progress";
-import { type Question } from "~/app/wordpress/hooks/useLearndash";
-import { cn } from "@/lib/utils";
-import confetti from "canvas-confetti";
-import { useForm } from "react-hook-form";
 import { useState } from "react";
+import confetti from "canvas-confetti";
+import { AnimatePresence, motion } from "framer-motion";
+import { useForm } from "react-hook-form";
+
+import { Button } from "@acme/ui/components/button";
+import { Card } from "@acme/ui/components/card";
+import { Form } from "@acme/ui/components/form";
+import { Progress } from "@acme/ui/components/progress";
+import { cn } from "@acme/ui/lib/utils";
+
+import type { Question } from "~/app/hooks/useLearndash";
 import { QuestionCard } from "./QuestionCard";
 
 interface QuizProps {

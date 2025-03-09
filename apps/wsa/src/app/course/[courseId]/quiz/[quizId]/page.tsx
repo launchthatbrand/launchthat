@@ -1,8 +1,9 @@
 "use client";
 
-import { Quiz } from "~/app/wordpress/_components/learndash/quiz/Quiz";
-import { Skeleton } from "~/app/_components/ui/skeleton";
-import { useLearndash } from "~/app/wordpress/hooks/useLearndash";
+import { Skeleton } from "@acme/ui/components/skeleton";
+
+import { Quiz } from "~/app/_components/learndash/quiz";
+import { useLearndash } from "~/app/hooks/useLearndash";
 
 interface QuizPageProps {
   params: {

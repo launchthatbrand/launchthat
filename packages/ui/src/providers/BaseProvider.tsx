@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { ThemeProvider as NextThemeProvider } from "next-themes";
 
-import { AuthProvider } from "@acme/auth";
+import { AuthProvider } from "@acme/auth-wsa/AuthProvider";
 
 import type { ThemeStyle } from "../themes/types";
 import { SidebarProvider } from "../components/sidebar";

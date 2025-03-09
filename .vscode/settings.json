@@ -9,5 +9,6 @@
       "filePath": "packages/ui",
       "group": "Default"
     }
-  ]
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

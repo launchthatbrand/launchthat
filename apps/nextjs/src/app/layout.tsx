@@ -1,16 +1,14 @@
+import "~/app/globals.css";
+
 import type { Metadata, Viewport } from "next";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 
-import { cn } from "@acme/ui";
-import { ThemeProvider, ThemeToggle } from "@acme/ui/theme";
-import { Toaster } from "@acme/ui/toast";
-
-import { TRPCReactProvider } from "~/trpc/react";
-
-import "~/app/globals.css";
+import StandardLayout from "@acme/ui/layout/StandardLayout";
+import { cn } from "@acme/ui/lib/utils";
 
 import { env } from "~/env";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -40,7 +38,10 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout(props: { children: React.ReactNode }) {
+export default function RootLayout(props: {
+  children: React.ReactNode;
+  sidebar: React.ReactNode;
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -50,13 +51,11 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           GeistMono.variable,
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TRPCReactProvider>{props.children}</TRPCReactProvider>
-          <div className="absolute bottom-4 right-4">
-            <ThemeToggle />
-          </div>
-          <Toaster />
-        </ThemeProvider>
+        <Providers>
+          <StandardLayout sidebar={props.sidebar} appName="Monday">
+            {props.children}
+          </StandardLayout>
+        </Providers>
       </body>
     </html>
   );

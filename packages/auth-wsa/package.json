@@ -11,7 +11,8 @@
     },
     "./env": "./env.ts",
     "./client": "./src/client.ts",
-    "./actions": "./src/actions.ts"
+    "./actions": "./src/actions.ts",
+    "./AuthProvider": "./src/AuthProvider.tsx"
   },
   "license": "MIT",
   "scripts": {

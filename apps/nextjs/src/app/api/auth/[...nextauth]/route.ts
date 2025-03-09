@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-import { handlers, isSecureContext } from "@acme/auth";
+import { getIsSecureContext, handlers } from "@acme/auth";
 
 const EXPO_COOKIE_NAME = "__acme-expo-redirect-state";
 const AUTH_COOKIE_PATTERN = /authjs\.session-token=([^;]+)/;
@@ -15,7 +15,7 @@ const AUTH_COOKIE_PATTERN = /authjs\.session-token=([^;]+)/;
  * @returns The modified request.
  */
 function rewriteRequestUrlInDevelopment(req: NextRequest) {
-  if (isSecureContext) return req;
+  if (getIsSecureContext()) return req;
 
   const host = req.headers.get("host");
   const newURL = new URL(req.url);
