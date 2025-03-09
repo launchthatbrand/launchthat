@@ -53,7 +53,7 @@ export default function TradingDashboard() {
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Left Column - 2/3 width */}
           <div className="space-y-8 lg:col-span-2">
-            <FeaturedContent className="" />
+            <FeaturedContent />
             {/* <WelcomeMessage /> */}
             <CourseProgress
               completedLessons={courseProgress.completedLessons}

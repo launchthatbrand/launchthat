@@ -15,7 +15,7 @@ import { cn } from "@acme/ui/lib/utils";
 export type CardLayout = "stacked" | "inline" | "overlay";
 
 export interface GeneralCardProps {
-  title?: string;
+  title?: ReactNode;
   subtitle?: string;
   content?: ReactNode;
   image?: {
@@ -245,7 +245,7 @@ export function GeneralCard({
   };
 
   const cardClasses = cn(
-    "relative overflow-hidden transition-all",
+    "relative p-0 transition-all",
     {
       "flex flex-col": layout === "stacked",
       "flex flex-row flex-wrap md:flex-nowrap": layout === "inline",
@@ -346,7 +346,7 @@ export function GeneralCard({
       <Card className={cardClasses} onClick={onClick}>
         {renderBadge()}
         {image && (
-          <div className="!sticky aspect-video w-full overflow-hidden">
+          <div className="!sticky aspect-video w-full">
             <img
               src={image.src}
               alt={image.alt}
@@ -354,8 +354,8 @@ export function GeneralCard({
             />
           </div>
         )}
-        <CardContent className={cn("font-body p-6", contentClassName)}>
-          <CardTitle>{title}</CardTitle>
+        <CardTitle>{title}</CardTitle>
+        <CardContent className={cn("font-body p-", contentClassName)}>
           <CardDescription>{subtitle}</CardDescription>
           {content}
 

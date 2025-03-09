@@ -2,13 +2,8 @@ import React from "react";
 import Image from "next/image";
 import { Clock, PlayCircle, ThumbsUp, Users } from "lucide-react";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@acme/ui/components/card";
 import { Tabs, TabsList, TabsTrigger } from "@acme/ui/components/tabs";
+import { GeneralCard } from "@acme/ui/general/GeneralCard";
 import { cn } from "@acme/ui/lib/utils";
 
 import { Carousel3D } from "./Carousel3D";
@@ -222,59 +217,101 @@ export function FeaturedContent({ className }: { className?: string }) {
   );
 
   return (
-    <Card
-      className={cn(
-        "overflow-hidden border border-slate-200 shadow-none",
-        className,
-      )}
-    >
-      <CardHeader className="min-h-36 pb-6 text-[#2b0e4d]">
-        <CardTitle className="flex justify-between space-y-4">
-          <div>
-            <p className="text-xs font-medium text-[#FC653C]">
-              ▬ FEATURED CONTENT ▬
-            </p>
-            <h3 className="mt-2 text-xl font-bold">Trading Education</h3>
-            <p className="mt-1 text-sm font-normal">
-              Learn from our best content
-            </p>
+    <GeneralCard
+      layout="stacked"
+      className={cn(className)}
+      title={
+        <div className="border-b bg-[#2b0e4d] p-6 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs font-medium text-[#FC653C]">
+                ▬ FEATURED CONTENT ▬
+              </p>
+              <h3 className="mt-2 text-xl font-bold">Trading Education</h3>
+              <p className="mt-1 text-sm font-normal text-gray-300">
+                Learn from our best content
+              </p>
+            </div>
+            <Tabs
+              defaultValue="latest"
+              onValueChange={(value) =>
+                setActiveTab(value as "latest" | "favorites")
+              }
+            >
+              <TabsList className="grid w-full grid-cols-2 gap-3 bg-transparent">
+                <TabsTrigger
+                  value="latest"
+                  className={cn(
+                    "data-[state=active]:bg-[#2b0e4d] data-[state=active]:text-white",
+                    "border border-slate-200 data-[state=inactive]:hover:bg-[#2b0e4d]/50",
+                  )}
+                >
+                  Latest Content
+                </TabsTrigger>
+                <TabsTrigger
+                  value="favorites"
+                  className={cn(
+                    "data-[state=active]:bg-[#2b0e4d] data-[state=active]:text-white",
+                    "border border-slate-200 data-[state=inactive]:hover:bg-[#2b0e4d]/50",
+                  )}
+                >
+                  Student Favorites
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
           </div>
-          <Tabs
-            defaultValue="latest"
-            onValueChange={(value) =>
-              setActiveTab(value as "latest" | "favorites")
-            }
-          >
-            <TabsList className="grid w-full grid-cols-2 bg-transparent">
-              <TabsTrigger
-                value="latest"
-                className={cn(
-                  "data-[state=active]:bg-[#2b0e4d] data-[state=active]:text-white",
-                  "border border-slate-200 data-[state=inactive]:hover:bg-[#2b0e4d]/50",
-                )}
-              >
-                Latest Content
-              </TabsTrigger>
-              <TabsTrigger
-                value="favorites"
-                className={cn(
-                  "data-[state=active]:bg-[#2b0e4d] data-[state=active]:text-white",
-                  "border border-slate-200 data-[state=inactive]:hover:bg-[#2b0e4d]/50",
-                )}
-              >
-                Student Favorites
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="p-0">
+        </div>
+      }
+      // title={
+      //   <div className="flex min-h-36 flex-col justify-between space-y-4 pb-6 text-[#2b0e4d]">
+      //     <div className="flex justify-between">
+      //       <div>
+      //         <p className="text-xs font-medium text-[#FC653C]">
+      //           ▬ FEATURED CONTENT ▬
+      //         </p>
+      //         <h3 className="mt-2 text-xl font-bold">Trading Education</h3>
+      //         <p className="mt-1 text-sm font-normal">
+      //           Learn from our best content
+      //         </p>
+      //       </div>
+      //       <Tabs
+      //         defaultValue="latest"
+      //         onValueChange={(value) =>
+      //           setActiveTab(value as "latest" | "favorites")
+      //         }
+      //       >
+      //         <TabsList className="grid w-full grid-cols-2 bg-transparent">
+      //           <TabsTrigger
+      //             value="latest"
+      //             className={cn(
+      //               "data-[state=active]:bg-[#2b0e4d] data-[state=active]:text-white",
+      //               "border border-slate-200 data-[state=inactive]:hover:bg-[#2b0e4d]/50",
+      //             )}
+      //           >
+      //             Latest Content
+      //           </TabsTrigger>
+      //           <TabsTrigger
+      //             value="favorites"
+      //             className={cn(
+      //               "data-[state=active]:bg-[#2b0e4d] data-[state=active]:text-white",
+      //               "border border-slate-200 data-[state=inactive]:hover:bg-[#2b0e4d]/50",
+      //             )}
+      //           >
+      //             Student Favorites
+      //           </TabsTrigger>
+      //         </TabsList>
+      //       </Tabs>
+      //     </div>
+      //   </div>
+      // }
+      content={
         <Carousel3D
           items={content}
           renderItem={renderCarouselItem}
           className="h-[450px] bg-gradient-to-b from-[#2b0e4d]/50 to-slate-50"
         />
-      </CardContent>
-    </Card>
+      }
+      contentClassName="p-0"
+    />
   );
 }

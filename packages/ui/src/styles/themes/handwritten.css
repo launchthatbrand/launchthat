@@ -49,7 +49,7 @@
   border: 2px solid var(--ink-color) !important;
   border-radius: 8px !important;
   box-shadow: 4px 4px 0 var(--ink-color) !important;
-  padding: 1.5rem !important;
+  /* padding: 1.5rem !important; */
   /* position: relative !important; */
   transition: all 0.2s ease !important;
 }

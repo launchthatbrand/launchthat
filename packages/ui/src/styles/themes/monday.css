@@ -1,0 +1,304 @@
+.monday {
+  /* Monday.com theme variables */
+  --monday-primary: 228 97% 61%;
+  --monday-green: 145 58% 55%;
+  --monday-red: 359 83% 71%;
+  --monday-yellow: 34 100% 75%;
+  --monday-purple: 272 51% 54%;
+  --monday-teal: 187 71% 53%;
+  --monday-orange: 16 94% 73%;
+  --monday-dark-blue: 208 86% 39%;
+  --monday-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  --monday-item-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  --monday-item-hover-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+  --monday-radius: 8px;
+  --monday-item-radius: 6px;
+
+  /* Override base theme variables */
+  --background: 224 100% 99%;
+  --foreground: 232 14% 22%;
+  --card: 0 0% 100%;
+  --card-foreground: 232 14% 22%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 232 14% 22%;
+  --primary: 228 97% 61%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 228 33% 97%;
+  --secondary-foreground: 228 97% 61%;
+  --muted: 228 33% 97%;
+  --muted-foreground: 232 14% 60%;
+  --accent: 228 97% 61%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 359 83% 71%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 228 30% 93%;
+  --input: 228 30% 93%;
+  --ring: 228 97% 61%;
+  --radius: var(--monday-radius);
+
+  /* Monday.com specific layout variables */
+  --sidebar-background: 0 0% 100%;
+  --sidebar-foreground: 232 14% 22%;
+  --sidebar-muted: 232 14% 60%;
+  --sidebar-border: 228 30% 93%;
+
+  /* Monday.com fonts */
+  --font-sans: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Helvetica, Arial, sans-serif;
+  --font-mono: "Roboto Mono", monospace;
+  --font-display: var(--font-sans);
+  --font-body: var(--font-sans);
+}
+
+/* Card styles with Monday.com aesthetic */
+.monday [class*="bg-card"] {
+  background-color: white !important;
+  border-radius: var(--monday-item-radius) !important;
+  box-shadow: var(--monday-item-shadow) !important;
+  border: none !important;
+  transition: all 0.2s ease !important;
+  overflow: hidden !important;
+}
+
+.monday [class*="bg-card"]:hover {
+  box-shadow: var(--monday-item-hover-shadow) !important;
+  transform: translateY(-2px) !important;
+}
+
+.monday [class*="bg-card"] h3 {
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  color: hsl(var(--foreground)) !important;
+  margin-bottom: 8px !important;
+}
+
+/* Button styles with Monday.com's distinctive rounded buttons */
+.monday button {
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  border-radius: 30px !important;
+  font-weight: 500 !important;
+  border: none !important;
+  padding: 8px 16px !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.monday button:hover {
+  background-color: hsl(228, 97%, 55%) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+  transform: translateY(-1px) !important;
+}
+
+.monday button:active {
+  transform: translateY(1px) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Status tag styles for task status, priority, etc */
+.monday .status-tag {
+  display: inline-block !important;
+  padding: 2px 8px !important;
+  border-radius: 15px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 1.5 !important;
+}
+
+.monday .status-working {
+  background-color: hsl(var(--monday-yellow)) !important;
+  color: hsl(34, 100%, 25%) !important;
+}
+
+.monday .status-done {
+  background-color: hsl(var(--monday-green)) !important;
+  color: hsl(145, 58%, 15%) !important;
+}
+
+.monday .status-stuck {
+  background-color: hsl(var(--monday-red)) !important;
+  color: hsl(359, 83%, 21%) !important;
+}
+
+.monday .status-high {
+  background-color: hsl(var(--monday-red)) !important;
+  color: white !important;
+}
+
+.monday .status-medium {
+  background-color: hsl(var(--monday-yellow)) !important;
+  color: hsl(34, 100%, 25%) !important;
+}
+
+.monday .status-low {
+  background-color: hsl(var(--monday-green)) !important;
+  color: hsl(145, 58%, 15%) !important;
+}
+
+/* Table styles for Monday.com-like data tables */
+.monday table {
+  width: 100% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 4px !important;
+  margin: 8px 0 !important;
+}
+
+.monday thead th {
+  text-align: left !important;
+  padding: 10px 16px !important;
+  background-color: hsl(var(--secondary)) !important;
+  color: hsl(var(--muted-foreground)) !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  text-transform: none !important;
+  letter-spacing: 0.3px !important;
+  border: none !important;
+}
+
+.monday tbody td {
+  padding: 10px 16px !important;
+  background-color: white !important;
+  border: none !important;
+  font-size: 14px !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.monday tbody tr {
+  box-shadow: var(--monday-item-shadow) !important;
+  border-radius: var(--monday-item-radius) !important;
+  margin-bottom: 4px !important;
+}
+
+.monday tbody tr:hover td {
+  background-color: hsl(var(--secondary)) !important;
+}
+
+.monday tbody tr td:first-child {
+  border-top-left-radius: var(--monday-item-radius) !important;
+  border-bottom-left-radius: var(--monday-item-radius) !important;
+}
+
+.monday tbody tr td:last-child {
+  border-top-right-radius: var(--monday-item-radius) !important;
+  border-bottom-right-radius: var(--monday-item-radius) !important;
+}
+
+/* Progress bar like Monday.com */
+.monday .progress-bar {
+  height: 6px !important;
+  background-color: hsl(var(--muted)) !important;
+  border-radius: 3px !important;
+  overflow: hidden !important;
+}
+
+.monday .progress-bar-fill {
+  height: 100% !important;
+  background-color: hsl(var(--monday-green)) !important;
+  border-radius: 3px !important;
+  transition: width 0.2s ease !important;
+}
+
+/* Dark mode modifiers */
+.dark.monday {
+  --background: 232 26% 15%;
+  --foreground: 0 0% 95%;
+  --card: 232 24% 20%;
+  --card-foreground: 0 0% 95%;
+  --popover: 232 24% 20%;
+  --popover-foreground: 0 0% 95%;
+  --primary: 228 97% 61%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 232 23% 25%;
+  --secondary-foreground: 0 0% 95%;
+  --muted: 232 23% 25%;
+  --muted-foreground: 0 0% 70%;
+  --accent: 228 97% 61%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 359 83% 71%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 232 23% 25%;
+  --input: 232 23% 25%;
+  --ring: 228 97% 61%;
+
+  --monday-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  --monday-item-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  --monday-item-hover-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+
+  /* Dark mode layout variables */
+  --sidebar-background: 232 24% 20%;
+  --sidebar-foreground: 0 0% 95%;
+  --sidebar-muted: 0 0% 70%;
+  --sidebar-border: 232 23% 25%;
+}
+
+/* Dark mode card styles */
+.dark.monday [class*="bg-card"] {
+  background-color: hsl(var(--card)) !important;
+  box-shadow: var(--monday-item-shadow) !important;
+}
+
+.dark.monday [class*="bg-card"]:hover {
+  box-shadow: var(--monday-item-hover-shadow) !important;
+}
+
+/* Dark mode button styles */
+.dark.monday button {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+.dark.monday button:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Dark mode table styles */
+.dark.monday thead th {
+  background-color: hsl(var(--secondary)) !important;
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+.dark.monday tbody td {
+  background-color: hsl(var(--card)) !important;
+}
+
+.dark.monday tbody tr:hover td {
+  background-color: hsl(var(--secondary)) !important;
+}
+
+/* Custom color dot styles like Monday.com column colors */
+.monday .color-dot {
+  display: inline-block !important;
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50% !important;
+  margin-right: 8px !important;
+}
+
+.monday .color-dot.purple {
+  background-color: hsl(var(--monday-purple)) !important;
+}
+
+.monday .color-dot.green {
+  background-color: hsl(var(--monday-green)) !important;
+}
+
+.monday .color-dot.blue {
+  background-color: hsl(var(--monday-primary)) !important;
+}
+
+.monday .color-dot.red {
+  background-color: hsl(var(--monday-red)) !important;
+}
+
+.monday .color-dot.yellow {
+  background-color: hsl(var(--monday-yellow)) !important;
+}
+
+.monday .color-dot.teal {
+  background-color: hsl(var(--monday-teal)) !important;
+}
+
+.monday .color-dot.orange {
+  background-color: hsl(var(--monday-orange)) !important;
+}

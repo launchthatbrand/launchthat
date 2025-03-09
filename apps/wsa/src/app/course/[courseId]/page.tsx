@@ -4,17 +4,10 @@ import { useRouter } from "next/navigation";
 import { Trophy } from "lucide-react";
 
 import { Badge } from "@acme/ui/components/badge";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@acme/ui/components/card";
 import { Progress } from "@acme/ui/components/progress";
-import { Skeleton } from "@acme/ui/components/skeleton";
+import { GeneralCard, GeneralCardSkeleton } from "@acme/ui/general/GeneralCard";
 
 import { useLearndash } from "../../hooks/useLearndash";
-import { LessonCard } from "./_components/LessonCard";
 
 interface Lesson {
   id: string;
@@ -24,6 +17,7 @@ interface Lesson {
       sourceUrl: string;
     };
   };
+  isCompleted?: boolean;
 }
 
 interface Quiz {
@@ -63,69 +57,38 @@ function LoadingSkeleton() {
     <div className="container py-8">
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
         <div className="lg:col-span-3">
-          <Card className="bg-theme-card/40 mb-8 border-0">
-            <CardHeader>
-              <Skeleton className="h-8 w-3/4" />
-              <Skeleton className="h-4 w-1/2" />
-            </CardHeader>
-            <CardContent>
-              <Skeleton className="mb-2 h-4 w-full" />
-              <Skeleton className="mb-2 h-4 w-full" />
-              <Skeleton className="h-4 w-2/3" />
-            </CardContent>
-          </Card>
+          <GeneralCardSkeleton
+            layout="stacked"
+            className="mb-8"
+            hasTitle={true}
+            hasSubtitle={true}
+            hasContent={true}
+            contentLines={3}
+          />
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {Array(6)
               .fill(0)
               .map((_, i) => (
-                <Card key={i} className="overflow-hidden">
-                  <Skeleton className="aspect-[2/1] w-full" />
-                  <div className="space-y-3 p-4">
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-3 w-4/5" />
-                  </div>
-                </Card>
+                <GeneralCardSkeleton
+                  key={i}
+                  layout="stacked"
+                  hasImage={true}
+                  hasTitle={true}
+                  hasSubtitle={true}
+                />
               ))}
           </div>
         </div>
 
         <div>
-          <Card className="bg-theme-card/40 sticky top-24 border-0">
-            <CardHeader>
-              <Skeleton className="h-6 w-1/2" />
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-1/3" />
-                <Skeleton className="h-2 w-full" />
-              </div>
-
-              <div className="space-y-2">
-                <Skeleton className="h-5 w-1/2" />
-                {Array(3)
-                  .fill(0)
-                  .map((_, i) => (
-                    <Card key={i}>
-                      <CardHeader className="p-3">
-                        <Skeleton className="h-4 w-4/5" />
-                      </CardHeader>
-                    </Card>
-                  ))}
-              </div>
-
-              <div className="space-y-2">
-                <Skeleton className="h-5 w-1/2" />
-                <div className="grid grid-cols-2 gap-2">
-                  {Array(4)
-                    .fill(0)
-                    .map((_, i) => (
-                      <Skeleton key={i} className="h-16 w-full rounded-md" />
-                    ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <GeneralCardSkeleton
+            layout="stacked"
+            className="sticky top-24"
+            hasTitle={true}
+            hasContent={true}
+            contentLines={6}
+          />
         </div>
       </div>
     </div>
@@ -199,10 +162,32 @@ export default function CoursePage({
           {course.siblings?.nodes && course.siblings.nodes.length > 0 ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {course.siblings.nodes.map((lesson: Lesson) => (
-                <LessonCard
+                <GeneralCard
                   key={lesson.id}
-                  lesson={lesson}
-                  courseId={course.id}
+                  title={lesson.title}
+                  layout="stacked"
+                  image={
+                    lesson.featuredImage
+                      ? {
+                          src: lesson.featuredImage.node.sourceUrl,
+                          alt: lesson.title,
+                        }
+                      : undefined
+                  }
+                  navigation={{
+                    path: `/course/${decodedCourseId}/${lesson.id}`,
+                    type: "card",
+                  }}
+                  badge={
+                    lesson.isCompleted
+                      ? {
+                          text: "COMPLETED",
+                          variant: "default",
+                          position: "top-left",
+                        }
+                      : undefined
+                  }
+                  enableHoverEffects={true}
                 />
               ))}
             </div>
@@ -214,74 +199,77 @@ export default function CoursePage({
         </div>
 
         <div>
-          <Card className="sticky top-24 -mt-40 space-y-6 border-0 bg-white">
-            <CardHeader className="pb-2">
-              <CardTitle>Course Progress</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Progress Bar */}
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Progress</span>
-                  <span>{progress}%</span>
+          <GeneralCard
+            layout="stacked"
+            title="Course Progress"
+            className="sticky top-24 -mt-40 border-0"
+            contentClassName="space-y-6"
+            content={
+              <>
+                {/* Progress Bar */}
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Progress</span>
+                    <span>{progress}%</span>
+                  </div>
+                  <Progress value={progress} className="h-2" />
                 </div>
-                <Progress value={progress} className="h-2" />
-              </div>
 
-              {/* Quizzes */}
-              {course.quizzes?.nodes && course.quizzes.nodes.length > 0 && (
+                {/* Quizzes */}
+                {course.quizzes?.nodes && course.quizzes.nodes.length > 0 && (
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-medium">Quizzes</h3>
+                    <div className="grid gap-2">
+                      {course.quizzes.nodes.map((quiz: Quiz) => (
+                        <GeneralCard
+                          key={quiz.id}
+                          layout="stacked"
+                          title={quiz.title}
+                          className="cursor-pointer transition-colors hover:bg-muted/50"
+                          contentClassName="p-0"
+                          onClick={() =>
+                            router.push(
+                              `/course/${decodedCourseId}/quiz/${quiz.id}`,
+                            )
+                          }
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Achievements */}
                 <div className="space-y-3">
-                  <h3 className="text-lg font-medium">Quizzes</h3>
-                  <div className="grid gap-2">
-                    {course.quizzes.nodes.map((quiz: Quiz) => (
-                      <Card
-                        key={quiz.id}
-                        className="cursor-pointer transition-colors hover:bg-muted/50"
-                        onClick={() =>
-                          router.push(
-                            `/course/${decodedCourseId}/quiz/${quiz.id}`,
-                          )
+                  <h3 className="text-lg font-medium">Achievements</h3>
+                  <div className="grid grid-cols-2 gap-2">
+                    {achievements.map((achievement) => (
+                      <GeneralCard
+                        key={achievement.id}
+                        layout="stacked"
+                        className={`p-0 ${!achievement.earned ? "opacity-50" : ""}`}
+                        contentClassName="p-3"
+                        content={
+                          <div className="flex flex-col items-center gap-1 text-center">
+                            <Trophy
+                              className={`h-6 w-6 ${achievement.earned ? "text-yellow-500" : "text-gray-400"}`}
+                            />
+                            <span className="text-sm font-medium">
+                              {achievement.title}
+                            </span>
+                            {achievement.earned && (
+                              <Badge variant="outline" className="text-xs">
+                                Earned
+                              </Badge>
+                            )}
+                          </div>
                         }
-                      >
-                        <CardHeader className="p-3">
-                          <CardTitle className="text-base">
-                            {quiz.title}
-                          </CardTitle>
-                        </CardHeader>
-                      </Card>
+                      />
                     ))}
                   </div>
                 </div>
-              )}
-
-              {/* Achievements */}
-              <div className="space-y-3">
-                <h3 className="text-lg font-medium">Achievements</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {achievements.map((achievement) => (
-                    <Card
-                      key={achievement.id}
-                      className={`p-3 ${!achievement.earned ? "opacity-50" : ""}`}
-                    >
-                      <div className="flex flex-col items-center gap-1 text-center">
-                        <Trophy
-                          className={`h-6 w-6 ${achievement.earned ? "text-yellow-500" : "text-gray-400"}`}
-                        />
-                        <span className="text-sm font-medium">
-                          {achievement.title}
-                        </span>
-                        {achievement.earned && (
-                          <Badge variant="outline" className="text-xs">
-                            Earned
-                          </Badge>
-                        )}
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </>
+            }
+          />
         </div>
       </div>
     </div>

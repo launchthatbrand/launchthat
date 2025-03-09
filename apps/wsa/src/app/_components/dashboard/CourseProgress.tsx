@@ -73,73 +73,59 @@ export function CourseProgress({
 
   return (
     <GeneralCard
-      title="Course Progress"
       layout="stacked"
       className="!translate-y-0 overflow-visible"
-      content={
-        <div className="flex flex-col">
-          {/* Header section with purple background */}
-          <div className="rounded-t-lg border-b bg-[#2b0e4d] p-6 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-[#FC653C]">
-                  ▬ YOUR PROGRESS ▬
-                </p>
-                <h3 className="mt-1 text-2xl font-bold tracking-tight">
-                  {milestoneTitle}
-                </h3>
-                <p className="text-sm text-gray-300">{milestoneDescription}</p>
-              </div>
-              <div className="text-center">
-                <div className="relative flex h-24 w-24 items-center justify-center rounded-full border-4 border-[#FC653C] bg-[#2b0e4d]">
-                  <div className="text-center">
-                    <span className="text-2xl font-bold">
-                      {Math.round(progress)}%
-                    </span>
-                    <p className="text-xs text-gray-300">Complete</p>
-                  </div>
-                </div>
-              </div>
+      title={
+        <div className="border-b bg-[#2b0e4d] p-6 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs font-medium text-[#FC653C]">
+                ▬ Course Progress ▬
+              </p>
+              <h3 className="mt-1 text-2xl font-bold tracking-tight">
+                {milestoneTitle}
+              </h3>
+              <p className="text-sm text-gray-300">{milestoneDescription}</p>
             </div>
-
-            <div className="mt-4">
-              <Progress value={progress} className="h-2 bg-gray-700" />
-              <div className="mt-1 flex justify-between text-xs text-gray-300">
-                <span>
-                  {completedLessons} of {totalLessons} lessons completed
-                </span>
-                <span>{Math.round(progress)}% Complete</span>
+            <div className="text-center">
+              <div className="relative flex h-24 w-24 items-center justify-center rounded-full border-4 border-[#FC653C] bg-[#2b0e4d]">
+                <div className="text-center">
+                  <span className="text-2xl font-bold">
+                    {Math.round(progress)}%
+                  </span>
+                  <p className="text-xs text-gray-300">Complete</p>
+                </div>
               </div>
             </div>
           </div>
-
-          {/* Recent lessons section */}
-          <div className="p-6">
-            <h4 className="font-semibold">Recent Lessons</h4>
-            <div className="mt-4 space-y-4">
-              {recentLessons.map((lesson, i) => (
-                <div key={i} className="flex justify-between border-b pb-2">
-                  <div>
-                    <h5 className="font-medium">{lesson.title}</h5>
-                    {lesson.completedAt ? (
-                      <p className="text-xs text-gray-500">
-                        Completed{" "}
-                        {formatDistanceToNow(new Date(lesson.completedAt))} ago
-                      </p>
-                    ) : (
-                      <p className="text-xs text-gray-500">In progress</p>
-                    )}
-                  </div>
-                  <div className="flex items-center">
-                    <Progress
-                      value={lesson.progress}
-                      className="h-2 w-20 bg-gray-100"
-                    />
-                    <span className="ml-2 text-xs">{lesson.progress}%</span>
-                  </div>
+        </div>
+      }
+      content={
+        <div className="p-6">
+          <h4 className="font-semibold">Recent Lessons</h4>
+          <div className="mt-4 space-y-4">
+            {recentLessons.map((lesson, i) => (
+              <div key={i} className="flex justify-between border-b pb-2">
+                <div>
+                  <h5 className="font-medium">{lesson.title}</h5>
+                  {lesson.completedAt ? (
+                    <p className="text-xs text-gray-500">
+                      Completed{" "}
+                      {formatDistanceToNow(new Date(lesson.completedAt))} ago
+                    </p>
+                  ) : (
+                    <p className="text-xs text-gray-500">In progress</p>
+                  )}
                 </div>
-              ))}
-            </div>
+                <div className="flex items-center">
+                  <Progress
+                    value={lesson.progress}
+                    className="h-2 w-20 bg-gray-100"
+                  />
+                  <span className="ml-2 text-xs">{lesson.progress}%</span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       }

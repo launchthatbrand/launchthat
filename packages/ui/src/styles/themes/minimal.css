@@ -48,7 +48,7 @@
   border-radius: var(--minimal-radius) !important;
   box-shadow: var(--minimal-shadow) !important;
   transition: var(--minimal-transition) !important;
-  padding: var(--minimal-spacing) !important;
+  /* padding: var(--minimal-spacing) !important; */
 }
 
 .minimal [class*="bg-card"]:hover {

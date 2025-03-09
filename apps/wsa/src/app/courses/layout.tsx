@@ -9,7 +9,7 @@ export default function CoursesLayout({
 }) {
   return (
     <div className="from-theme-background via-theme-background-secondary to-theme-background flex min-h-screen w-full flex-1 flex-col bg-gradient-to-br">
-      <CourseHeader title="Courses" />
+      {/* <CourseHeader title="Courses" /> */}
       {children}
     </div>
   );

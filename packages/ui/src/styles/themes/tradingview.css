@@ -1,0 +1,195 @@
+.tradingview {
+  /* TradingView theme variables */
+  --tradingview-chart-grid: rgba(233, 237, 241, 0.8);
+  --tradingview-accent-blue: 217 91% 60%;
+  --tradingview-accent-green: 151 83% 43%;
+  --tradingview-accent-red: 0 91% 59%;
+  --tradingview-divider: rgba(233, 237, 241, 1);
+  --tradingview-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --tradingview-tooltip-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  /* Override base theme variables */
+  --background: 210 40% 98%;
+  --foreground: 216 23% 17%;
+  --card: 0 0% 100%;
+  --card-foreground: 216 23% 17%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 216 23% 17%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 210 34% 93%;
+  --secondary-foreground: 217 29% 30%;
+  --muted: 210 34% 93%;
+  --muted-foreground: 218 11% 65%;
+  --accent: 217 91% 60%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 91% 59%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 218 13% 86%;
+  --input: 218 13% 86%;
+  --ring: 217 91% 60%;
+  --radius: 4px;
+
+  /* TradingView specific layout variables */
+  --sidebar-background: 0 0% 100%;
+  --sidebar-foreground: 216 23% 17%;
+  --sidebar-muted: 218 11% 65%;
+  --sidebar-border: 218 13% 86%;
+
+  /* TradingView fonts */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto,
+    Ubuntu, sans-serif;
+  --font-mono: "Consolas", monospace;
+  --font-display: var(--font-sans);
+  --font-body: var(--font-sans);
+}
+
+/* Card styles */
+.tradingview [class*="bg-card"] {
+  background-color: white !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--tradingview-shadow) !important;
+  transition: all 0.2s ease !important;
+}
+
+.tradingview [class*="bg-card"]:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Card header styles */
+.tradingview [class*="bg-card"] h3 {
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Button styles */
+.tradingview button {
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  border-radius: var(--radius) !important;
+  font-weight: 500 !important;
+  border: none !important;
+  padding: 8px 16px !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease !important;
+}
+
+.tradingview button:hover {
+  background-color: hsl(217, 91%, 55%) !important;
+}
+
+.tradingview button:active {
+  transform: translateY(1px) !important;
+}
+
+/* Chart elements (can be used for any data visualization) */
+.tradingview .chart-grid line {
+  stroke: var(--tradingview-chart-grid) !important;
+  stroke-width: 1px !important;
+  stroke-dasharray: none !important;
+}
+
+.tradingview .chart-axis text {
+  fill: hsl(var(--muted-foreground)) !important;
+  font-size: 11px !important;
+}
+
+.tradingview .profit-value {
+  color: hsl(var(--tradingview-accent-green)) !important;
+}
+
+.tradingview .loss-value {
+  color: hsl(var(--tradingview-accent-red)) !important;
+}
+
+/* Table styles for financial data */
+.tradingview table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+}
+
+.tradingview thead th {
+  text-align: left !important;
+  padding: 12px 16px !important;
+  background-color: hsl(var(--secondary)) !important;
+  color: hsl(var(--secondary-foreground)) !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  border-top: 1px solid hsl(var(--border)) !important;
+  border-bottom: 1px solid hsl(var(--border)) !important;
+}
+
+.tradingview tbody td {
+  padding: 8px 16px !important;
+  border-bottom: 1px solid hsl(var(--border)) !important;
+  font-size: 14px !important;
+}
+
+.tradingview tbody tr:hover {
+  background-color: hsl(var(--muted)) !important;
+}
+
+/* Dark mode modifiers */
+.dark.tradingview {
+  --tradingview-chart-grid: rgba(56, 63, 78, 0.8);
+  --tradingview-divider: rgba(56, 63, 78, 1);
+  --tradingview-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --tradingview-tooltip-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+
+  /* Override dark mode base variables */
+  --background: 221 31% 14%;
+  --foreground: 210 40% 98%;
+  --card: 221 31% 16%;
+  --card-foreground: 210 40% 98%;
+  --popover: 221 31% 16%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 221 29% 20%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 221 29% 20%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217 91% 60%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 91% 59%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 221 31% 21%;
+  --input: 221 31% 21%;
+  --ring: 217 91% 60%;
+
+  /* Dark mode layout variables */
+  --sidebar-background: 221 31% 16%;
+  --sidebar-foreground: 210 40% 98%;
+  --sidebar-muted: 215 20.2% 65.1%;
+  --sidebar-border: 221 31% 21%;
+}
+
+/* Dark mode card styles */
+.dark.tradingview [class*="bg-card"] {
+  background-color: hsl(var(--card)) !important;
+  border-color: hsl(var(--border)) !important;
+  box-shadow: var(--tradingview-shadow) !important;
+}
+
+/* Dark mode button styles */
+.dark.tradingview button:hover {
+  background-color: hsl(217, 91%, 55%) !important;
+}
+
+/* Dark mode table styles */
+.dark.tradingview thead th {
+  background-color: hsl(var(--secondary)) !important;
+  color: hsl(var(--secondary-foreground)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+.dark.tradingview tbody td {
+  border-color: hsl(var(--border)) !important;
+}

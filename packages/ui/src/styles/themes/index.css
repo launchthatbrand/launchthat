@@ -7,6 +7,8 @@
 @import "./minimal.css";
 @import "./terminal.css";
 @import "./handwritten.css";
+@import "./tradingview.css";
+@import "./monday.css";
 
 /* Add transitions to elements that use theme variables */
 *,
@@ -25,3 +27,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto+Condensed:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono&display=swap");

@@ -19,6 +19,7 @@ export async function fetchWordPress<T>(
 ): Promise<T | null> {
   const user = await currentUser();
   const wpAuthToken = user?.privateMetadata.wpAuthToken as string | undefined;
+  console.log(wpAuthToken);
 
   const response = await fetch(env.NEXT_PUBLIC_WORDPRESS_API_URL, {
     method: "POST",
@@ -38,6 +39,7 @@ export async function fetchWordPress<T>(
   }
 
   const result = (await response.json()) as GraphQLResponse<T>;
+  console.log(result.data.users);
 
   if (result.errors) {
     console.error("GraphQL Errors:", result.errors);

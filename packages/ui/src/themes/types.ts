@@ -6,7 +6,9 @@ export type ThemeStyle =
   | "cyberpunk"
   | "minimal"
   | "terminal"
-  | "handwritten";
+  | "handwritten"
+  | "tradingview"
+  | "monday";
 
 export interface ThemeConfig {
   label: string;
@@ -65,6 +67,20 @@ export const themes: ThemeConfig[] = [
     description: "Organic, sketch-like design with natural animations",
     className: "theme-handwritten",
   },
+  {
+    label: "TradingView",
+    value: "tradingview",
+    description:
+      "Professional financial interface with crisp data visualization",
+    className: "theme-tradingview",
+  },
+  {
+    label: "Monday",
+    value: "monday",
+    description:
+      "Colorful, modern project management interface with rounded elements",
+    className: "monday",
+  },
 ];
 
 // Helper functions
@@ -72,7 +88,7 @@ export function getThemeClassName(style: ThemeStyle): string {
   const theme = themes.find((t) => t.value === style);
   if (!theme) {
     console.warn(`Theme "${style}" not found, falling back to default theme`);
-    return themes[0].className;
+    return themes[0]?.className ?? "theme-glass";
   }
   return theme.className;
 }

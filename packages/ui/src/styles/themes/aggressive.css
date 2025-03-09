@@ -165,7 +165,7 @@
     calc(100% - 10px) 100%,
     0 100%
   ) !important;
-  padding: 1rem 2rem !important;
+  /* padding: 1rem 2rem !important; */
   font-family: var(--font-display) !important;
   font-weight: 800 !important;
   text-transform: uppercase !important;

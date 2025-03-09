@@ -1,7 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { SignInButton } from "@clerk/nextjs";
+import { CheckCircle, ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@acme/ui/components/button";
 import { Card, CardContent } from "@acme/ui/components/card";
@@ -13,6 +16,51 @@ import { Comments } from "./_components/Comments";
 import { ProgressSidebar } from "./_components/ProgressSidebar";
 import { VideoPlayer } from "./_components/VideoPlayer";
 import { detectVideoInfo } from "./utils";
+
+// Rating component for lessons
+function LessonRating({ onRate }: { onRate: (rating: number) => void }) {
+  const [rating, setRating] = useState<number>(0);
+  const [hoveredRating, setHoveredRating] = useState<number>(0);
+
+  const handleRate = (value: number) => {
+    setRating(value);
+    onRate(value);
+  };
+
+  return (
+    <div className="flex flex-col items-center">
+      {/* <span className="mb-1 text-sm font-medium text-muted-foreground">
+        Rate this lesson
+      </span> */}
+      <div className="flex space-x-1">
+        {[1, 2, 3, 4, 5].map((value) => (
+          <button
+            key={value}
+            type="button"
+            onClick={() => handleRate(value)}
+            onMouseEnter={() => setHoveredRating(value)}
+            onMouseLeave={() => setHoveredRating(0)}
+            className="focus:outline-none"
+            aria-label={`Rate ${value} stars`}
+          >
+            <Star
+              className={`h-6 w-6 ${
+                (hoveredRating ? value <= hoveredRating : value <= rating)
+                  ? "fill-yellow-400 text-yellow-400"
+                  : "text-gray-300"
+              } transition-colors`}
+            />
+          </button>
+        ))}
+      </div>
+      {rating > 0 && (
+        <span className="mt-1 text-xs text-green-600">
+          Thanks for your feedback!
+        </span>
+      )}
+    </div>
+  );
+}
 
 function LoadingSkeleton() {
   return (
@@ -81,9 +129,15 @@ export default function LessonPage({
 }: {
   params: { courseId: string; lessonId: string };
 }) {
+  const router = useRouter();
   const stickyContainerRef = useRef<HTMLDivElement>(null);
   const { useLesson, useRelatedLessons } = useLearndash();
   const decodedLessonId = decodeURIComponent(params.lessonId);
+
+  // State for lesson completion
+  const [isCompleting, setIsCompleting] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [_lessonRating, setLessonRating] = useState<number>(0);
 
   // Fetch current lesson
   const { data: lesson, isLoading: isLoadingLesson } =
@@ -92,6 +146,72 @@ export default function LessonPage({
   // Fetch related lessons
   const { data: relatedLessons, isLoading: isLoadingRelated } =
     useRelatedLessons(decodedLessonId);
+
+  // Function to handle lesson rating
+  const handleRateLesson = (rating: number) => {
+    setLessonRating(rating);
+    // Here you would typically make an API call to save the rating
+    toast.success("Rating submitted", {
+      description: `You rated this lesson ${rating} stars. Thank you!`,
+    });
+  };
+
+  // Function to handle lesson completion
+  const handleCompleteLesson = async () => {
+    if (isCompleted) return;
+
+    setIsCompleting(true);
+
+    try {
+      // Simulate API call to mark lesson as complete
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      // Update completion state
+      setIsCompleted(true);
+
+      toast.success("Lesson Completed!", {
+        description: "Your progress has been updated.",
+      });
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
+      console.error("Error completing lesson:", errorMessage);
+
+      toast.error("Failed to complete lesson", {
+        description: "Please try again later.",
+      });
+    } finally {
+      setIsCompleting(false);
+    }
+  };
+
+  // Find previous and next lessons if they exist
+  const findAdjacentLessons = () => {
+    // Guard clause for when data isn't available
+    if (!Array.isArray(relatedLessons) || !lesson) {
+      return { prevLesson: null, nextLesson: null };
+    }
+
+    // Assume relatedLessons are sorted in order
+    const lessonIds = relatedLessons.map((l) => l.id);
+    const currentIndex = lessonIds.indexOf(lesson.id);
+
+    // Only return adjacent lessons if found in the array
+    const prevLesson =
+      currentIndex > 0 ? relatedLessons[currentIndex - 1] : null;
+    const nextLesson =
+      currentIndex < lessonIds.length - 1
+        ? relatedLessons[currentIndex + 1]
+        : null;
+
+    return { prevLesson, nextLesson };
+  };
+
+  const { prevLesson, nextLesson } = findAdjacentLessons();
+
+  const navigateToLesson = (lessonId: string) => {
+    router.push(`/course/${params.courseId}/${lessonId}`);
+  };
 
   if (isLoadingLesson || isLoadingRelated) {
     return <LoadingSkeleton />;
@@ -115,10 +235,71 @@ export default function LessonPage({
               contentClassName="p-0"
               content={
                 lesson && videoInfo ? (
-                  <VideoPlayer
-                    videoInfo={videoInfo}
-                    stickyContainerRef={stickyContainerRef}
-                  />
+                  <>
+                    <VideoPlayer
+                      videoInfo={videoInfo}
+                      stickyContainerRef={stickyContainerRef}
+                    />
+                    <div className="flex flex-col border-t bg-background p-4">
+                      {/* Navigation and rating in flex container */}
+                      <div className="mb-4 flex flex-col items-center justify-between md:flex-row">
+                        {/* Navigation buttons */}
+                        <div className="mb-4 flex space-x-2 md:mb-0">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              prevLesson && navigateToLesson(prevLesson.id)
+                            }
+                            disabled={!prevLesson}
+                            className="flex items-center"
+                          >
+                            <ChevronLeft className="mr-1 h-4 w-4" />
+                            Previous
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              nextLesson && navigateToLesson(nextLesson.id)
+                            }
+                            disabled={!nextLesson}
+                            className="flex items-center"
+                          >
+                            Next
+                            <ChevronRight className="ml-1 h-4 w-4" />
+                          </Button>
+                        </div>
+
+                        {/* Rating Component */}
+                        <LessonRating onRate={handleRateLesson} />
+                      </div>
+
+                      {/* Complete button in full width container */}
+                      <div className="flex justify-center">
+                        <Button
+                          size="lg"
+                          className="min-w-[200px] font-medium"
+                          onClick={handleCompleteLesson}
+                          disabled={isCompleting || isCompleted}
+                        >
+                          {isCompleting ? (
+                            <span className="flex items-center">
+                              <Skeleton className="mr-2 h-4 w-4 animate-spin rounded-full" />
+                              Completing...
+                            </span>
+                          ) : isCompleted ? (
+                            <span className="flex items-center">
+                              <CheckCircle className="mr-2 h-4 w-4 text-green-500" />
+                              Lesson Completed
+                            </span>
+                          ) : (
+                            "Complete Lesson"
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                  </>
                 ) : (
                   <AuthenticationRequired />
                 )

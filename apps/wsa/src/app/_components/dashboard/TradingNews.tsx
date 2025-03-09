@@ -77,9 +77,23 @@ export function TradingNews({ news }: TradingNewsProps) {
 
   return (
     <GeneralCard
-      title="Trading News & Events"
       layout="stacked"
       className="!translate-y-0"
+      title={
+        <div className="border-b bg-[#2b0e4d] p-6 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs font-medium text-[#FC653C]">
+                ▬ Trading News & Events ▬
+              </p>
+              <h3 className="mt-2 text-xl font-bold">Trading News & Events</h3>
+              <p className="mt-1 text-sm font-normal text-gray-300">
+                News and events that could impact your trading
+              </p>
+            </div>
+          </div>
+        </div>
+      }
       content={
         <div className="flex flex-col">
           {/* Filters header */}

@@ -1,9 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Crown, Medal, Star, Trophy } from "lucide-react";
-
 import Image from "next/image";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { Crown, Medal, Star, Trophy } from "lucide-react";
+
+import { GeneralCard } from "@acme/ui/general/GeneralCard";
+import { cn } from "@acme/ui/lib/utils";
 
 interface LeaderboardUser {
   id: string;
@@ -50,24 +50,26 @@ const getRankStyle = (rank: number) => {
 
 export function Leaderboard({ users, className }: LeaderboardProps) {
   return (
-    <Card
-      className={cn("border border-slate-200 bg-white shadow-sm", className)}
-    >
-      <CardHeader className="border-b bg-[#2b0e4d] pb-8 text-white">
-        <CardTitle className="flex items-center justify-between">
-          <div>
-            <p className="text-xs font-medium text-[#FC653C]">
-              ▬ TOP TRADERS ▬
-            </p>
-            <h3 className="mt-2 text-xl font-bold">Leaderboard</h3>
-            <p className="mt-1 text-sm font-normal text-gray-300">
-              This week's top performers
-            </p>
+    <GeneralCard
+      layout="stacked"
+      className={cn(className)}
+      title={
+        <div className="border-b bg-[#2b0e4d] p-6 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs font-medium text-[#FC653C]">
+                ▬ Leaderboard ▬
+              </p>
+              <h3 className="mt-2 text-xl font-bold">Leaderboard</h3>
+              <p className="mt-1 text-sm font-normal text-gray-300">
+                This week's top performers
+              </p>
+            </div>
+            <Trophy className="h-8 w-8 text-[#FC653C]" />
           </div>
-          <Trophy className="h-8 w-8 text-[#FC653C]" />
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="p-0">
+        </div>
+      }
+      content={
         <div className="divide-y divide-slate-100">
           {users.map((user) => (
             <Link
@@ -117,7 +119,8 @@ export function Leaderboard({ users, className }: LeaderboardProps) {
             </Link>
           ))}
         </div>
-      </CardContent>
-    </Card>
+      }
+      contentClassName="p-0"
+    />
   );
 }

@@ -11,6 +11,8 @@ import {
   PieChart,
   Settings2,
   TerminalSquare,
+  User,
+  Users,
 } from "lucide-react";
 
 import { SidebarHeader } from "@acme/ui/components/sidebar";
@@ -85,6 +87,16 @@ export default function DefaultSidebar() {
       title: "Templates & Downloads",
       url: "/downloads",
       icon: BookOpen,
+    },
+    {
+      title: "Groups",
+      url: "/groups",
+      icon: Users,
+    },
+    {
+      title: "User",
+      url: "/user",
+      icon: User,
     },
   ];
 
