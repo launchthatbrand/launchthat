@@ -44,9 +44,6 @@ export function Providers({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // Determine if we're in development mode
-  const isDev = env.NODE_ENV === "development";
-
   return (
     <BaseProvider>
       <TRPCReactProvider>
@@ -55,6 +52,11 @@ export function Providers({ children }: { children: ReactNode }) {
           <PWAInstallButton />
           <ThemeToggle />
         </div>
+        {env.NODE_ENV === "development" && (
+          <div className="fixed bottom-4 left-4 z-50 rounded bg-black/10 p-2 text-xs">
+            DEV MODE - PWA Testing Enabled
+          </div>
+        )}
       </TRPCReactProvider>
     </BaseProvider>
   );
