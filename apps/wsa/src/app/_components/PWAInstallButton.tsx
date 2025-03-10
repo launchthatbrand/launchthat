@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@acme/ui/components/dialog";
-import { Download, Share, X } from "lucide-react";
+import { Download, Share } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@acme/ui/components/button";
@@ -151,7 +151,7 @@ export default function PWAInstallButton({ className }: PWAInstallButtonProps) {
   const isDev = env.NODE_ENV === "development";
   const shouldShowButton = isDev || canInstall || isIOS;
 
-  // Don't render anything on server
+  // Don't render anything on server or if button shouldn't be shown
   if (!isClient || (!shouldShowButton && !isDev)) {
     return null;
   }
