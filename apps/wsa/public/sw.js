@@ -1,5 +1,8 @@
+// Service Worker for WSA Learning Platform
 const CACHE_NAME = "wsa-app-v1";
-const urlsToCache = [
+
+// Assets to cache on install
+const STATIC_ASSETS = [
   "/",
   "/login",
   "/downloads",
@@ -8,25 +11,41 @@ const urlsToCache = [
   "/manifest.json",
 ];
 
-// Install service worker and cache static assets
+// Install event - cache all static assets
 self.addEventListener("install", (event) => {
+  console.log("[Service Worker] Installing...");
+
+  // Skip waiting to ensure the new service worker activates immediately
+  self.skipWaiting();
+
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log("Opened cache");
-      return cache.addAll(urlsToCache);
-    }),
+    caches
+      .open(CACHE_NAME)
+      .then((cache) => {
+        console.log("[Service Worker] Caching static assets");
+        return cache.addAll(STATIC_ASSETS);
+      })
+      .catch((err) => {
+        console.error("[Service Worker] Cache error:", err);
+      }),
   );
 });
 
-// Activate service worker and clean up old caches
+// Activate event - clean up old caches
 self.addEventListener("activate", (event) => {
+  console.log("[Service Worker] Activating...");
+
+  // Take control of all clients immediately
+  event.waitUntil(clients.claim());
+
+  // Remove old caches
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            console.log("Clearing old cache:", cacheName);
-            return caches.delete(cacheName);
+        cacheNames.map((name) => {
+          if (name !== CACHE_NAME) {
+            console.log("[Service Worker] Removing old cache:", name);
+            return caches.delete(name);
           }
         }),
       );
@@ -34,21 +53,36 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// Fetch assets from cache first, then network
+// Fetch event - serve from cache first, then network
 self.addEventListener("fetch", (event) => {
+  // Skip non-GET requests and browser extensions
+  if (
+    event.request.method !== "GET" ||
+    !event.request.url.startsWith(self.location.origin)
+  ) {
+    return;
+  }
+
+  // Skip API and API-like requests (dynamic data)
+  if (
+    event.request.url.includes("/api/") ||
+    event.request.url.includes("/trpc/") ||
+    event.request.url.includes("/sso-callback")
+  ) {
+    return;
+  }
+
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      // Cache hit - return response
-      if (response) {
-        return response;
+    caches.match(event.request).then((cachedResponse) => {
+      // Return cached response if found
+      if (cachedResponse) {
+        return cachedResponse;
       }
 
-      // Clone the request
-      const fetchRequest = event.request.clone();
-
-      return fetch(fetchRequest)
+      // Otherwise fetch from network
+      return fetch(event.request)
         .then((response) => {
-          // Check if we received a valid response
+          // Check if valid response
           if (
             !response ||
             response.status !== 200 ||
@@ -57,24 +91,36 @@ self.addEventListener("fetch", (event) => {
             return response;
           }
 
-          // Clone the response
+          // Clone the response to cache it
           const responseToCache = response.clone();
 
+          // Cache the new resource
           caches.open(CACHE_NAME).then((cache) => {
-            // Don't cache API requests
-            if (!event.request.url.includes("/api/")) {
-              cache.put(event.request, responseToCache);
-            }
+            cache.put(event.request, responseToCache);
           });
 
           return response;
         })
-        .catch(() => {
-          // If network fails and it's a navigation request, serve the offline page
+        .catch((err) => {
+          // Network failure, check if it's a navigation request
+          console.error("[Service Worker] Fetch error:", err);
+
           if (event.request.mode === "navigate") {
             return caches.match("/offline.html");
           }
+
+          return new Response("Network error", {
+            status: 408,
+            headers: { "Content-Type": "text/plain" },
+          });
         });
     }),
   );
+});
+
+// Listen for messages from clients
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
 });

@@ -15,6 +15,9 @@ interface SafariNavigator extends Navigator {
   standalone?: boolean;
 }
 
+/**
+ * Register the service worker for PWA functionality
+ */
 export function registerServiceWorker() {
   if (typeof window !== "undefined" && "serviceWorker" in navigator) {
     window.addEventListener("load", () => {
@@ -33,7 +36,10 @@ export function registerServiceWorker() {
   }
 }
 
-// Check if the PWA is installed or not
+/**
+ * Check if the PWA is already installed
+ * @returns boolean indicating if the app is running in standalone mode
+ */
 export function isPWAInstalled() {
   if (typeof window !== "undefined") {
     // Check if the app is in standalone mode (installed)
