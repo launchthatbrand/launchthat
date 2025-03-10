@@ -55,11 +55,6 @@ export function Providers({ children }: { children: ReactNode }) {
           <PWAInstallButton />
           <ThemeToggle />
         </div>
-        {isDev && (
-          <div className="fixed bottom-4 left-4 z-50 rounded bg-black/10 p-2 text-xs">
-            DEV MODE - PWA Testing Enabled
-          </div>
-        )}
       </TRPCReactProvider>
     </BaseProvider>
   );
