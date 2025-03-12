@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { type ReactNode } from "react";
+import type {ReactNode} from "react";
 
 export const FilterGroupCard = Card;
 

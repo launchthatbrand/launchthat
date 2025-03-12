@@ -27,13 +27,9 @@ import { CSS } from "@dnd-kit/utilities";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { type SettingsSection } from "../shared/SettingsAccordion";
+import type {SettingsSection} from "../shared/SettingsAccordion";
 import { BaseWidgetSettingsComponent } from "../shared/BaseWidgetSettings";
-import {
-  type BoardColumn,
-  type BoardItemsSettings,
-  type FilterGroup,
-} from "../../types/board-items";
+import type {BoardColumn, BoardItemsSettings, FilterGroup} from "../../types/board-items";
 import { FilterGroupSettings } from "./settings/FilterGroupSettings";
 import { ViewSettings } from "./settings/ViewSettings";
 import { ActionButtonSettings } from "./settings/ActionButtonSettings";
@@ -123,12 +119,12 @@ function SortableFilterGroupCard({
       column.settings_str ? JSON.parse(column.settings_str) : null,
     );
 
-    let options: Array<{
+    let options: {
       id: string;
       label: string;
       value: string;
       color?: string;
-    }> = [];
+    }[] = [];
     let numberRange: { min: number; max: number } | undefined;
 
     if (column.type === "dropdown" || column.type === "status") {
@@ -372,11 +368,11 @@ function SortableFilterGroupCard({
                 );
                 if (!column) return;
 
-                let options: Array<{
+                let options: {
                   id: string;
                   label: string;
                   value: string;
-                }> = [];
+                }[] = [];
                 const settings = column.settings_str
                   ? JSON.parse(column.settings_str)
                   : {};
@@ -568,7 +564,7 @@ export function BoardItemsSettings({
 
   return (
     <BaseWidgetSettingsComponent
-      settings={component.settings as BoardItemsSettings}
+      settings={component.settings}
       onSettingsChange={onSettingsChange}
       customSections={customSections}
       enabledCommonSections={[]}

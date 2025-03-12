@@ -8,7 +8,16 @@
     {
       "filePath": "packages/ui",
       "group": "Default"
+    },
+    {
+      "filePath": "packages/payload-cms",
+      "group": "Default"
+    },
+    {
+      "filePath": "apps/payload-website",
+      "group": "Default"
     }
   ],
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "favorites.sortOrder": "DESC"
 }

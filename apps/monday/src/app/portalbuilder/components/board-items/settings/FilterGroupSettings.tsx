@@ -1,8 +1,4 @@
-import {
-  type BoardColumn,
-  type BoardItemsSettings,
-  type FilterGroup,
-} from "../../../types/board-items";
+import type {BoardColumn, BoardItemsSettings, FilterGroup} from "../../../types/board-items";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -24,9 +20,10 @@ import {
   KeyboardSensor,
   PointerSensor,
   useSensor,
-  useSensors,
-  type DragEndEvent,
+  useSensors
+  
 } from "@dnd-kit/core";
+import type {DragEndEvent} from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
@@ -111,12 +108,12 @@ function SortableFilterGroupCard({
     const column = columns.find((col) => col.id === value);
     if (!column) return;
 
-    let options: Array<{
+    let options: {
       id: string;
       label: string;
       value: string;
       color?: string;
-    }> = [];
+    }[] = [];
     let numberRange: { min: number; max: number } | undefined;
 
     if (column.type === "dropdown" || column.type === "status") {
@@ -331,11 +328,11 @@ function SortableFilterGroupCard({
                 );
                 if (!column) return;
 
-                let options: Array<{
+                let options: {
                   id: string;
                   label: string;
                   value: string;
-                }> = [];
+                }[] = [];
                 const settings = column.settings_str
                   ? JSON.parse(column.settings_str)
                   : {};

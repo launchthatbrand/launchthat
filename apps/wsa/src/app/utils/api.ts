@@ -1,7 +1,6 @@
 "use server";
 
 import { currentUser } from "@clerk/nextjs/server";
-
 import { env } from "../../env";
 
 // const clerkClient = createClerkClient({
@@ -39,7 +38,6 @@ export async function fetchWordPress<T>(
   }
 
   const result = (await response.json()) as GraphQLResponse<T>;
-  console.log(result.data.users);
 
   if (result.errors) {
     console.error("GraphQL Errors:", result.errors);

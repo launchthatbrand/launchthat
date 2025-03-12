@@ -1,13 +1,16 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@acme/ui/components/avatar";
 
 import { Badge } from "@acme/ui/components/badge";
 import { Card } from "@acme/ui/components/card";
-import { cn } from "@acme/ui/lib/utils";
-
+import Link from "next/link";
 import type { User } from "../hooks/useUsers";
+import { cn } from "@acme/ui/lib/utils";
 
 interface UserCardProps {
   user: User;
@@ -15,8 +18,11 @@ interface UserCardProps {
 }
 
 export function UserCard({ user, className }: UserCardProps) {
+  // Format the user role with a fallback
+  const userRole = user.roles?.nodes[0]?.name ?? "Member";
+
   return (
-    <Link href={`/user/${user.id}`}>
+    <Link href={`/user/${user.slug}`}>
       <Card
         className={cn(
           "group overflow-hidden transition-all hover:border-primary",
@@ -25,21 +31,18 @@ export function UserCard({ user, className }: UserCardProps) {
       >
         <div className="p-6">
           <div className="flex items-center gap-4">
-            <div className="relative h-12 w-12 overflow-hidden rounded-full">
-              <Image
-                src={user.avatar?.url ?? "/avatars/default.jpg"}
-                alt={user.name}
-                fill
-                className="object-cover"
-              />
-            </div>
+            <Avatar className="h-12 w-12">
+              {user.avatar?.url && <AvatarImage src={user.avatar.url} />}
+              <AvatarFallback>
+                {user.name.slice(0, 2).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
             <div>
               <h3 className="font-semibold group-hover:text-primary">
                 {user.name}
               </h3>
-              <p className="text-sm text-muted-foreground">
-                {user.roles?.nodes[0]?.name ?? "Member"}
-              </p>
+              <p className="text-sm text-muted-foreground">{user.email}</p>
+              <p className="text-sm text-muted-foreground">{userRole}</p>
             </div>
           </div>
 

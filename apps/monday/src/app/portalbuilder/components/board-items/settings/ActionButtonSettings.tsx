@@ -1,7 +1,4 @@
-import {
-  type BoardColumn,
-  type BoardItemsSettings,
-} from "../../../types/board-items";
+import type {BoardColumn, BoardItemsSettings} from "../../../types/board-items";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";

@@ -1,16 +1,59 @@
 "use client";
 
-import {
-  mockComments,
-  mockTradeIdeas,
-  mockUserProfile,
-} from "./_data/mock-data";
+import { User, useUsers } from "../hooks/useUsers";
+import { mockComments, mockTradeIdeas } from "./_data/mock-data";
 
 import { LessonComments } from "./_components/LessonComments";
 import { TradeIdeas } from "./_components/TradeIdeas";
-import { UserHeader } from "./_components/UserHeader";
+import { useParams } from "next/navigation";
+
+// Define local interface to handle typed results
+interface UserResult {
+  user: User | null;
+  isLoading: boolean;
+  error: Error | null;
+}
 
 export default function UserProfilePage() {
+  const params = useParams();
+  const userId = params.userId as string;
+
+  // Use the useUser hook with type assertion
+  const { user, isLoading, error } = useUsers().useUser(userId) as UserResult;
+
+  // Log data for debugging
+  console.log("User data:", user);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="container py-12">
+          <div className="rounded-lg bg-white p-8 shadow-sm">
+            <div className="flex items-center space-x-4">
+              <div className="h-16 w-16 animate-pulse rounded-full bg-gray-200"></div>
+              <div className="space-y-2">
+                <div className="h-6 w-48 animate-pulse rounded bg-gray-200"></div>
+                <div className="h-4 w-24 animate-pulse rounded bg-gray-200"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !user) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="container py-12">
+          <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-600">
+            User not found or error loading user data
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header Section */}

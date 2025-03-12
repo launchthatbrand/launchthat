@@ -31,6 +31,7 @@ export interface User {
   id: string;
   name: string;
   slug: string;
+  email: string;
   avatar?: {
     url: string;
   };
@@ -59,6 +60,7 @@ export function useUsers() {
     queryKey: ["users"],
     queryFn: () => fetchWordPress(GET_USERS),
   });
+  console.log("useUsers", usersData);
 
   // Process users data
   const users = usersData?.users?.nodes ?? [];

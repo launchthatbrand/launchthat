@@ -45,12 +45,12 @@
 
 /* Card specific styles */
 .terminal [class*="bg-card"] {
-  background: rgba(0, 20, 0, 0.8) !important;
-  border: 1px solid var(--terminal-green) !important;
-  box-shadow: var(--terminal-glow) !important;
-  /* position: relative !important; */
-  overflow: hidden !important;
-  /* padding: 1rem !important; */
+  background: rgba(0, 20, 0, 0.8);
+  border: 1px solid var(--terminal-green);
+  box-shadow: var(--terminal-glow);
+  /* position: relative; */
+  overflow: hidden;
+  /* padding: 1rem; */
 }
 
 /* Terminal cursor effect */
@@ -72,20 +72,20 @@
 
 /* Typography */
 .terminal [class*="bg-card"] h3 {
-  font-family: var(--terminal-font) !important;
-  font-size: 1.5rem !important;
-  color: var(--terminal-green) !important;
-  margin-bottom: 1rem !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.1em !important;
+  font-family: var(--terminal-font);
+  font-size: 1.5rem;
+  color: var(--terminal-green);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .terminal [class*="bg-card"] p {
-  font-family: var(--terminal-font) !important;
-  font-size: 1.1rem !important;
-  line-height: 1.4 !important;
-  color: var(--terminal-green) !important;
-  opacity: 0.8 !important;
+  font-family: var(--terminal-font);
+  font-size: 1.1rem;
+  line-height: 1.4;
+  color: var(--terminal-green);
+  opacity: 0.8;
 }
 
 /* Scanline effect */
@@ -113,85 +113,85 @@
 
 /* Button styles */
 .terminal button {
-  background: var(--terminal-bg) !important;
-  color: var(--terminal-green) !important;
-  border: 1px solid var(--terminal-green) !important;
-  font-family: var(--font-mono) !important;
-  padding: 0.5rem 1rem !important;
-  position: relative !important;
-  cursor: pointer !important;
-  overflow: hidden !important;
+  background: var(--terminal-bg);
+  color: var(--terminal-green);
+  border: 1px solid var(--terminal-green);
+  font-family: var(--font-mono);
+  padding: 0.5rem 1rem;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
 }
 
 .terminal button::before {
-  content: ">" !important;
-  margin-right: 0.5rem !important;
-  opacity: 0 !important;
-  transition: opacity 0.2s ease !important;
+  content: ">";
+  margin-right: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
 .terminal button:hover {
-  background: var(--terminal-green) !important;
-  color: var(--terminal-bg) !important;
+  background: var(--terminal-green);
+  color: var(--terminal-bg);
 }
 
 .terminal button:hover::before {
-  opacity: 1 !important;
+  opacity: 1;
 }
 
 .terminal button:focus {
-  outline: none !important;
-  box-shadow: 0 0 0 2px var(--terminal-green) !important;
+  outline: none;
+  box-shadow: 0 0 0 2px var(--terminal-green);
 }
 
 .terminal button:active {
-  background: var(--terminal-bright-green) !important;
-  border-color: var(--terminal-bright-green) !important;
+  background: var(--terminal-bright-green);
+  border-color: var(--terminal-bright-green);
 }
 
 /* Add a blinking cursor effect */
 .terminal button::after {
-  content: "_" !important;
-  position: absolute !important;
-  right: 1rem !important;
-  animation: blink 1s step-end infinite !important;
+  content: "_";
+  position: absolute;
+  right: 1rem;
+  animation: blink 1s step-end infinite;
 }
 
 @keyframes blink {
   50% {
-    opacity: 0 !important;
+    opacity: 0;
   }
 }
 
 /* Input styles */
 .terminal input {
-  background: transparent !important;
-  border: 1px solid var(--terminal-green) !important;
-  color: var(--terminal-green) !important;
-  font-family: var(--terminal-font) !important;
-  font-size: 1.1rem !important;
-  padding: 0.5rem !important;
+  background: transparent;
+  border: 1px solid var(--terminal-green);
+  color: var(--terminal-green);
+  font-family: var(--terminal-font);
+  font-size: 1.1rem;
+  padding: 0.5rem;
 }
 
 .terminal input::placeholder {
-  color: rgba(0, 255, 0, 0.5) !important;
+  color: rgba(0, 255, 0, 0.5);
 }
 
 /* Dark mode adjustments */
 .dark.terminal button {
-  background: var(--terminal-bg-dark) !important;
-  color: var(--terminal-green-dark) !important;
-  border-color: var(--terminal-green-dark) !important;
+  background: var(--terminal-bg-dark);
+  color: var(--terminal-green-dark);
+  border-color: var(--terminal-green-dark);
 }
 
 .dark.terminal button:hover {
-  background: var(--terminal-green-dark) !important;
-  color: var(--terminal-bg-dark) !important;
+  background: var(--terminal-green-dark);
+  color: var(--terminal-bg-dark);
 }
 
 .dark.terminal button:active {
-  background: var(--terminal-bright-green-dark) !important;
-  border-color: var(--terminal-bright-green-dark) !important;
+  background: var(--terminal-bright-green-dark);
+  border-color: var(--terminal-bright-green-dark);
 }
 
 /* Dark mode is the same as light mode for terminal theme */

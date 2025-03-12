@@ -53,11 +53,11 @@
 
 /* Card specific styles - target shadcn classes */
 .retro [class*="bg-card"] {
-  background: #fff !important;
-  border: var(--retro-border) solid #000 !important;
-  box-shadow: var(--retro-shadow) !important;
-  /* position: relative !important; */
-  transition: all 0.2s ease !important;
+  background: #fff;
+  border: var(--retro-border) solid #000;
+  box-shadow: var(--retro-shadow);
+  /* position: relative; */
+  transition: all 0.2s ease;
   image-rendering: pixelated;
 }
 
@@ -90,8 +90,8 @@
 }
 
 .retro [class*="bg-card"]:hover {
-  transform: translate(-4px, -4px) !important;
-  box-shadow: 0.8rem 0.8rem 0 #000 !important;
+  transform: translate(-4px, -4px);
+  box-shadow: 0.8rem 0.8rem 0 #000;
 }
 
 /* Target card header */
@@ -115,33 +115,33 @@
 
 /* Button styles */
 .retro button {
-  background: var(--retro-primary) !important;
-  color: var(--retro-text) !important;
-  border: 4px solid var(--retro-border) !important;
-  border-left-color: var(--retro-border-light) !important;
-  border-top-color: var(--retro-border-light) !important;
-  border-right-color: var(--retro-border-dark) !important;
-  border-bottom-color: var(--retro-border-dark) !important;
-  padding: 0.75rem 1.5rem !important;
-  font-family: var(--font-pixel) !important;
-  text-transform: uppercase !important;
-  text-shadow: 2px 2px var(--retro-shadow) !important;
-  position: relative !important;
-  transition: all 0.1s !important;
-  image-rendering: pixelated !important;
+  background: var(--retro-primary);
+  color: var(--retro-text);
+  border: 4px solid var(--retro-border);
+  border-left-color: var(--retro-border-light);
+  border-top-color: var(--retro-border-light);
+  border-right-color: var(--retro-border-dark);
+  border-bottom-color: var(--retro-border-dark);
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-pixel);
+  text-transform: uppercase;
+  text-shadow: 2px 2px var(--retro-shadow);
+  position: relative;
+  transition: all 0.1s;
+  image-rendering: pixelated;
 }
 
 .retro button:hover {
-  filter: brightness(1.1) !important;
-  transform: translateY(-2px) !important;
+  filter: brightness(1.1);
+  transform: translateY(-2px);
 }
 
 .retro button:active {
-  border-left-color: var(--retro-border-dark) !important;
-  border-top-color: var(--retro-border-dark) !important;
-  border-right-color: var(--retro-border-light) !important;
-  border-bottom-color: var(--retro-border-light) !important;
-  transform: translateY(2px) !important;
+  border-left-color: var(--retro-border-dark);
+  border-top-color: var(--retro-border-dark);
+  border-right-color: var(--retro-border-light);
+  border-bottom-color: var(--retro-border-light);
+  transform: translateY(2px);
 }
 
 /* Dark mode */
@@ -188,13 +188,13 @@
 
 /* Dark mode card styles */
 .dark.retro [class*="bg-card"] {
-  background: #000 !important;
-  border: var(--retro-border) solid #0ff !important;
-  box-shadow: var(--retro-shadow) !important;
+  background: #000;
+  border: var(--retro-border) solid #0ff;
+  box-shadow: var(--retro-shadow);
 }
 
 .dark.retro [class*="bg-card"]:hover {
-  box-shadow: 0.8rem 0.8rem 0 #0ff !important;
+  box-shadow: 0.8rem 0.8rem 0 #0ff;
 }
 
 .dark.retro [class*="bg-card"] h3 {
@@ -204,15 +204,15 @@
 
 /* Dark mode button styles */
 .dark.retro button {
-  background: var(--retro-primary-dark) !important;
-  color: var(--retro-text-dark) !important;
-  text-shadow: 2px 2px var(--retro-shadow-dark) !important;
+  background: var(--retro-primary-dark);
+  color: var(--retro-text-dark);
+  text-shadow: 2px 2px var(--retro-shadow-dark);
 }
 
 .dark.retro button:hover {
-  box-shadow: 6px 6px 0 #0ff !important;
+  box-shadow: 6px 6px 0 #0ff;
 }
 
 .dark.retro button:active {
-  box-shadow: 2px 2px 0 #0ff !important;
+  box-shadow: 2px 2px 0 #0ff;
 }

@@ -48,14 +48,14 @@
 
 /* Card specific styles */
 .aggressive [class*="bg-card"] {
-  background: var(--aggressive-gradient) !important;
-  border: var(--aggressive-border) !important;
-  box-shadow: var(--aggressive-shadow) !important;
-  transform: skew(-2deg) !important;
-  border-radius: 0 !important;
-  /* position: relative !important; */
-  overflow: hidden !important;
-  transition: all 0.3s ease !important;
+  background: var(--aggressive-gradient);
+  border: var(--aggressive-border);
+  box-shadow: var(--aggressive-shadow);
+  transform: skew(-2deg);
+  border-radius: 0;
+  /* position: relative; */
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
 .aggressive [class*="bg-card"]::after {
@@ -85,8 +85,8 @@
 }
 
 .aggressive [class*="bg-card"]:hover {
-  transform: skew(-2deg) scale(1.05) !important;
-  box-shadow: 0 0 30px rgba(255, 0, 0, 0.7) !important;
+  transform: skew(-2deg) scale(1.05);
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.7);
 }
 
 .aggressive [class*="bg-card"] h1,
@@ -155,90 +155,90 @@
 
 /* Button styles */
 .aggressive button {
-  background: var(--aggressive-primary) !important;
-  color: var(--aggressive-text, #fff) !important;
-  border: none !important;
+  background: var(--aggressive-primary);
+  color: var(--aggressive-text, #fff);
+  border: none;
   clip-path: polygon(
     0 0,
     100% 0,
     100% calc(100% - 10px),
     calc(100% - 10px) 100%,
     0 100%
-  ) !important;
-  /* padding: 1rem 2rem !important; */
-  font-family: var(--font-display) !important;
-  font-weight: 800 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 2px !important;
-  position: relative !important;
-  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
-  box-shadow: var(--aggressive-shadow) !important;
+  );
+  /* padding: 1rem 2rem; */
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: var(--aggressive-shadow);
 }
 
 .aggressive button::before {
-  content: "" !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(
     45deg,
     transparent 0%,
     rgba(255, 255, 255, 0.2) 50%,
     transparent 100%
-  ) !important;
-  transform: translateX(-100%) !important;
-  transition: transform 0.3s ease !important;
+  );
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
 }
 
 .aggressive button:hover {
-  transform: scale(1.05) translateY(-2px) !important;
-  box-shadow: var(--aggressive-hover-shadow) !important;
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: var(--aggressive-hover-shadow);
 }
 
 .aggressive button:hover::before {
-  transform: translateX(100%) !important;
+  transform: translateX(100%);
 }
 
 .aggressive button:active {
-  transform: scale(0.95) translateY(1px) !important;
-  box-shadow: var(--aggressive-active-shadow) !important;
+  transform: scale(0.95) translateY(1px);
+  box-shadow: var(--aggressive-active-shadow);
 }
 
 /* Focus styles for accessibility */
 .aggressive button:focus {
-  outline: none !important;
+  outline: none;
   box-shadow:
     0 0 0 3px var(--aggressive-accent),
-    var(--aggressive-shadow) !important;
+    var(--aggressive-shadow);
 }
 
 .aggressive button:focus:not(:focus-visible) {
-  box-shadow: var(--aggressive-shadow) !important;
+  box-shadow: var(--aggressive-shadow);
 }
 
 /* Dark mode button styles */
 .dark.aggressive button {
-  background: var(--aggressive-primary-dark, #ff3333) !important;
-  color: var(--aggressive-text-dark, #000) !important;
-  box-shadow: var(--aggressive-shadow-dark) !important;
+  background: var(--aggressive-primary-dark, #ff3333);
+  color: var(--aggressive-text-dark, #000);
+  box-shadow: var(--aggressive-shadow-dark);
 }
 
 .dark.aggressive button:hover {
-  box-shadow: var(--aggressive-hover-shadow-dark) !important;
+  box-shadow: var(--aggressive-hover-shadow-dark);
 }
 
 .dark.aggressive button:active {
-  box-shadow: var(--aggressive-active-shadow-dark) !important;
+  box-shadow: var(--aggressive-active-shadow-dark);
 }
 
 .dark.aggressive button:focus {
   box-shadow:
     0 0 0 3px var(--aggressive-accent-dark),
-    var(--aggressive-shadow-dark) !important;
+    var(--aggressive-shadow-dark);
 }
 
 .dark.aggressive button:focus:not(:focus-visible) {
-  box-shadow: var(--aggressive-shadow-dark) !important;
+  box-shadow: var(--aggressive-shadow-dark);
 }

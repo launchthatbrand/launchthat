@@ -1,5 +1,7 @@
 // This script is meant to be imported in pages where you want to register the service worker
 
+import { env } from "~/env";
+
 // Define types for installation prompt
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -10,46 +12,52 @@ interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
 }
 
-// Define extended Navigator type for Safari
-interface SafariNavigator extends Navigator {
-  standalone?: boolean;
-}
+// Check if PWA is installed
+export const isPWAInstalled = () => {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(display-mode: standalone)").matches;
+};
 
-/**
- * Register the service worker for PWA functionality
- */
-export function registerServiceWorker() {
-  if (typeof window !== "undefined" && "serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker
-        .register("/sw.js")
-        .then((registration) => {
-          console.log(
-            "Service Worker registered with scope:",
-            registration.scope,
-          );
-        })
-        .catch((error) => {
-          console.error("Service Worker registration failed:", error);
-        });
-    });
-  }
-}
+// Unregister service worker and clear caches
+export const unregisterServiceWorker = async () => {
+  if (typeof window === "undefined") return;
 
-/**
- * Check if the PWA is already installed
- * @returns boolean indicating if the app is running in standalone mode
- */
-export function isPWAInstalled() {
-  if (typeof window !== "undefined") {
-    // Check if the app is in standalone mode (installed)
-    return (
-      window.matchMedia("(display-mode: standalone)").matches ||
-      (window.navigator as SafariNavigator).standalone === true
-    );
+  try {
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    for (const registration of registrations) {
+      await registration.unregister();
+    }
+
+    // Clear all caches
+    const cacheNames = await caches.keys();
+    await Promise.all(cacheNames.map((name) => caches.delete(name)));
+
+    console.log("[SW] Service worker unregistered and caches cleared");
+  } catch (error) {
+    console.error("[SW] Error unregistering service worker:", error);
   }
-  return false;
-}
+};
+
+// Register service worker
+export const registerServiceWorker = async () => {
+  if (typeof window === "undefined") return;
+
+  const isDev = env.NODE_ENV === "development";
+
+  try {
+    // In development, unregister any existing service worker
+    if (isDev) {
+      await unregisterServiceWorker();
+      console.log("[SW] Development mode - Service worker disabled");
+      return;
+    }
+
+    const registration = await navigator.serviceWorker.register("/sw.js");
+    console.log("[SW] Service worker registered successfully", registration);
+  } catch (error) {
+    console.error("[SW] Service worker registration failed:", error);
+  }
+};
 
 // Get installation prompt status
 export function usePWAInstall() {

@@ -52,152 +52,152 @@
 
 /* Card styles with Monday.com aesthetic */
 .monday [class*="bg-card"] {
-  background-color: white !important;
-  border-radius: var(--monday-item-radius) !important;
-  box-shadow: var(--monday-item-shadow) !important;
-  border: none !important;
-  transition: all 0.2s ease !important;
-  overflow: hidden !important;
+  background-color: white;
+  border-radius: var(--monday-item-radius);
+  box-shadow: var(--monday-item-shadow);
+  border: none;
+  transition: all 0.2s ease;
+  overflow: hidden;
 }
 
 .monday [class*="bg-card"]:hover {
-  box-shadow: var(--monday-item-hover-shadow) !important;
-  transform: translateY(-2px) !important;
+  box-shadow: var(--monday-item-hover-shadow);
+  transform: translateY(-2px);
 }
 
 .monday [class*="bg-card"] h3 {
-  font-weight: 500 !important;
-  font-size: 16px !important;
-  color: hsl(var(--foreground)) !important;
-  margin-bottom: 8px !important;
+  font-weight: 500;
+  font-size: 16px;
+  color: hsl(var(--foreground));
+  margin-bottom: 8px;
 }
 
 /* Button styles with Monday.com's distinctive rounded buttons */
 .monday button {
-  background-color: hsl(var(--primary)) !important;
-  color: hsl(var(--primary-foreground)) !important;
-  border-radius: 30px !important;
-  font-weight: 500 !important;
-  border: none !important;
-  padding: 8px 16px !important;
-  font-size: 14px !important;
-  line-height: 1.6 !important;
-  transition: all 0.2s ease !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-radius: 30px;
+  font-weight: 500;
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .monday button:hover {
-  background-color: hsl(228, 97%, 55%) !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
-  transform: translateY(-1px) !important;
+  background-color: hsl(228, 97%, 55%);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
 }
 
 .monday button:active {
-  transform: translateY(1px) !important;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 /* Status tag styles for task status, priority, etc */
 .monday .status-tag {
-  display: inline-block !important;
-  padding: 2px 8px !important;
-  border-radius: 15px !important;
-  font-size: 12px !important;
-  font-weight: 500 !important;
-  line-height: 1.5 !important;
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
 }
 
 .monday .status-working {
-  background-color: hsl(var(--monday-yellow)) !important;
-  color: hsl(34, 100%, 25%) !important;
+  background-color: hsl(var(--monday-yellow));
+  color: hsl(34, 100%, 25%);
 }
 
 .monday .status-done {
-  background-color: hsl(var(--monday-green)) !important;
-  color: hsl(145, 58%, 15%) !important;
+  background-color: hsl(var(--monday-green));
+  color: hsl(145, 58%, 15%);
 }
 
 .monday .status-stuck {
-  background-color: hsl(var(--monday-red)) !important;
-  color: hsl(359, 83%, 21%) !important;
+  background-color: hsl(var(--monday-red));
+  color: hsl(359, 83%, 21%);
 }
 
 .monday .status-high {
-  background-color: hsl(var(--monday-red)) !important;
-  color: white !important;
+  background-color: hsl(var(--monday-red));
+  color: white;
 }
 
 .monday .status-medium {
-  background-color: hsl(var(--monday-yellow)) !important;
-  color: hsl(34, 100%, 25%) !important;
+  background-color: hsl(var(--monday-yellow));
+  color: hsl(34, 100%, 25%);
 }
 
 .monday .status-low {
-  background-color: hsl(var(--monday-green)) !important;
-  color: hsl(145, 58%, 15%) !important;
+  background-color: hsl(var(--monday-green));
+  color: hsl(145, 58%, 15%);
 }
 
 /* Table styles for Monday.com-like data tables */
 .monday table {
-  width: 100% !important;
-  border-collapse: separate !important;
-  border-spacing: 0 4px !important;
-  margin: 8px 0 !important;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 4px;
+  margin: 8px 0;
 }
 
 .monday thead th {
-  text-align: left !important;
-  padding: 10px 16px !important;
-  background-color: hsl(var(--secondary)) !important;
-  color: hsl(var(--muted-foreground)) !important;
-  font-weight: 500 !important;
-  font-size: 13px !important;
-  text-transform: none !important;
-  letter-spacing: 0.3px !important;
-  border: none !important;
+  text-align: left;
+  padding: 10px 16px;
+  background-color: hsl(var(--secondary));
+  color: hsl(var(--muted-foreground));
+  font-weight: 500;
+  font-size: 13px;
+  text-transform: none;
+  letter-spacing: 0.3px;
+  border: none;
 }
 
 .monday tbody td {
-  padding: 10px 16px !important;
-  background-color: white !important;
-  border: none !important;
-  font-size: 14px !important;
-  transition: background-color 0.2s ease !important;
+  padding: 10px 16px;
+  background-color: white;
+  border: none;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
 }
 
 .monday tbody tr {
-  box-shadow: var(--monday-item-shadow) !important;
-  border-radius: var(--monday-item-radius) !important;
-  margin-bottom: 4px !important;
+  box-shadow: var(--monday-item-shadow);
+  border-radius: var(--monday-item-radius);
+  margin-bottom: 4px;
 }
 
 .monday tbody tr:hover td {
-  background-color: hsl(var(--secondary)) !important;
+  background-color: hsl(var(--secondary));
 }
 
 .monday tbody tr td:first-child {
-  border-top-left-radius: var(--monday-item-radius) !important;
-  border-bottom-left-radius: var(--monday-item-radius) !important;
+  border-top-left-radius: var(--monday-item-radius);
+  border-bottom-left-radius: var(--monday-item-radius);
 }
 
 .monday tbody tr td:last-child {
-  border-top-right-radius: var(--monday-item-radius) !important;
-  border-bottom-right-radius: var(--monday-item-radius) !important;
+  border-top-right-radius: var(--monday-item-radius);
+  border-bottom-right-radius: var(--monday-item-radius);
 }
 
 /* Progress bar like Monday.com */
 .monday .progress-bar {
-  height: 6px !important;
-  background-color: hsl(var(--muted)) !important;
-  border-radius: 3px !important;
-  overflow: hidden !important;
+  height: 6px;
+  background-color: hsl(var(--muted));
+  border-radius: 3px;
+  overflow: hidden;
 }
 
 .monday .progress-bar-fill {
-  height: 100% !important;
-  background-color: hsl(var(--monday-green)) !important;
-  border-radius: 3px !important;
-  transition: width 0.2s ease !important;
+  height: 100%;
+  background-color: hsl(var(--monday-green));
+  border-radius: 3px;
+  transition: width 0.2s ease;
 }
 
 /* Dark mode modifiers */
@@ -235,70 +235,70 @@
 
 /* Dark mode card styles */
 .dark.monday [class*="bg-card"] {
-  background-color: hsl(var(--card)) !important;
-  box-shadow: var(--monday-item-shadow) !important;
+  background-color: hsl(var(--card));
+  box-shadow: var(--monday-item-shadow);
 }
 
 .dark.monday [class*="bg-card"]:hover {
-  box-shadow: var(--monday-item-hover-shadow) !important;
+  box-shadow: var(--monday-item-hover-shadow);
 }
 
 /* Dark mode button styles */
 .dark.monday button {
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .dark.monday button:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Dark mode table styles */
 .dark.monday thead th {
-  background-color: hsl(var(--secondary)) !important;
-  color: hsl(var(--muted-foreground)) !important;
+  background-color: hsl(var(--secondary));
+  color: hsl(var(--muted-foreground));
 }
 
 .dark.monday tbody td {
-  background-color: hsl(var(--card)) !important;
+  background-color: hsl(var(--card));
 }
 
 .dark.monday tbody tr:hover td {
-  background-color: hsl(var(--secondary)) !important;
+  background-color: hsl(var(--secondary));
 }
 
 /* Custom color dot styles like Monday.com column colors */
 .monday .color-dot {
-  display: inline-block !important;
-  width: 12px !important;
-  height: 12px !important;
-  border-radius: 50% !important;
-  margin-right: 8px !important;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
 }
 
 .monday .color-dot.purple {
-  background-color: hsl(var(--monday-purple)) !important;
+  background-color: hsl(var(--monday-purple));
 }
 
 .monday .color-dot.green {
-  background-color: hsl(var(--monday-green)) !important;
+  background-color: hsl(var(--monday-green));
 }
 
 .monday .color-dot.blue {
-  background-color: hsl(var(--monday-primary)) !important;
+  background-color: hsl(var(--monday-primary));
 }
 
 .monday .color-dot.red {
-  background-color: hsl(var(--monday-red)) !important;
+  background-color: hsl(var(--monday-red));
 }
 
 .monday .color-dot.yellow {
-  background-color: hsl(var(--monday-yellow)) !important;
+  background-color: hsl(var(--monday-yellow));
 }
 
 .monday .color-dot.teal {
-  background-color: hsl(var(--monday-teal)) !important;
+  background-color: hsl(var(--monday-teal));
 }
 
 .monday .color-dot.orange {
-  background-color: hsl(var(--monday-orange)) !important;
+  background-color: hsl(var(--monday-orange));
 }

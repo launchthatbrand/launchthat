@@ -1,4 +1,4 @@
-import { type PortalBuilderComponent } from "../../types";
+import type {PortalBuilderComponent} from "../../types";
 import { useBoardInfo } from "../../hooks/useBoardInfo";
 import { formatNumberWithSymbol } from "../../utils/format";
 import {
@@ -79,12 +79,12 @@ interface FilterGroup {
   linkedColumn: string;
   columnType: "dropdown" | "status" | "numbers" | "label";
   filterType?: "buttons" | "price";
-  options: Array<{
+  options: {
     id: string;
     label: string;
     value: string;
     color?: string;
-  }>;
+  }[];
   numberRange?: {
     min: number;
     max: number;
@@ -130,7 +130,7 @@ interface BoardItemsSettings {
 interface BoardItem {
   id: string;
   name: string;
-  column_values: Array<{
+  column_values: {
     id: string;
     text: string;
     value: string;
@@ -140,7 +140,7 @@ interface BoardItem {
       type: string;
       settings_str?: string;
     };
-  }>;
+  }[];
   group?: {
     id: string;
     title: string;
@@ -301,7 +301,7 @@ export function BoardItemsComponent({
 
     // Search in column values
     return item.column_values.some(
-      (cv) => cv.text && cv.text.toLowerCase().includes(searchLower),
+      (cv) => cv.text?.toLowerCase().includes(searchLower),
     );
   });
 
@@ -726,7 +726,7 @@ export function BoardItemsComponent({
       columnValue.column.type === "dropdown" ||
       columnValue.column.type === "status"
     ) {
-      const values = columnValue.text?.split(/,\s*/).filter(Boolean) ?? [];
+      const values = columnValue.text.split(/,\s*/).filter(Boolean) ?? [];
       return (
         <div className="flex flex-wrap gap-1.5">
           {values.map((value, index) => (
@@ -1010,7 +1010,7 @@ export function BoardItemsComponent({
               {item.column_values
                 .filter(
                   (col) =>
-                    !settings.hiddenColumns?.includes(col.column.id) &&
+                    !settings.hiddenColumns.includes(col.column.id) &&
                     col.text &&
                     col.column.id !== settings.featuredImageColumn,
                 )

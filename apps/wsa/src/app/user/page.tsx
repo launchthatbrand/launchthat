@@ -1,69 +1,26 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { User, useUsers } from "./hooks/useUsers";
 
 import { Card } from "@acme/ui/components/card";
 import { Skeleton } from "@acme/ui/components/skeleton";
-
-import { fetchWordPress } from "../utils/api";
 import { UserCard } from "./_components/UserCard";
-import { GET_USERS } from "./queries";
-
-interface User {
-  id: string;
-  name: string;
-  slug: string;
-  avatar?: {
-    url: string;
-  };
-  roles?: {
-    nodes: {
-      name: string;
-    }[];
-  };
-  description?: string;
-  posts?: {
-    nodes: {
-      id: string;
-      title: string;
-      date: string;
-      status: string;
-    }[];
-    pageInfo: {
-      total: number;
-    };
-  };
-  courses?: {
-    nodes: {
-      id: string;
-      title: string;
-      status: string;
-      featuredImage?: {
-        node: {
-          sourceUrl: string;
-        };
-      };
-    }[];
-  };
-}
+import { UserSearch } from "./_components/UserSearch";
 
 export default function UsersPage() {
-  const {
-    data: usersData,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["usersss"],
-    queryFn: () => fetchWordPress(GET_USERS),
-  });
+  // Cast the hook result to handle typing issues
+  const result = useUsers();
+  const users = (result.users || []) as User[];
+  const isLoadingUsers = result.isLoadingUsers;
+  const usersError = result.usersError;
 
-  console.log("usersData", usersData);
+  console.log("usersData", users);
 
-  if (isLoading) {
+  if (isLoadingUsers) {
     return (
       <div className="container py-8">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[...Array(6)].map((_, i) => (
+          {Array.from({ length: 6 }).map((_, i) => (
             <Card key={i} className="overflow-hidden">
               <div className="p-6">
                 <div className="flex items-center gap-4">
@@ -89,7 +46,7 @@ export default function UsersPage() {
     );
   }
 
-  if (error) {
+  if (usersError) {
     return (
       <div className="container py-8">
         <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-600">
@@ -99,11 +56,12 @@ export default function UsersPage() {
     );
   }
 
-  const users = usersData?.users?.nodes ?? [];
-
   return (
     <div className="container py-8">
-      <h1 className="mb-8 text-3xl font-bold">Community Members</h1>
+      <div className="mb-8 flex flex-col gap-4">
+        <h1 className="text-3xl font-bold">Community Members</h1>
+        <UserSearch users={users} className="max-w-2xl" />
+      </div>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {users.map((user: User) => (
           <UserCard key={user.id} user={user} />

@@ -5,6 +5,7 @@ export const GET_USERS = `
         id
         name
         slug
+        email
       }
     }
   }
@@ -12,10 +13,11 @@ export const GET_USERS = `
 
 export const GET_USER = `
   query GetUser($id: ID!) {
-    user(id: $id) {
+    user(id: $id, idType: SLUG)) {
       id
       name
       slug
+      email
       avatar {
         url
       }

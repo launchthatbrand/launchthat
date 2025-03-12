@@ -1,14 +1,14 @@
-import type { ReactNode } from "react";
-import Link from "next/link";
-
-import { Badge } from "@acme/ui/components/badge";
-import { Button } from "@acme/ui/components/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardTitle,
 } from "@acme/ui/components/card";
+
+import { Badge } from "@acme/ui/components/badge";
+import { Button } from "@acme/ui/components/button";
+import Link from "next/link";
+import type { ReactNode } from "react";
 import { Skeleton } from "@acme/ui/components/skeleton";
 import { cn } from "@acme/ui/lib/utils";
 
@@ -250,7 +250,7 @@ export function GeneralCard({
       "flex flex-col": layout === "stacked",
       "flex flex-row flex-wrap md:flex-nowrap": layout === "inline",
       "group relative overflow-hidden": layout === "overlay",
-      "no-hover": !enableHoverEffects,
+      "no-hover-effects": !enableHoverEffects,
     },
     className,
   );

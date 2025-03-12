@@ -37,19 +37,19 @@
 
 /* Card specific styles - target shadcn classes */
 .brutalist [class*="bg-card"] {
-  background-color: var(--brutalist-bg) !important;
-  border: var(--brutalist-border) !important;
-  box-shadow: var(--brutalist-shadow) !important;
-  transform: none !important;
-  border-radius: 0 !important;
+  background-color: var(--brutalist-bg);
+  border: var(--brutalist-border);
+  box-shadow: var(--brutalist-shadow);
+  transform: none;
+  border-radius: 0;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
 }
 
 .brutalist [class*="bg-card"]:hover {
-  transform: translate(-4px, -4px) !important;
-  box-shadow: 12px 12px 0px #000 !important;
+  transform: translate(-4px, -4px);
+  box-shadow: 12px 12px 0px #000;
 }
 
 /* Target card header */
@@ -96,41 +96,41 @@
 
 /* Button styles */
 .brutalist button {
-  background: #000 !important;
-  color: #fff !important;
-  border: var(--brutalist-border) !important;
-  /* padding: 1rem 2rem !important; */
-  font-family: var(--font-mono) !important;
-  /* font-size: 1rem !important; */
-  text-transform: uppercase !important;
-  letter-spacing: 2px !important;
-  transform: translate(-4px, -4px) !important;
-  box-shadow: 5px 5px 0 #5a5a5a !important;
-  transition: all 0.2s ease !important;
-  position: relative !important;
+  background: #000;
+  color: #fff;
+  border: var(--brutalist-border);
+  /* padding: 1rem 2rem; */
+  font-family: var(--font-mono);
+  /* font-size: 1rem; */
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transform: translate(-4px, -4px);
+  box-shadow: 5px 5px 0 #5a5a5a;
+  transition: all 0.2s ease;
+  position: relative;
 }
 
 .brutalist button:hover {
-  transform: translate(-2px, -2px) !important;
-  box-shadow: 6px 6px 0 #000 !important;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000;
 }
 
 .brutalist button:active {
-  transform: translate(0, 0) !important;
-  box-shadow: 0 0 0 #000 !important;
+  transform: translate(0, 0);
+  box-shadow: 0 0 0 #000;
 }
 
 /* Dark mode button styles */
 .dark.brutalist button {
-  background: #fff !important;
-  color: #000 !important;
-  box-shadow: 8px 8px 0 #fff !important;
+  background: #fff;
+  color: #000;
+  box-shadow: 8px 8px 0 #fff;
 }
 
 .dark.brutalist button:hover {
-  box-shadow: 6px 6px 0 #fff !important;
+  box-shadow: 6px 6px 0 #fff;
 }
 
 .dark.brutalist button:active {
-  box-shadow: 0 0 0 #fff !important;
+  box-shadow: 0 0 0 #fff;
 }

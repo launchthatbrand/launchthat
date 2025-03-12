@@ -1,16 +1,14 @@
-import {
-  type BoardColumn,
-  type BoardItemsSettings,
-} from "../../../types/board-items";
+import type {BoardColumn, BoardItemsSettings} from "../../../types/board-items";
 import { Label } from "@/components/ui/label";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Grid2X2, Table as TableIcon } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import {
-  SettingsAccordion,
-  type SettingsSection,
+  SettingsAccordion
+  
 } from "../../shared/SettingsAccordion";
+import type {SettingsSection} from "../../shared/SettingsAccordion";
 import { CardLayoutSettings } from "./CardLayoutSettings";
 import { OrganizationSettings } from "./OrganizationSettings";
 import { Columns, Grid, LayoutGrid, Layers } from "lucide-react";

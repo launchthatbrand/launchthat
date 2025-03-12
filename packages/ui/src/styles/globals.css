@@ -102,4 +102,34 @@
   [data-sidebar="trigger"] [data-sidebar="trigger"] {
     padding: initial !important;
   }
+
+  table button,
+  table [role="row"],
+  table [role="columnheader"]:hover,
+  table [role="row"]:hover,
+  table [role="checkbox"]:hover {
+    background: initial !important;
+    color: var(--sidebar-button-text) !important;
+    border: initial !important;
+    /* border-radius: initial !important; */
+    padding: initial !important;
+    font-weight: initial !important;
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+  }
+
+  table [role="checkbox"] {
+    background: initial !important;
+    color: var(--sidebar-button-text) !important;
+    border: 1px solid !important;
+    /* border-radius: initial !important; */
+    padding: initial !important;
+    font-weight: initial !important;
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+  }
 }

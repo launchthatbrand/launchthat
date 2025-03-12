@@ -1,0 +1,7 @@
+---
+description: wsa graphql types
+globs: apps/wsa/*
+alwaysApply: false
+---
+Use the schema file at [schema.graphql](mdc:packages/db-wsa/src/graphql/schema.graphql) when creating graphql queries while developing inside the apps/wsa directory.
+

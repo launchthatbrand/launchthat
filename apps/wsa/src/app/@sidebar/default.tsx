@@ -10,15 +10,15 @@ import {
   Map,
   PieChart,
   Settings2,
+  ShoppingCart,
   TerminalSquare,
   User,
   Users,
 } from "lucide-react";
 
-import { SidebarHeader } from "@acme/ui/components/sidebar";
 import { NavMain } from "@acme/ui/general/nav-main";
+import { SidebarHeader } from "@acme/ui/components/sidebar";
 import { TeamSwitcher } from "@acme/ui/general/team-switcher";
-
 import { useLearndash } from "../hooks/useLearndash";
 
 // This is sample data.
@@ -94,9 +94,14 @@ export default function DefaultSidebar() {
       icon: Users,
     },
     {
-      title: "User",
+      title: "Users",
       url: "/user",
       icon: User,
+    },
+    {
+      title: "Orders",
+      url: "/orders",
+      icon: ShoppingCart,
     },
   ];
 

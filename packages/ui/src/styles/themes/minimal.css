@@ -43,49 +43,49 @@
 
 /* Card specific styles */
 .minimal [class*="bg-card"] {
-  background: hsl(var(--card)) !important;
-  border: var(--minimal-border) !important;
-  border-radius: var(--minimal-radius) !important;
-  box-shadow: var(--minimal-shadow) !important;
-  transition: var(--minimal-transition) !important;
-  /* padding: var(--minimal-spacing) !important; */
+  background: hsl(var(--card));
+  border: var(--minimal-border);
+  border-radius: var(--minimal-radius);
+  box-shadow: var(--minimal-shadow);
+  transition: var(--minimal-transition);
+  /* padding: var(--minimal-spacing); */
 }
 
 .minimal [class*="bg-card"]:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Typography */
 .minimal [class*="bg-card"] h3 {
-  font-family: var(--font-display) !important;
-  font-weight: 600 !important;
-  letter-spacing: -0.02em !important;
-  color: hsl(var(--card-foreground)) !important;
-  margin-bottom: 0.75rem !important;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: hsl(var(--card-foreground));
+  margin-bottom: 0.75rem;
 }
 
 .minimal [class*="bg-card"] p {
-  font-family: var(--font-body) !important;
-  font-weight: 400 !important;
-  line-height: 1.6 !important;
-  color: hsl(var(--muted-foreground)) !important;
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+  color: hsl(var(--muted-foreground));
 }
 
 /* Button styles */
 .minimal button {
-  background: hsl(var(--primary)) !important;
-  color: hsl(var(--primary-foreground)) !important;
-  border: none !important;
-  border-radius: var(--minimal-radius) !important;
-  padding: 0.5rem 1rem !important;
-  font-weight: 500 !important;
-  transition: var(--minimal-transition) !important;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  /* border: none; */
+  border-radius: var(--minimal-radius);
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: var(--minimal-transition);
 }
 
 .minimal button:hover {
-  opacity: 0.9 !important;
-  transform: translateY(-2px) !important;
+  opacity: 0.9;
+  transform: translateY(-2px);
 }
 
 /* Dark mode adjustments */
