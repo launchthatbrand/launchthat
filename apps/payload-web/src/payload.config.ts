@@ -12,9 +12,10 @@ import { fileURLToPath } from 'url'
 import { getServerSideURL } from './utilities/getURL'
 import path from 'path'
 import { plugins } from '@acme/payload-cms/plugins'
-// storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres' // database-adapter-import
 import sharp from 'sharp' // sharp-import
+
+// storage-adapter-import-placeholder
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -23,6 +24,8 @@ const dirname = path.dirname(filename)
 const config = {
   admin: {
     components: {
+      beforeNavLinks: ['@/_components/admin/CustomNav#CustomNav'],
+      Nav: ['@/_components/admin/CustomNav#CustomNav'],
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // // Feel free to delete this at any time. Simply remove the line below and the import `BeforeLogin` statement on line 15.
       // beforeLogin: ['@/components/BeforeLogin'],

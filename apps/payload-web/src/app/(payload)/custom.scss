@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#nav-toggler,
+.template-default nav {
+  display: none;
+}
+.template-default {
+  display: flex !important;
+  justify-content: stretch !important;
+}
+.table {
+  width: 100%;
+}
+
+body {
+  margin: 0px !important;
+}

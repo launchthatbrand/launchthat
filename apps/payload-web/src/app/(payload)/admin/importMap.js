@@ -20,6 +20,7 @@ import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloa
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { RowLabel as RowLabel_ec255a65fa6fa8d1faeb09cf35284224 } from '@/Header/RowLabel'
 import { RowLabel as RowLabel_1f6ff6ff633e3695d348f4f3c58f1466 } from '@/Footer/RowLabel'
+import { CustomNav as CustomNav_609007f32ff44c829cec3a1e0e1d396c } from '@/_components/admin/CustomNav'
 import { default as default_6754c3b9feea6e4682b092cc6b4a15a4 } from '@acme/payload-cms/components/BeforeDashboard'
 
 export const importMap = {
@@ -45,5 +46,6 @@ export const importMap = {
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
   "@/Header/RowLabel#RowLabel": RowLabel_ec255a65fa6fa8d1faeb09cf35284224,
   "@/Footer/RowLabel#RowLabel": RowLabel_1f6ff6ff633e3695d348f4f3c58f1466,
+  "@/_components/admin/CustomNav#CustomNav": CustomNav_609007f32ff44c829cec3a1e0e1d396c,
   "@acme/payload-cms/components/BeforeDashboard#default": default_6754c3b9feea6e4682b092cc6b4a15a4
 }
