@@ -56,7 +56,7 @@ function AppHeader({
   return (
     <header
       className={cn(
-        "left-0 z-50 flex w-full items-center gap-5 border-b border-white/[0.08] bg-[#edeff8] p-2 backdrop-blur-xl",
+        "left-0 z-20 flex w-full items-center gap-5 border-b border-white/[0.08] bg-[#edeff8] p-2 backdrop-blur-xl",
         className,
       )}
     >

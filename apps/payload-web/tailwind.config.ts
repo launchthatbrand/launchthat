@@ -18,7 +18,7 @@ const config = {
   corePlugins: {
     preflight: false,
   },
-  darkMode: ['selector', '[data-theme="dark"]'],
+  // darkMode: ['selector', '[data-theme="dark"]'],
   plugins: [tailwindcssAnimate, typography],
   prefix: '',
   safelist: [

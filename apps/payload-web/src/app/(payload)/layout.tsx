@@ -5,8 +5,11 @@ import './custom.scss'
 
 import { RootLayout, handleServerFunctions } from '@payloadcms/next/layouts'
 
+import { CustomNav } from '@/_components/admin/CustomNav'
+import { Providers } from '../providers'
 import React from 'react'
 import type { ServerFunctionClient } from 'payload'
+import StandardLayout from '@acme/ui/layout/StandardLayout'
 import config from '@payload-config'
 import { importMap } from './admin/importMap.js'
 
@@ -16,6 +19,7 @@ import { importMap } from './admin/importMap.js'
 
 type Args = {
   children: React.ReactNode
+  sidebar: React.ReactNode
 }
 
 const serverFunction: ServerFunctionClient = async function (args) {
@@ -27,13 +31,15 @@ const serverFunction: ServerFunctionClient = async function (args) {
   })
 }
 
-const Layout = ({ children }: Args) => (
+const Layout = ({ children, sidebar }: Args) => (
   <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
-    <div className="flex bg-blue-500">
-      <div className="w-[300px] bg-red-400"></div>
-      <div className="w-3/4">{children}</div>
-    </div>
+    <Providers>
+      <StandardLayout sidebar={sidebar} appName="WSA">
+        {children}
+      </StandardLayout>
+    </Providers>
   </RootLayout>
+
   // <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
   //   {children}
   // </RootLayout>

@@ -88,6 +88,7 @@
   [data-sidebar="rail"][data-sidebar="rail"] {
     /* Repeating the selector increases specificity */
     background: var(--sidebar-button-bg, transparent) !important;
+    backdrop-filter: initial !important;
     color: var(--sidebar-button-text) !important;
     border: none !important;
     border-radius: 0 !important;
@@ -97,6 +98,9 @@
     transform: none !important;
     box-shadow: none !important;
     opacity: 1 !important;
+  }
+  [data-sidebar="rail"]::before [data-sidebar="rail"]::before {
+    display: none !important;
   }
 
   [data-sidebar="trigger"] [data-sidebar="trigger"] {

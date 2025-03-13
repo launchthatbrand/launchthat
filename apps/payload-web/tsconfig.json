@@ -30,7 +30,8 @@
       "@payload-config": ["./src/payload.config.ts"],
       "@acme/payload-cms/*": ["../../packages/payload-cms/src/*"],
       "react": ["./node_modules/@types/react"],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "~/*": ["./src/*"]
     }
   },
   "include": [

@@ -5,7 +5,7 @@ export default {
   content: [
     "src/**/*.{ts,tsx}",
     "app/**/*.{ts,tsx}",
-    "@acme/ui/components/**/*.{ts,tsx}",
+    "@acme/ui/**/*.{ts,tsx}",
     "../../packages/ui/src/components/**/*.{ts,tsx}",
     "../../packages/ui/src/layout/**/*.{ts,tsx}",
     "../../packages/ui/src/providers/**/*.{ts,tsx}",

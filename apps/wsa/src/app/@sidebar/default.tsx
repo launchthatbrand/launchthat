@@ -16,9 +16,10 @@ import {
   Users,
 } from "lucide-react";
 
-import { NavMain } from "@acme/ui/general/nav-main";
 import { SidebarHeader } from "@acme/ui/components/sidebar";
+import { NavMain } from "@acme/ui/general/nav-main";
 import { TeamSwitcher } from "@acme/ui/general/team-switcher";
+
 import { useLearndash } from "../hooks/useLearndash";
 
 // This is sample data.

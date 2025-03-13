@@ -1,9 +1,12 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import '@acme/ui/styles/globals.css';
+// @tailwind base;
+// @tailwind components;
+// @tailwind utilities;
 
 #nav-toggler,
-.template-default nav {
+.template-default nav:first-child,
+.template-default aside:first-child,
+.app-header {
   display: none;
 }
 .template-default {
@@ -14,6 +17,27 @@
   width: 100%;
 }
 
+.template-default__wrap {
+  padding-top: var(--gutter-h);
+}
+
 body {
   margin: 0px !important;
+}
+
+menu,
+ol,
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body
+  > div.group\/sidebar-wrapper.flex.min-h-svh.w-full.has-\[\[data-variant\=inset\]\]\:bg-sidebar
+  > div.flex.flex-1
+  > main
+  > div
+  > div {
+  width: 100% !important;
 }

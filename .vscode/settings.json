@@ -16,6 +16,10 @@
     {
       "filePath": "apps/payload-website",
       "group": "Default"
+    },
+    {
+      "filePath": "apps\\payload-web",
+      "group": "Default"
     }
   ],
   "typescript.tsdk": "node_modules/typescript/lib",

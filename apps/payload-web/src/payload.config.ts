@@ -9,7 +9,7 @@ import { Posts } from '@acme/payload-cms/collections'
 import { Users } from '@acme/payload-cms/collections'
 import { defaultLexical } from '@acme/payload-cms/fields'
 import { fileURLToPath } from 'url'
-import { getServerSideURL } from './utilities/getURL'
+import { getServerSideURL } from '@acme/payload-cms/utilities/getURL'
 import path from 'path'
 import { plugins } from '@acme/payload-cms/plugins'
 import { postgresAdapter } from '@payloadcms/db-postgres' // database-adapter-import
@@ -24,14 +24,10 @@ const dirname = path.dirname(filename)
 const config = {
   admin: {
     components: {
-      beforeNavLinks: ['@/_components/admin/CustomNav#CustomNav'],
-      Nav: ['@/_components/admin/CustomNav#CustomNav'],
-      // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
-      // // Feel free to delete this at any time. Simply remove the line below and the import `BeforeLogin` statement on line 15.
-      // beforeLogin: ['@/components/BeforeLogin'],
-      // // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
-      // // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
-      beforeDashboard: ['@acme/payload-cms/components/BeforeDashboard'],
+      beforeDashboard: [
+        '@acme/payload-cms/components/BeforeDashboard',
+        '@/_components/admin/CustomNav#CustomNav',
+      ],
     },
     importMap: {
       baseDir: path.resolve(dirname),
