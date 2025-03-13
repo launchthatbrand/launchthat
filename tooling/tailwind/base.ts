@@ -11,6 +11,8 @@ export default {
     "../../packages/ui/src/providers/**/*.{ts,tsx}",
     "../../packages/ui/src/hooks/**/*.{ts,tsx}",
     "../../packages/ui/src/general/**/*.{ts,tsx}",
+    "../../packages/payload-cms/src/components/**/*.{ts,tsx}",
+    "@acme/payload-cms/src/components/**/*.{ts,tsx}",
   ],
   theme: {
     extend: {

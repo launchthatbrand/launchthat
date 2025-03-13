@@ -1,17 +1,18 @@
+'use server'
 import type { Metadata } from 'next'
 
-import { PayloadRedirects } from '@/components/PayloadRedirects'
-import configPromise from '@payload-config'
+import { PayloadRedirects } from '@acme/payload-cms/components/PayloadRedirects'
+import configPromise from '@acme/payload-cms/payload.config'
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
-import { homeStatic } from '@/endpoints/seed/home-static'
+import { homeStatic } from '@acme/payload-cms/endpoints/seed/home-static'
 
-import { RenderBlocks } from '@/blocks/RenderBlocks'
-import { RenderHero } from '@/heros/RenderHero'
-import { generateMeta } from '@/utilities/generateMeta'
+import { RenderBlocks } from '@acme/payload-cms/blocks/RenderBlocks'
+import { RenderHero } from '@acme/payload-cms/heros/RenderHero'
+import { generateMeta } from '@acme/payload-cms/utilities/generateMeta'
 import PageClient from './page.client'
-import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { LivePreviewListener } from '@acme/payload-cms/components/LivePreviewListener'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })

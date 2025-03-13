@@ -1,18 +1,16 @@
 import './globals.css'
 
-import { AdminBar } from '@acme/payload-cms/components/AdminBar'
-import { Footer } from '@acme/payload-cms/Footer/Component'
+// Client components
+import { AdminBar, InitTheme, Providers } from '@acme/payload-cms/client'
+// Server utilities
+import { Footer, Header, getServerSideURL, mergeOpenGraph } from '@acme/payload-cms/server'
+
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
-import { Header } from '@/Header/Component'
-import { InitTheme } from '@/providers/Theme/InitTheme'
 import type { Metadata } from 'next'
-import { Providers } from '@/providers'
 import React from 'react'
 import { cn } from '@/utilities/ui'
 import { draftMode } from 'next/headers'
-import { getServerSideURL } from '@/utilities/getURL'
-import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
