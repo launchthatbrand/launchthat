@@ -1,0 +1,17 @@
+import React from "react";
+
+interface AdminBarProps {
+  adminBarProps?: {
+    preview?: boolean;
+  };
+}
+
+export const AdminBar: React.FC<AdminBarProps> = ({ adminBarProps }) => {
+  return (
+    <div className="admin-bar">
+      {adminBarProps?.preview && <div>Preview Mode</div>}
+    </div>
+  );
+};
+
+export default AdminBar;

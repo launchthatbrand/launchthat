@@ -1,0 +1,71 @@
+{
+  "name": "@acme/payload-cms",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "type": "module",
+  "exports": {
+    "./*": "./src/*",
+    "./client": "./src/client.ts",
+    "./layout": "./src/app/frontend/layout.tsx",
+    "./server": "./src/server.ts",
+    "./collections": "./src/collections/index.ts",
+    "./components/*": "./src/components/*.tsx",
+    "./components/*/*": "./src/components/*/*.tsx",
+    "./Header/config": "./src/Header/config.ts",
+    "./Footer/config": "./src/Footer/config.ts",
+    "./components/PayloadRedirects": "./src/components/PayloadRedirects/index.tsx",
+    "./components/LivePreviewListener": "./src/components/LivePreviewListener/index.tsx",
+    "./payload.config": "./src/payload.config.ts",
+    "./endpoints/*": "./src/endpoints/*.ts",
+    "./blocks/*": "./src/blocks/*.tsx",
+    "./heros/*": "./src/heros/*.tsx",
+    "./utilities/*": "./src/utilities/*.ts",
+    "./fields": "./src/fields/index.ts",
+    "./fields/*": "./src/fields/index.ts",
+    "./hooks": "./src/hooks/index.ts",
+    "./hooks/*": "./src/hooks/index.ts",
+    "./plugins": "./src/plugins/index.ts"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "lint": "eslint .",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@payloadcms/db-mongodb": "latest",
+    "@payloadcms/db-postgres": "^3.27.0",
+    "@payloadcms/live-preview-react": "latest",
+    "@payloadcms/next": "latest",
+    "@payloadcms/payload-cloud": "latest",
+    "@payloadcms/plugin-form-builder": "latest",
+    "@payloadcms/plugin-nested-docs": "latest",
+    "@payloadcms/plugin-redirects": "latest",
+    "@payloadcms/plugin-search": "latest",
+    "@payloadcms/plugin-seo": "latest",
+    "@payloadcms/richtext-lexical": "latest",
+    "@payloadcms/ui": "latest",
+    "clsx": "^2.0.0",
+    "next": "^15.1.5",
+    "payload": "^3.18.0",
+    "payload-admin-bar": "^1.0.6",
+    "tailwind-merge": "^2.0.0"
+  },
+  "peerDependencies": {
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@acme/tsconfig": "workspace:*",
+    "@acme/ui": "workspace:*",
+    "@types/node": "catalog:react18",
+    "@types/react": "catalog:react18",
+    "@types/react-dom": "catalog:react18",
+    "eslint": "catalog:",
+    "eslint-config-next": "^15.1.5",
+    "typescript": "catalog:"
+  }
+}
