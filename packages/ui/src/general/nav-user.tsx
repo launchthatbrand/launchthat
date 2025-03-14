@@ -1,6 +1,10 @@
 "use client";
 
-import { SignInButton, useClerk, useSession } from "@clerk/nextjs";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@acme/ui/components/avatar";
 import {
   BadgeCheck,
   Bell,
@@ -9,12 +13,6 @@ import {
   LogOut,
   Sparkles,
 } from "lucide-react";
-
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@acme/ui/components/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,6 +28,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@acme/ui/components/sidebar";
+import { SignInButton, useClerk, useSession } from "@clerk/nextjs";
+
+import { cn } from "../lib/utils";
 
 interface NavUserProps {
   user?: {
@@ -37,9 +38,10 @@ interface NavUserProps {
     email: string;
     avatar: string;
   };
+  className?: string;
 }
 
-export function NavUser({ user }: NavUserProps = {}) {
+export function NavUser({ user, className }: NavUserProps = {}) {
   const { isMobile } = useSidebar();
   const { session } = useSession();
   const { signOut } = useClerk();
@@ -47,7 +49,7 @@ export function NavUser({ user }: NavUserProps = {}) {
   if (!session) {
     return (
       <SignInButton>
-        <button className="flex items-center justify-center rounded-md bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 px-4 py-1 text-sm font-medium text-white transition-colors hover:from-pink-600 hover:to-purple-600">
+        <button className="ml-auto flex items-center justify-center rounded-md bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 px-4 py-1 text-sm font-medium text-white transition-colors hover:from-pink-600 hover:to-purple-600">
           Sign In
         </button>
       </SignInButton>
@@ -61,7 +63,10 @@ export function NavUser({ user }: NavUserProps = {}) {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="h-10 rounded-lg bg-gradient-to-r from-pink-500/20 to-purple-500/20 p-1 hover:from-pink-500/30 hover:to-purple-500/30"
+              className={cn(
+                "h-10 rounded-lg bg-gradient-to-r from-pink-500/20 to-purple-500/20 p-1 hover:from-pink-500/30 hover:to-purple-500/30",
+                className,
+              )}
             >
               <Avatar className="border-gradient-to-r h-8 w-8 rounded-lg border-2 from-pink-500 to-purple-500">
                 <AvatarImage src={session.user.imageUrl} />

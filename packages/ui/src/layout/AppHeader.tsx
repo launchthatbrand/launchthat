@@ -42,7 +42,7 @@ const SidebarTriggerWrapper = () => {
   // ) : null;
 
   return !isFromMonday ? (
-    <SidebarTrigger className="rounded-lg bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 p-2 text-white transition-colors hover:from-orange-500 hover:via-pink-600 hover:to-purple-700" />
+    <SidebarTrigger className="left-3 rounded-lg bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 p-3 text-white transition-colors hover:from-orange-500 hover:via-pink-600 hover:to-purple-700 xl:!absolute" />
   ) : null;
 };
 
@@ -58,18 +58,13 @@ function AppHeader({
   return (
     <header
       className={cn(
-        "left-0 z-30 flex w-full items-center gap-5 border-b border-white/[0.08] bg-[#edeff8] p-2 backdrop-blur-xl",
+        "left-0 z-30 flex w-full items-center gap-5 border-b border-white/[0.08] bg-[#edeff8] !px-4 backdrop-blur-xl",
         className,
       )}
     >
-      {sidebarToggle ? <SidebarTriggerWrapper /> : null}
-      <div className="container flex h-[48px] w-full items-center justify-between">
-        <div
-          className={cn(
-            "flex items-center gap-8",
-            sidebarToggle && "-ml-[40px]",
-          )}
-        >
+      <div className="container flex h-[48px] w-full items-center justify-start gap-5">
+        {sidebarToggle ? <SidebarTriggerWrapper /> : null}
+        <div className={cn("flex items-center gap-8", sidebarToggle && "")}>
           <Link href="/" className="flex items-center gap-2">
             <Logo appName={appName} />
           </Link>
@@ -77,7 +72,7 @@ function AppHeader({
           <TopNavbar />
         </div>
 
-        <NavUser />
+        <NavUser className="!ml-auto" />
         {/* <SignedOut>
             <SignInButton />
           </SignedOut>

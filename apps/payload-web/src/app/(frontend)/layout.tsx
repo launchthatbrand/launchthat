@@ -40,12 +40,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 />
               }
             >
-              <AdminBar
-                adminBarProps={{
-                  preview: isEnabled,
-                }}
-              />
-
               <Header />
               {children}
               <Footer className="sticky bottom-0 left-0 right-0" />

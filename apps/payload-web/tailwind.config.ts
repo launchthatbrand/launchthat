@@ -38,14 +38,14 @@ const config = {
   theme: {
     container: {
       center: true,
-      padding: {
-        '2xl': '2rem',
-        DEFAULT: '1rem',
-        lg: '2rem',
-        md: '2rem',
-        sm: '1rem',
-        xl: '2rem',
-      },
+      // padding: {
+      //   '2xl': '2rem',
+      //   DEFAULT: '1rem',
+      //   lg: '2rem',
+      //   md: '2rem',
+      //   sm: '1rem',
+      //   xl: '2rem',
+      // },
       screens: {
         '2xl': '130rem',
         lg: '64rem',

@@ -35,7 +35,7 @@ export default function StandardLayout(props: {
         <AppHeader
           appName={props.appName}
           sidebarToggle={sidebarToggle}
-          className="sticky top-0"
+          className="sticky top-0 p-2"
         />
         <div className="TEST flex flex-1 flex-col items-stretch justify-center">
           {props.children}
