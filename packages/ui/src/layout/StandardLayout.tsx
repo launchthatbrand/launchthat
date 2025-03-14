@@ -21,6 +21,7 @@ export default function StandardLayout(props: {
   children: React.ReactNode;
   sidebar?: React.ReactNode;
   appName: string;
+  topbar?: React.ReactNode;
 }) {
   console.log(props.sidebar);
   const sidebarToggle = props.sidebar !== undefined;
@@ -30,6 +31,7 @@ export default function StandardLayout(props: {
         <AppSidebar sidebar={props.sidebar} className="list-none" />
       ) : null}
       <SidebarInset className="flex max-h-[calc(100vh-20px)] flex-1 flex-col overflow-auto overflow-y-scroll">
+        {props.topbar !== undefined ? props.topbar : null}
         <AppHeader
           appName={props.appName}
           sidebarToggle={sidebarToggle}

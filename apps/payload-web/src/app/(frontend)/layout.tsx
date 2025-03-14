@@ -30,7 +30,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         <Providers>
           <BaseProviders>
-            <StandardLayout appName="WSA">
+            <StandardLayout
+              appName="WSA"
+              topbar={
+                <AdminBar
+                  adminBarProps={{
+                    preview: isEnabled,
+                  }}
+                />
+              }
+            >
               <AdminBar
                 adminBarProps={{
                   preview: isEnabled,
