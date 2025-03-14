@@ -1,17 +1,12 @@
 'use server'
 
-import '@payloadcms/next/css'
 import './custom.scss'
+import '@payloadcms/next/css'
 
-import { RootLayout, handleServerFunctions } from '@payloadcms/next/layouts'
-
-import { CustomNav } from '@/_components/admin/CustomNav'
+import { PayloadSidebar } from './_components/PayloadSidebar'
 import { Providers } from '../providers'
 import React from 'react'
-import type { ServerFunctionClient } from 'payload'
 import StandardLayout from '@acme/ui/layout/StandardLayout'
-import config from '@payload-config'
-import { importMap } from './admin/importMap.js'
 
 /* THIS FILE WAS GENERATED AUTOMATICALLY BY PAYLOAD. */
 /* DO NOT MODIFY IT BECAUSE IT COULD BE REWRITTEN AT ANY TIME. */
@@ -22,27 +17,15 @@ type Args = {
   sidebar: React.ReactNode
 }
 
-const serverFunction: ServerFunctionClient = async function (args) {
-  'use server'
-  return handleServerFunctions({
-    ...args,
-    config,
-    importMap,
-  })
+// No need for server function or RootLayout as they're already in the main layout
+export default async function PayloadLayout({ children, sidebar }: Args) {
+  return (
+    <div className="payload-admin-container">
+      <Providers>
+        <StandardLayout sidebar={sidebar} appName="WSA">
+          {children}
+        </StandardLayout>
+      </Providers>
+    </div>
+  )
 }
-
-const Layout = ({ children, sidebar }: Args) => (
-  <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
-    <Providers>
-      <StandardLayout sidebar={sidebar} appName="WSA">
-        {children}
-      </StandardLayout>
-    </Providers>
-  </RootLayout>
-
-  // <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
-  //   {children}
-  // </RootLayout>
-)
-
-export default Layout

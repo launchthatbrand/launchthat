@@ -1,7 +1,6 @@
 "use client";
 
 import type { Metadata, Viewport } from "next";
-
 import {
   Sidebar,
   SidebarInset,
@@ -23,12 +22,20 @@ export default function StandardLayout(props: {
   sidebar?: React.ReactNode;
   appName: string;
 }) {
+  console.log(props.sidebar);
+  const sidebarToggle = props.sidebar !== undefined;
   return (
     <div className="flex flex-1">
-      <AppSidebar sidebar={props.sidebar} className="list-none" />
+      {props.sidebar !== undefined ? (
+        <AppSidebar sidebar={props.sidebar} className="list-none" />
+      ) : null}
       <SidebarInset className="flex max-h-[calc(100vh-20px)] flex-1 flex-col overflow-auto overflow-y-scroll">
-        <AppHeader appName={props.appName} className="sticky top-0" />
-        <div className="TEST flex flex-1 flex-col items-center justify-center">
+        <AppHeader
+          appName={props.appName}
+          sidebarToggle={sidebarToggle}
+          className="sticky top-0"
+        />
+        <div className="TEST flex flex-1 flex-col items-stretch justify-center">
           {props.children}
         </div>
       </SidebarInset>

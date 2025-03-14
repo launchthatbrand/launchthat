@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
-import { SidebarTrigger } from "@acme/ui/components/sidebar";
+import Link from "next/link";
 import { Logo } from "@acme/ui/general/Logo";
 import { NavUser } from "@acme/ui/general/nav-user";
+import { SidebarTrigger } from "@acme/ui/components/sidebar";
 import TopNavbar from "@acme/ui/general/TopNavbar";
 import { cn } from "@acme/ui/lib/utils";
 
@@ -48,21 +48,28 @@ const SidebarTriggerWrapper = () => {
 
 function AppHeader({
   appName,
+  sidebarToggle,
   className,
 }: {
   appName: string;
+  sidebarToggle: boolean;
   className?: string;
 }) {
   return (
     <header
       className={cn(
-        "left-0 z-20 flex w-full items-center gap-5 border-b border-white/[0.08] bg-[#edeff8] p-2 backdrop-blur-xl",
+        "left-0 z-30 flex w-full items-center gap-5 border-b border-white/[0.08] bg-[#edeff8] p-2 backdrop-blur-xl",
         className,
       )}
     >
-      <SidebarTriggerWrapper />
+      {sidebarToggle ? <SidebarTriggerWrapper /> : null}
       <div className="container flex h-[48px] w-full items-center justify-between">
-        <div className="-ml-7 flex items-center gap-8">
+        <div
+          className={cn(
+            "flex items-center gap-8",
+            sidebarToggle && "-ml-[40px]",
+          )}
+        >
           <Link href="/" className="flex items-center gap-2">
             <Logo appName={appName} />
           </Link>
