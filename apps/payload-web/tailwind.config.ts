@@ -1,8 +1,6 @@
 import type { Config } from 'tailwindcss'
 import baseConfig from '@acme/tailwind-config/web'
 import { fontFamily } from 'tailwindcss/defaultTheme'
-import tailwindcssAnimate from 'tailwindcss-animate'
-import typography from '@tailwindcss/typography'
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -19,7 +17,6 @@ const config = {
     preflight: false,
   },
   // darkMode: ['selector', '[data-theme="dark"]'],
-  plugins: [tailwindcssAnimate, typography],
   prefix: '',
   safelist: [
     'lg:col-span-4',
