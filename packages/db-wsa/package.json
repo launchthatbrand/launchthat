@@ -35,7 +35,6 @@
     "codegen": "pnpm with-env graphql-codegen --config codegen.ts"
   },
   "dependencies": {
-    "@acme/graphql": "*",
     "@tanstack/react-query": "^4.28.0",
     "@vercel/postgres": "^0.10.0",
     "drizzle-orm": "^0.38.4",

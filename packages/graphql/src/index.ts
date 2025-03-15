@@ -11,6 +11,8 @@
  * @param headers Additional headers to send
  * @returns Response data or null
  */
+
+export type HeadersInit = void;
 export async function fetchGraphQL<T>(
   url: string,
   query: string,
