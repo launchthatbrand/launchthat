@@ -27,6 +27,7 @@
     "./hooks": "./src/hooks/index.ts",
     "./hooks/*": "./src/hooks/index.ts",
     "./plugins": "./src/plugins/index.ts",
+    "./trpc": "./src/trpc/index.ts",
     "./env": "./env.ts"
   },
   "sideEffects": false,
@@ -60,6 +61,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@acme/api": "workspace:*",
     "@acme/tsconfig": "workspace:*",
     "@acme/ui": "workspace:*",
     "@types/node": "catalog:react18",

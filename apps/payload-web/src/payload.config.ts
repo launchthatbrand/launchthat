@@ -6,7 +6,7 @@ import { Header } from '@acme/payload-cms/Header/config'
 import { Media } from '@acme/payload-cms/collections'
 import { Pages } from '@acme/payload-cms/collections'
 import { Posts } from '@acme/payload-cms/collections'
-import { Users } from '@acme/payload-cms/collections'
+import { Users } from './app/(payload)/admin/collections/users'
 import { defaultLexical } from '@acme/payload-cms/fields'
 import { fileURLToPath } from 'url'
 import { getServerSideURL } from '@acme/payload-cms/utilities/getURL'
@@ -20,6 +20,11 @@ import sharp from 'sharp' // sharp-import
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+// Configure the Users collection with our custom list view component
+// const Users = createUsersCollection({
+//   list: './app/(payload)/admin/collections/users/custom-users-list-view#CustomUsersListView',
+// })
+
 // Skip TypeScript checks entirely with a type assertion
 const config = {
   admin: {
@@ -32,7 +37,7 @@ const config = {
     importMap: {
       baseDir: path.resolve(dirname),
     },
-    user: Users.slug,
+
     livePreview: {
       breakpoints: [
         {

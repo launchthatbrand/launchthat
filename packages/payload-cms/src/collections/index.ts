@@ -12,4 +12,4 @@ export { Categories } from "./Categories";
 // Export collections from subdirectories
 export { Posts } from "./Posts";
 export { Pages } from "./Pages";
-export { Users } from "./Users";
+export { Users, createUsersCollection } from "./Users/index";

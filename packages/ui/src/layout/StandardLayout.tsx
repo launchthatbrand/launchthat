@@ -23,7 +23,6 @@ export default function StandardLayout(props: {
   appName: string;
   topbar?: React.ReactNode;
 }) {
-  console.log(props.sidebar);
   const sidebarToggle = props.sidebar !== undefined;
   return (
     <div className="flex flex-1">

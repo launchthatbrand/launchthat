@@ -20,7 +20,12 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
+    "@acme/api": "workspace:*",
+    "@acme/api-payload": "workspace:*",
+    "@acme/auth": "workspace:*",
+    "@acme/db": "workspace:*",
     "@acme/payload-cms": "workspace:*",
+    "@acme/ui": "workspace:*",
     "@payloadcms/db-mongodb": "latest",
     "@payloadcms/db-postgres": "^3.27.0",
     "@payloadcms/live-preview-react": "latest",
@@ -37,6 +42,10 @@
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
+    "@tanstack/react-query": "catalog:",
+    "@trpc/client": "catalog:",
+    "@trpc/server": "catalog:",
+    "@trpc/tanstack-react-query": "catalog:",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cross-env": "^7.0.3",
@@ -54,8 +63,10 @@
     "react-dom": "^19.0.0",
     "react-hook-form": "7.45.4",
     "sharp": "0.32.6",
+    "superjson": "2.2.2",
     "tailwind-merge": "^2.3.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@acme/eslint-config": "workspace:*",

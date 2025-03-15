@@ -5,10 +5,13 @@ import { BookOpen, TerminalSquare } from 'lucide-react'
 import { NavMain } from '@acme/ui/general/nav-main'
 import React from 'react'
 import { SidebarHeader } from '@acme/ui/components/sidebar'
+import { SidebarNav } from '@acme/ui/components/sidebar-nav'
 import { useConfig } from '@payloadcms/ui'
+import { usePathname } from 'next/navigation'
 
 export function PayloadSidebar() {
   const { config } = useConfig()
+  const pathname = usePathname()
 
   const navMain = [
     {
@@ -31,12 +34,46 @@ export function PayloadSidebar() {
     })),
   ]
 
+  const navItems: NavItem[] = [
+    {
+      title: 'Dashboard',
+      href: '/admin',
+      icon: 'Home',
+      exact: true,
+    },
+    {
+      title: 'Collections',
+      icon: 'Database',
+      items: [
+        {
+          title: 'Users (tRPC)',
+          href: '/admin/users',
+          active: pathname === '/admin/users',
+        },
+        {
+          title: 'Users',
+          href: '/admin/collections/users',
+          active: pathname.startsWith('/admin/collections/users'),
+        },
+        // Other collections...
+      ],
+    },
+    {
+      title: 'Globals',
+      icon: 'Globe',
+      items: [
+        // Your globals...
+      ],
+    },
+  ]
+
   return (
     <>
       <SidebarHeader>
         <h3 className="text-lg font-semibold">Payload CMS</h3>
       </SidebarHeader>
       <NavMain items={navMain} />
+      <SidebarNav items={navItems} />
     </>
   )
 }

@@ -418,9 +418,24 @@ importers:
 
   apps/payload-web:
     dependencies:
+      '@acme/api':
+        specifier: workspace:*
+        version: link:../../packages/api-base
+      '@acme/api-payload':
+        specifier: workspace:*
+        version: link:../../packages/api-payload
+      '@acme/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
+      '@acme/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       '@acme/payload-cms':
         specifier: workspace:*
         version: link:../../packages/payload-cms
+      '@acme/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@payloadcms/db-mongodb':
         specifier: latest
         version: 3.28.1(@aws-sdk/credential-providers@3.758.0)(payload@3.28.1(bufferutil@4.0.8)(graphql@16.10.0)(typescript@5.7.3)(utf-8-validate@6.0.4))(socks@2.8.3)
@@ -469,6 +484,18 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.0.2
         version: 1.1.2(@types/react@19.0.7)(react@19.0.0)
+      '@tanstack/react-query':
+        specifier: 'catalog:'
+        version: 5.66.5(react@19.0.0)
+      '@trpc/client':
+        specifier: 'catalog:'
+        version: 11.0.0-rc.772(@trpc/server@11.0.0-rc.772(typescript@5.7.3))(typescript@5.7.3)
+      '@trpc/server':
+        specifier: 'catalog:'
+        version: 11.0.0-rc.772(typescript@5.7.3)
+      '@trpc/tanstack-react-query':
+        specifier: 'catalog:'
+        version: 11.0.0-rc.772(@tanstack/react-query@5.66.5(react@19.0.0))(@trpc/client@11.0.0-rc.772(@trpc/server@11.0.0-rc.772(typescript@5.7.3))(typescript@5.7.3))(@trpc/server@11.0.0-rc.772(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.1
@@ -520,12 +547,18 @@ importers:
       sharp:
         specifier: 0.32.6
         version: 0.32.6
+      superjson:
+        specifier: 2.2.2
+        version: 2.2.2
       tailwind-merge:
         specifier: ^2.3.0
         version: 2.6.0
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.14(ts-node@10.9.2(@swc/core@1.6.1(@swc/helpers@0.5.15))(@types/node@22.5.4)(typescript@5.7.3)))
+      zod:
+        specifier: 'catalog:'
+        version: 3.24.1
     devDependencies:
       '@acme/eslint-config':
         specifier: workspace:*
@@ -764,6 +797,104 @@ importers:
       '@acme/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/typescript
+      eslint:
+        specifier: 'catalog:'
+        version: 9.19.0(jiti@2.4.2)
+      prettier:
+        specifier: 'catalog:'
+        version: 3.4.2
+      typescript:
+        specifier: 'catalog:'
+        version: 5.7.3
+
+  packages/api-payload:
+    dependencies:
+      '@acme/api':
+        specifier: workspace:*
+        version: link:../api-base
+      '@acme/auth':
+        specifier: workspace:*
+        version: link:../auth
+      '@acme/db':
+        specifier: workspace:*
+        version: link:../db
+      '@acme/payload-cms':
+        specifier: workspace:*
+        version: link:../payload-cms
+      '@trpc/client':
+        specifier: ^10.45.1
+        version: 10.45.2(@trpc/server@10.45.2)
+      '@trpc/server':
+        specifier: ^10.45.1
+        version: 10.45.2
+      next:
+        specifier: ^15.1.5
+        version: 15.2.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4)
+      superjson:
+        specifier: ^2.2.1
+        version: 2.2.2
+      zod:
+        specifier: ^3.22.4
+        version: 3.24.1
+    devDependencies:
+      '@acme/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint
+      '@acme/prettier-config':
+        specifier: workspace:*
+        version: link:../../tooling/prettier
+      '@acme/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/typescript
+      '@types/node':
+        specifier: catalog:react18
+        version: 22.10.10
+      eslint:
+        specifier: 'catalog:'
+        version: 9.19.0(jiti@2.4.2)
+      prettier:
+        specifier: 'catalog:'
+        version: 3.4.2
+      typescript:
+        specifier: 'catalog:'
+        version: 5.7.3
+
+  packages/api-template:
+    dependencies:
+      '@acme/api':
+        specifier: workspace:*
+        version: link:../api-base
+      '@acme/auth':
+        specifier: workspace:*
+        version: link:../auth
+      '@acme/db':
+        specifier: workspace:*
+        version: link:../db
+      '@trpc/client':
+        specifier: ^10.45.1
+        version: 10.45.2(@trpc/server@10.45.2)
+      '@trpc/server':
+        specifier: ^10.45.1
+        version: 10.45.2
+      superjson:
+        specifier: ^2.2.1
+        version: 2.2.2
+      zod:
+        specifier: ^3.22.4
+        version: 3.24.1
+    devDependencies:
+      '@acme/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint
+      '@acme/prettier-config':
+        specifier: workspace:*
+        version: link:../../tooling/prettier
+      '@acme/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/typescript
+      '@types/node':
+        specifier: catalog:react18
+        version: 22.10.10
       eslint:
         specifier: 'catalog:'
         version: 9.19.0(jiti@2.4.2)
@@ -1201,6 +1332,9 @@ importers:
         specifier: ^2.0.0
         version: 2.6.0
     devDependencies:
+      '@acme/api':
+        specifier: workspace:*
+        version: link:../api-base
       '@acme/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/typescript
@@ -5981,11 +6115,19 @@ packages:
   '@tootallnate/quickjs-emscripten@0.23.0':
     resolution: {integrity: sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA==}
 
+  '@trpc/client@10.45.2':
+    resolution: {integrity: sha512-ykALM5kYWTLn1zYuUOZ2cPWlVfrXhc18HzBDyRhoPYN0jey4iQHEFSEowfnhg1RvYnrAVjNBgHNeSAXjrDbGwg==}
+    peerDependencies:
+      '@trpc/server': 10.45.2
+
   '@trpc/client@11.0.0-rc.772':
     resolution: {integrity: sha512-EKEe7ArExpa5Tq2mUqZ7ZCGkzSbPDTmtjDocxPOxHSfwhTVpUm6TYNkp0vw1090H6xncA6hw1kNChHJabeH+AQ==}
     peerDependencies:
       '@trpc/server': 11.0.0-rc.772+6627c5a96
       typescript: '>=5.7.2'
+
+  '@trpc/server@10.45.2':
+    resolution: {integrity: sha512-wOrSThNNE4HUnuhJG6PfDRp4L2009KDVxsd+2VYH8ro6o/7/jwYZ8Uu5j+VaW+mOmc8EHerHzGcdbGNQSAUPgg==}
 
   '@trpc/server@11.0.0-rc.772':
     resolution: {integrity: sha512-xZRL9Ks8zGSV+CHJct2dx6MgL2g9VIJUKoDxetH8s8iybQgBuZ5JUi6W25FcP6jIMz5AvsmU1KXu2ATsb6J/OQ==}
@@ -19791,6 +19933,11 @@ snapshots:
       '@tanstack/query-core': 5.66.4
       react: 18.3.1
 
+  '@tanstack/react-query@5.66.5(react@19.0.0)':
+    dependencies:
+      '@tanstack/query-core': 5.66.4
+      react: 19.0.0
+
   '@tanstack/react-table@8.21.2(react-dom@19.0.0(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@tanstack/table-core': 8.21.2
@@ -19803,10 +19950,16 @@ snapshots:
 
   '@tootallnate/quickjs-emscripten@0.23.0': {}
 
+  '@trpc/client@10.45.2(@trpc/server@10.45.2)':
+    dependencies:
+      '@trpc/server': 10.45.2
+
   '@trpc/client@11.0.0-rc.772(@trpc/server@11.0.0-rc.772(typescript@5.7.3))(typescript@5.7.3)':
     dependencies:
       '@trpc/server': 11.0.0-rc.772(typescript@5.7.3)
       typescript: 5.7.3
+
+  '@trpc/server@10.45.2': {}
 
   '@trpc/server@11.0.0-rc.772(typescript@5.7.3)':
     dependencies:
@@ -19819,6 +19972,15 @@ snapshots:
       '@trpc/server': 11.0.0-rc.772(typescript@5.7.3)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
+      typescript: 5.7.3
+
+  '@trpc/tanstack-react-query@11.0.0-rc.772(@tanstack/react-query@5.66.5(react@19.0.0))(@trpc/client@11.0.0-rc.772(@trpc/server@11.0.0-rc.772(typescript@5.7.3))(typescript@5.7.3))(@trpc/server@11.0.0-rc.772(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)':
+    dependencies:
+      '@tanstack/react-query': 5.66.5(react@19.0.0)
+      '@trpc/client': 11.0.0-rc.772(@trpc/server@11.0.0-rc.772(typescript@5.7.3))(typescript@5.7.3)
+      '@trpc/server': 11.0.0-rc.772(typescript@5.7.3)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
       typescript: 5.7.3
 
   '@tsconfig/node10@1.0.11': {}
