@@ -1,6 +1,7 @@
 "use client";
 
 import type { Metadata, Viewport } from "next";
+
 import {
   Sidebar,
   SidebarInset,

@@ -63,6 +63,7 @@ interface CardLoopProps<T extends object> {
     lg?: number;
     xl?: number;
   };
+  enableHoverEffects?: boolean;
   gap?: string;
   emptyState?: ReactNode;
   // View mode props
@@ -98,6 +99,7 @@ export function CardLoop<T extends object>({
     xl: 4,
   },
   gap = "gap-4",
+  enableHoverEffects = true,
   emptyState,
   initialViewMode = "grid",
   showViewToggle = false,
@@ -112,6 +114,7 @@ export function CardLoop<T extends object>({
   initialFilterValue = "",
   customFilterFn,
 }: CardLoopProps<T>) {
+  console.log("CardLoop enableHoverEffects", enableHoverEffects);
   const [viewMode, setViewMode] = useState<"grid" | "table">(initialViewMode);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -346,7 +349,7 @@ export function CardLoop<T extends object>({
         <>
           <div className={cn("rounded-md border", tableContainerClassName)}>
             <GeneralCard
-              enableHoverEffects={false}
+              enableHoverEffects={enableHoverEffects}
               content={
                 <Table>
                   <TableHeader>
@@ -398,7 +401,7 @@ export function CardLoop<T extends object>({
                   </TableBody>
                 </Table>
               }
-            ></GeneralCard>
+            />
           </div>
           {enablePagination && (
             <div className="flex items-center justify-end space-x-2 py-4">

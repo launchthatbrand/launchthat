@@ -89,7 +89,7 @@
   pointer-events: none;
 }
 
-.retro [class*="bg-card"]:hover {
+.retro [class*="bg-card"]:not(.no-hover-effects):hover {
   transform: translate(-4px, -4px);
   box-shadow: 0.8rem 0.8rem 0 #000;
 }

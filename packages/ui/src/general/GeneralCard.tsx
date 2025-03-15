@@ -1,14 +1,14 @@
+import type { ReactNode } from "react";
+import Link from "next/link";
+
+import { Badge } from "@acme/ui/components/badge";
+import { Button } from "@acme/ui/components/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardTitle,
 } from "@acme/ui/components/card";
-
-import { Badge } from "@acme/ui/components/badge";
-import { Button } from "@acme/ui/components/button";
-import Link from "next/link";
-import type { ReactNode } from "react";
 import { Skeleton } from "@acme/ui/components/skeleton";
 import { cn } from "@acme/ui/lib/utils";
 
@@ -174,8 +174,9 @@ export function GeneralCard({
   className,
   contentClassName,
   onClick,
-  enableHoverEffects = true,
+  enableHoverEffects,
 }: GeneralCardProps) {
+  console.log("enableHoverEffects", enableHoverEffects);
   const CardWrapper = ({ children }: { children: ReactNode }) => {
     if (navigation?.type === "card") {
       return (

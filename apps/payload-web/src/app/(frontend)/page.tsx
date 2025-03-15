@@ -1,5 +1,7 @@
-import PageTemplate, { generateMetadata } from './[slug]/page'
+import React from 'react'
 
-export default PageTemplate
+function HomePage() {
+  return <div className="flex flex-1 items-center justify-center">HomePage</div>
+}
 
-export { generateMetadata }
+export default HomePage

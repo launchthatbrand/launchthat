@@ -49,6 +49,22 @@ catalogs:
     react-dom:
       specifier: 18.3.1
       version: 18.3.1
+  react19:
+    '@types/node':
+      specifier: 22.5.4
+      version: 22.5.4
+    '@types/react':
+      specifier: 19.0.7
+      version: 19.0.7
+    '@types/react-dom':
+      specifier: 19.0.3
+      version: 19.0.3
+    react:
+      specifier: ^19.0.0
+      version: 19.0.0
+    react-dom:
+      specifier: ^19.0.0
+      version: 19.0.0
 
 importers:
 
@@ -427,6 +443,211 @@ importers:
       '@acme/auth':
         specifier: workspace:*
         version: link:../../packages/auth
+      '@acme/auth-wsa':
+        specifier: workspace:*
+        version: link:../../packages/auth-wsa
+      '@acme/db':
+        specifier: workspace:*
+        version: link:../../packages/db
+      '@acme/payload-cms':
+        specifier: workspace:*
+        version: link:../../packages/payload-cms
+      '@acme/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      '@payloadcms/db-mongodb':
+        specifier: latest
+        version: 3.28.1(@aws-sdk/credential-providers@3.758.0)(payload@3.28.1(bufferutil@4.0.8)(graphql@16.10.0)(typescript@5.7.3)(utf-8-validate@6.0.4))(socks@2.8.3)
+      '@payloadcms/db-postgres':
+        specifier: ^3.27.0
+        version: 3.28.1(@neondatabase/serverless@0.10.0)(@opentelemetry/api@1.9.0)(@planetscale/database@1.19.0)(@types/react@19.0.7)(@vercel/postgres@0.10.0(utf-8-validate@6.0.4))(mysql2@3.11.3)(payload@3.28.1(bufferutil@4.0.8)(graphql@16.10.0)(typescript@5.7.3)(utf-8-validate@6.0.4))(postgres@3.4.4)(react@19.0.0)
+      '@payloadcms/live-preview-react':
+        specifier: latest
+        version: 3.28.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@payloadcms/next':
+        specifier: latest
+        version: 3.28.1(@types/react@19.0.7)(graphql@16.10.0)(monaco-editor@0.38.0)(next@15.2.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.28.1(bufferutil@4.0.8)(graphql@16.10.0)(typescript@5.7.3)(utf-8-validate@6.0.4))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
+      '@payloadcms/payload-cloud':
+        specifier: latest
+        version: 3.28.1(payload@3.28.1(bufferutil@4.0.8)(graphql@16.10.0)(typescript@5.7.3)(utf-8-validate@6.0.4))
+      '@payloadcms/plugin-form-builder':
+        specifier: latest
+        version: 3.28.1(@types/react@19.0.7)(monaco-editor@0.38.0)(next@15.2.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.28.1(bufferutil@4.0.8)(graphql@16.10.0)(typescript@5.7.3)(utf-8-validate@6.0.4))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
+      '@payloadcms/plugin-nested-docs':
+        specifier: latest
+        version: 3.28.1(payload@3.28.1(bufferutil@4.0.8)(graphql@16.10.0)(typescript@5.7.3)(utf-8-validate@6.0.4))
+      '@payloadcms/plugin-redirects':
+        specifier: latest
+        version: 3.28.1(payload@3.28.1(bufferutil@4.0.8)(graphql@16.10.0)(typescript@5.7.3)(utf-8-validate@6.0.4))
+      '@payloadcms/plugin-search':
+        specifier: latest
+        version: 3.28.1(@types/react@19.0.7)(graphql@16.10.0)(monaco-editor@0.38.0)(next@15.2.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.28.1(bufferutil@4.0.8)(graphql@16.10.0)(typescript@5.7.3)(utf-8-validate@6.0.4))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
+      '@payloadcms/plugin-seo':
+        specifier: latest
+        version: 3.28.1(@types/react@19.0.7)(monaco-editor@0.38.0)(next@15.2.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.28.1(bufferutil@4.0.8)(graphql@16.10.0)(typescript@5.7.3)(utf-8-validate@6.0.4))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
+      '@payloadcms/richtext-lexical':
+        specifier: latest
+        version: 3.28.1(@faceless-ui/modal@3.0.0-beta.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@faceless-ui/scroll-info@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@payloadcms/next@3.28.1(@types/react@19.0.7)(graphql@16.10.0)(monaco-editor@0.38.0)(next@15.2.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.28.1(bufferutil@4.0.8)(graphql@16.10.0)(typescript@5.7.3)(utf-8-validate@6.0.4))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3))(@types/react@19.0.7)(monaco-editor@0.38.0)(next@15.2.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.28.1(bufferutil@4.0.8)(graphql@16.10.0)(typescript@5.7.3)(utf-8-validate@6.0.4))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)(yjs@13.6.24)
+      '@payloadcms/ui':
+        specifier: latest
+        version: 3.28.1(@types/react@19.0.7)(monaco-editor@0.38.0)(next@15.2.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.28.1(bufferutil@4.0.8)(graphql@16.10.0)(typescript@5.7.3)(utf-8-validate@6.0.4))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
+      '@radix-ui/react-checkbox':
+        specifier: ^1.0.4
+        version: 1.1.4(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-label':
+        specifier: ^2.0.2
+        version: 2.1.2(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-select':
+        specifier: ^2.0.0
+        version: 2.1.6(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-slot':
+        specifier: ^1.0.2
+        version: 1.1.2(@types/react@19.0.7)(react@19.0.0)
+      '@tanstack/react-query':
+        specifier: 'catalog:'
+        version: 5.66.5(react@19.0.0)
+      '@trpc/client':
+        specifier: 'catalog:'
+        version: 11.0.0-rc.772(@trpc/server@11.0.0-rc.772(typescript@5.7.3))(typescript@5.7.3)
+      '@trpc/server':
+        specifier: 'catalog:'
+        version: 11.0.0-rc.772(typescript@5.7.3)
+      '@trpc/tanstack-react-query':
+        specifier: 'catalog:'
+        version: 11.0.0-rc.772(@tanstack/react-query@5.66.5(react@19.0.0))(@trpc/client@11.0.0-rc.772(@trpc/server@11.0.0-rc.772(typescript@5.7.3))(typescript@5.7.3))(@trpc/server@11.0.0-rc.772(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
+      class-variance-authority:
+        specifier: ^0.7.0
+        version: 0.7.1
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
+      dotenv-cli:
+        specifier: ^8.0.0
+        version: 8.0.0
+      geist:
+        specifier: ^1.3.0
+        version: 1.3.1(next@15.2.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))
+      graphql:
+        specifier: ^16.8.2
+        version: 16.10.0
+      lucide-react:
+        specifier: ^0.378.0
+        version: 0.378.0(react@19.0.0)
+      next:
+        specifier: ^15.1.5
+        version: 15.2.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4)
+      next-sitemap:
+        specifier: ^4.2.3
+        version: 4.2.3(next@15.2.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))
+      payload:
+        specifier: ^3.18.0
+        version: 3.28.1(bufferutil@4.0.8)(graphql@16.10.0)(typescript@5.7.3)(utf-8-validate@6.0.4)
+      payload-admin-bar:
+        specifier: ^1.0.6
+        version: 1.0.7(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      pg:
+        specifier: ^8.13.3
+        version: 8.13.3
+      prism-react-renderer:
+        specifier: ^2.3.1
+        version: 2.4.1(react@19.0.0)
+      react:
+        specifier: catalog:react19
+        version: 19.0.0
+      react-dom:
+        specifier: catalog:react19
+        version: 19.0.0(react@19.0.0)
+      react-hook-form:
+        specifier: 7.45.4
+        version: 7.45.4(react@19.0.0)
+      sharp:
+        specifier: 0.32.6
+        version: 0.32.6
+      superjson:
+        specifier: 2.2.2
+        version: 2.2.2
+      tailwind-merge:
+        specifier: ^2.3.0
+        version: 2.6.0
+      tailwindcss-animate:
+        specifier: ^1.0.7
+        version: 1.0.7(tailwindcss@3.4.14(ts-node@10.9.2(@swc/core@1.6.1(@swc/helpers@0.5.15))(@types/node@22.5.4)(typescript@5.7.3)))
+      zod:
+        specifier: 'catalog:'
+        version: 3.24.1
+    devDependencies:
+      '@acme/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint
+      '@acme/prettier-config':
+        specifier: workspace:*
+        version: link:../../tooling/prettier
+      '@acme/tailwind-config':
+        specifier: workspace:*
+        version: link:../../tooling/tailwind
+      '@eslint/eslintrc':
+        specifier: ^3.2.0
+        version: 3.2.0
+      '@tailwindcss/typography':
+        specifier: ^0.5.13
+        version: 0.5.16(tailwindcss@3.4.14(ts-node@10.9.2(@swc/core@1.6.1(@swc/helpers@0.5.15))(@types/node@22.5.4)(typescript@5.7.3)))
+      '@types/escape-html':
+        specifier: ^1.0.2
+        version: 1.0.4
+      '@types/node':
+        specifier: catalog:react19
+        version: 22.5.4
+      '@types/react':
+        specifier: catalog:react19
+        version: 19.0.7
+      '@types/react-dom':
+        specifier: catalog:react19
+        version: 19.0.3(@types/react@19.0.7)
+      autoprefixer:
+        specifier: ^10.4.19
+        version: 10.4.21(postcss@8.5.1)
+      copyfiles:
+        specifier: ^2.4.1
+        version: 2.4.1
+      eslint:
+        specifier: ^9.16.0
+        version: 9.19.0(jiti@2.4.2)
+      eslint-config-next:
+        specifier: ^15.1.5
+        version: 15.2.2(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.3)
+      null-loader:
+        specifier: ^4.0.1
+        version: 4.0.1(webpack@5.98.0(@swc/core@1.6.1(@swc/helpers@0.5.15)))
+      postcss:
+        specifier: ^8.4.38
+        version: 8.5.1
+      prettier:
+        specifier: ^3.4.2
+        version: 3.4.2
+      tailwindcss:
+        specifier: ^3.4.3
+        version: 3.4.14(ts-node@10.9.2(@swc/core@1.6.1(@swc/helpers@0.5.15))(@types/node@22.5.4)(typescript@5.7.3))
+      typescript:
+        specifier: 5.7.3
+        version: 5.7.3
+
+  apps/payload-wsa:
+    dependencies:
+      '@acme/api':
+        specifier: workspace:*
+        version: link:../../packages/api-base
+      '@acme/api-payload':
+        specifier: workspace:*
+        version: link:../../packages/api-payload
+      '@acme/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
+      '@acme/auth-wsa':
+        specifier: workspace:*
+        version: link:../../packages/auth-wsa
       '@acme/db':
         specifier: workspace:*
         version: link:../../packages/db

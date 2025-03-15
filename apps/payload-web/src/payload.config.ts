@@ -97,4 +97,4 @@ const config = {
 }
 
 // Use a type assertion to bypass all TypeScript errors
-export default buildConfig(config as any)
+export default buildConfig(config)

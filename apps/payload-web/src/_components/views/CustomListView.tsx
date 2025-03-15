@@ -15,6 +15,7 @@ type Props = ListViewServerProps &
   }
 
 export default async function CustomListView(props: Props) {
+  console.log('props', props)
   // Extract only serializable data from the props
   const serializedData = {
     // Data items
