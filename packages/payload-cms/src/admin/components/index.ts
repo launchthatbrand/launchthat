@@ -1,1 +1,1 @@
-export * from "./PayloadAdminLayout";
+export { default as PayloadAdminLayout } from "./PayloadAdminLayout";

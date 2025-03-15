@@ -1,12 +1,8 @@
 import { PayloadRequest, buildConfig } from 'payload'
 
-import { Categories } from '@acme/payload-cms/collections'
 import { Footer } from '@acme/payload-cms/Footer/config'
 import { Header } from '@acme/payload-cms/Header/config'
-import { Media } from '@acme/payload-cms/collections'
-import { Pages } from '@acme/payload-cms/collections'
-import { Posts } from '@acme/payload-cms/collections'
-import { Users } from './app/(payload)/admin/collections/users'
+import collections from './utils/payload/createCollections'
 import { defaultLexical } from '@acme/payload-cms/fields'
 import { fileURLToPath } from 'url'
 import { getServerSideURL } from '@acme/payload-cms/utilities/getURL'
@@ -71,7 +67,7 @@ const config = {
     migrationDir: path.resolve(dirname, './migrations'),
   }),
   // database-adapter-config-end
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: collections,
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header(), Footer],
   plugins: [

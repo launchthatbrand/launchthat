@@ -28,6 +28,7 @@
     "./hooks/*": "./src/hooks/index.ts",
     "./plugins": "./src/plugins/index.ts",
     "./trpc": "./src/trpc/index.ts",
+    "./admin/components": "./src/admin/components/index.ts",
     "./env": "./env.ts"
   },
   "sideEffects": false,
@@ -50,25 +51,24 @@
     "@payloadcms/richtext-lexical": "latest",
     "@payloadcms/ui": "latest",
     "clsx": "^2.0.0",
-    "next": "^15.1.5",
     "payload": "^3.18.0",
     "payload-admin-bar": "^1.0.6",
     "tailwind-merge": "^2.0.0"
   },
   "peerDependencies": {
-    "next": "^14.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "next": "^15.1.5",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@acme/api": "workspace:*",
     "@acme/tsconfig": "workspace:*",
     "@acme/ui": "workspace:*",
-    "@types/node": "catalog:react18",
-    "@types/react": "catalog:react18",
-    "@types/react-dom": "catalog:react18",
-    "eslint": "catalog:",
+    "@types/node": "22.5.4",
+    "@types/react": "19.0.7",
+    "@types/react-dom": "19.0.3",
+    "eslint": "^9.16.0",
     "eslint-config-next": "^15.1.5",
-    "typescript": "catalog:"
+    "typescript": "5.7.3"
   }
 }

@@ -1,18 +1,32 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, LayoutGrid, List, Search } from "lucide-react";
+"use client";
+
 import type {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
 } from "@tanstack/react-table";
+import type { ReactNode } from "react";
+import React, { useRef, useState } from "react";
+import {
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown, LayoutGrid, List, Search } from "lucide-react";
+
+import { Button } from "../components/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../components/dropdown-menu";
-import React, { useRef, useState } from "react";
+import { Input } from "../components/input";
 import {
   Table,
   TableBody,
@@ -27,20 +41,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../components/tooltip";
-import {
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-
-import { Button } from "../components/button";
-import { GeneralCard } from "./GeneralCard";
-import { Input } from "../components/input";
-import type { ReactNode } from "react";
 import { cn } from "../lib/utils";
+import { GeneralCard } from "./GeneralCard";
 
 // Column definition for table view using TanStack Table
 export type TableColumn<T> = ColumnDef<T>;

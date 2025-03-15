@@ -17,7 +17,7 @@ export const UsersBase: CollectionConfig = {
     components: {
       views: {
         list: {
-          Component: '@/app/(payload)/admin/collections/users/custom-users-list-view',
+          Component: '@/app/(payload)/admin/collections/users/usersCollection',
         },
       },
     },

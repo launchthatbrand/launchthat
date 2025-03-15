@@ -2,14 +2,10 @@
 
 import { CardLoop } from "@acme/ui/general/CardLoop";
 
-// Define a type that only includes serializable data
-type PayloadAdminLayoutProps = {
-  // Only include serializable fields from the original props
+// Type for the props our client component accepts
+type ClientCardListProps = {
   items: any[];
   collectionSlug?: string;
-  collectionLabel?: string;
-  totalDocs?: number;
-  canCreate?: boolean;
 };
 
 // Simple date formatter function
@@ -21,15 +17,8 @@ const formatDate = (dateString: string): string => {
   });
 };
 
-// Client component that only receives serializable data
-export default function PayloadAdminLayout({
-  items,
-  collectionSlug,
-  collectionLabel,
-  totalDocs,
-  canCreate,
-}: PayloadAdminLayoutProps) {
-  // This function is defined in the client component, not passed from server
+export function ClientCardList({ items, collectionSlug }: ClientCardListProps) {
+  // This is a client component so we can define functions here
   const renderItem = (item: any) => (
     <div className="p-4">
       <div className="flex items-center space-x-4">
@@ -57,25 +46,12 @@ export default function PayloadAdminLayout({
     </div>
   );
 
-  // Also defined in the client component
+  // Define cell renderer function inside the client component
   const renderCreatedCell = ({ row }: any) =>
     row.original.createdAt ? formatDate(row.original.createdAt) : "";
 
   return (
-    <div className="p-4">
-      <h1 className="mb-6 text-2xl font-bold">{collectionLabel || "Items"}</h1>
-
-      {canCreate && (
-        <div className="mb-4">
-          <a
-            href={`/admin/collections/${collectionSlug}/create`}
-            className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-          >
-            Create New
-          </a>
-        </div>
-      )}
-
+    <div className="mt-4">
       <CardLoop
         items={items}
         renderItem={renderItem}
@@ -99,10 +75,6 @@ export default function PayloadAdminLayout({
           },
         ]}
       />
-
-      <div className="mt-4 text-sm text-gray-500">
-        Showing {items.length} of {totalDocs || items.length} items
-      </div>
     </div>
   );
 }
