@@ -1,0 +1,71 @@
+{
+  "name": "@acme/wsa-payload",
+  "version": "1.0.0",
+  "description": "Website template for Payload",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm with-env NODE_OPTIONS=--no-deprecation next build",
+    "postbuild": "next-sitemap --config next-sitemap.config.cjs",
+    "dev": "rm -rf .next && pnpm generate:importmap && pnpm with-env next dev",
+    "dev:prod": "pnpm with-env NODE_OPTIONS=--no-deprecation rm -rf .next && pnpm build && pnpm start",
+    "generate:importmap": "pnpm with-env payload generate:importmap",
+    "generate:types": "pnpm with-env NODE_OPTIONS=--no-deprecation payload generate:types",
+    "ii": "pnpm with-env NODE_OPTIONS=--no-deprecation pnpm --ignore-workspace install",
+    "lint": "pnpm with-env NODE_OPTIONS=--no-deprecation next lint",
+    "lint:fix": "pnpm with-env NODE_OPTIONS=--no-deprecation next lint --fix",
+    "payload": "pnpm with-env payload",
+    "reinstall": "pnpm with-env NODE_OPTIONS=--no-deprecation rm -rf node_modules && rm pnpm-lock.yaml && pnpm --ignore-workspace install",
+    "start": "pnpm with-env NODE_OPTIONS=--no-deprecation next start",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "dependencies": {
+    "@acme/api": "workspace:*",
+    "@acme/api-payload": "workspace:*",
+    "@acme/auth": "workspace:*",
+    "@acme/auth-wsa": "workspace:*",
+    "@acme/db": "workspace:*",
+    "@acme/payload-cms": "workspace:*",
+    "@acme/ui": "workspace:*",
+    "@tanstack/react-query": "catalog:",
+    "@trpc/client": "catalog:",
+    "@trpc/server": "catalog:",
+    "@trpc/tanstack-react-query": "catalog:",
+    "dotenv-cli": "catalog:",
+    "geist": "catalog:",
+    "graphql": "catalog:",
+    "next": "catalog:next15",
+    "next-sitemap": "catalog:",
+    "pg": "catalog:",
+    "prism-react-renderer": "catalog:",
+    "react": "catalog:react19",
+    "react-dom": "catalog:react19",
+    "sharp": "catalog:",
+    "superjson": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@acme/eslint-config": "workspace:*",
+    "@acme/prettier-config": "workspace:*",
+    "@acme/tailwind-config": "workspace:*",
+    "@eslint/eslintrc": "catalog:",
+    "@types/escape-html": "catalog:",
+    "@types/node": "catalog:react19",
+    "@types/react": "catalog:react19",
+    "@types/react-dom": "catalog:react19",
+    "copyfiles": "catalog:",
+    "eslint": "catalog:react19",
+    "null-loader": "catalog:",
+    "prettier": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:"
+  },
+  "engines": {
+    "node": "^18.20.2 || >=20.9.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp"
+    ]
+  }
+}

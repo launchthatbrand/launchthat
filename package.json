@@ -9,6 +9,7 @@
   "scripts": {
     "dev:payload": "turbo watch dev -F @acme/payload-web...",
     "dev:wsa": "turbo watch dev -F @acme/wsa...",
+    "dev:wsa-p": "turbo watch dev -F @acme/wsa-payload...",
     "build": "turbo run build",
     "build:ui": "turbo run build --filter=@acme/ui",
     "clean": "git clean -xdf node_modules .next",
