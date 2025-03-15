@@ -52,7 +52,7 @@
     "@graphql-codegen/typescript": "^4.0.1",
     "@graphql-codegen/typescript-operations": "^4.0.1",
     "@graphql-codegen/typescript-react-query": "^6.0.0",
-    "dotenv-cli": "^8.0.0",
+    "dotenv-cli": "catalog:",
     "drizzle-kit": "^0.30.2",
     "eslint": "catalog:",
     "prettier": "catalog:",

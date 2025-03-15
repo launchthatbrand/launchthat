@@ -29,6 +29,7 @@
     "./plugins": "./src/plugins/index.ts",
     "./trpc": "./src/trpc/index.ts",
     "./admin/components": "./src/admin/components/index.ts",
+    "./db": "./src/db/index.ts",
     "./env": "./env.ts"
   },
   "sideEffects": false,
@@ -56,19 +57,19 @@
     "tailwind-merge": "^2.0.0"
   },
   "peerDependencies": {
-    "next": "^15.1.5",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "next": "catalog:next15",
+    "react": "catalog:react19",
+    "react-dom": "catalog:react19"
   },
   "devDependencies": {
     "@acme/api": "workspace:*",
     "@acme/tsconfig": "workspace:*",
     "@acme/ui": "workspace:*",
-    "@types/node": "22.5.4",
-    "@types/react": "19.0.7",
-    "@types/react-dom": "19.0.3",
-    "eslint": "^9.16.0",
+    "@types/node": "catalog:react19",
+    "@types/react": "catalog:react19",
+    "@types/react-dom": "catalog:react19",
+    "eslint": "catalog:react19",
     "eslint-config-next": "^15.1.5",
-    "typescript": "5.7.3"
+    "typescript": "catalog:"
   }
 }

@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url'
 import { getServerSideURL } from '@acme/payload-cms/utilities/getURL'
 import path from 'path'
 import { plugins } from '@acme/payload-cms/plugins'
-import { postgresAdapter } from '@payloadcms/db-postgres' // database-adapter-import
+import { postgresAdapter } from '@acme/payload-cms/db' // database-adapter-import
 import sharp from 'sharp' // sharp-import
 
 // storage-adapter-import-placeholder
