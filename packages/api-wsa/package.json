@@ -19,6 +19,8 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
+    "@acme/api": "workspace:*",
+    "@acme/api-payload": "workspace:*",
     "@acme/auth-wsa": "workspace:*",
     "@acme/db-wsa": "workspace:*",
     "@acme/validators": "workspace:*",

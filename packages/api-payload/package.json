@@ -4,20 +4,37 @@
   "private": true,
   "main": "./src/index.ts",
   "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    },
+    "./trpc": {
+      "types": "./dist/trpc.d.ts",
+      "default": "./src/trpc.ts"
+    },
+    "./router": {
+      "types": "./dist/router/index.d.ts",
+      "default": "./src/router/index.ts"
+    }
+  },
   "scripts": {
-    "clean": "rm -rf .turbo node_modules",
+    "build": "tsc --project tsconfig.json",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "dev": "tsc --project tsconfig.json",
     "format": "prettier --check . --ignore-path ../../.gitignore",
-    "lint": "eslint . --ignore-path ../../.gitignore",
-    "type-check": "tsc --noEmit"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false --project tsconfig.json",
+    "test": "node -r ./src/register.js ./node_modules/.bin/tsx ./src/test.ts"
   },
   "dependencies": {
     "@acme/api": "workspace:*",
     "@acme/auth": "workspace:*",
     "@acme/db": "workspace:*",
-    "@acme/payload-cms": "workspace:*",
     "@trpc/client": "^10.45.1",
     "@trpc/server": "^10.45.1",
     "next": "^15.1.5",
+    "payload": "^3.18.0",
     "superjson": "^2.2.1",
     "zod": "^3.22.4"
   },
@@ -28,6 +45,7 @@
     "@types/node": "catalog:react18",
     "eslint": "catalog:",
     "prettier": "catalog:",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "catalog:"
   },
   "eslintConfig": {

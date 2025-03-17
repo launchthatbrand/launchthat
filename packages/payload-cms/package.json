@@ -30,13 +30,16 @@
     "./trpc": "./src/trpc/index.ts",
     "./admin/components": "./src/admin/components/index.ts",
     "./db": "./src/db/index.ts",
+    "./db/trpc-adapter": "./src/db/trpc-adapter.ts",
     "./env": "./env.ts"
   },
   "sideEffects": false,
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
+    "generate:types": "pnpm with-env payload generate:types",
     "lint": "eslint .",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
     "@payloadcms/db-mongodb": "latest",
@@ -52,8 +55,10 @@
     "@payloadcms/richtext-lexical": "latest",
     "@payloadcms/ui": "latest",
     "clsx": "^2.0.0",
+    "dotenv-cli": "catalog:",
     "payload": "^3.18.0",
     "payload-admin-bar": "^1.0.6",
+    "sharp": "catalog:",
     "tailwind-merge": "^2.0.0"
   },
   "peerDependencies": {
@@ -63,6 +68,7 @@
   },
   "devDependencies": {
     "@acme/api": "workspace:*",
+    "@acme/api-payload": "workspace:*",
     "@acme/tsconfig": "workspace:*",
     "@acme/ui": "workspace:*",
     "@types/node": "catalog:react19",

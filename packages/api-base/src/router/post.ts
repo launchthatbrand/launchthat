@@ -37,4 +37,11 @@ export const postRouter = {
   delete: protectedProcedure.input(z.string()).mutation(({ ctx, input }) => {
     return ctx.db.delete(Post).where(eq(Post.id, input));
   }),
+
+  test: publicProcedure.query(({ ctx }) => {
+    return ctx.db.query.Post.findMany({
+      orderBy: desc(Post.id),
+      limit: 10,
+    });
+  }),
 } satisfies TRPCRouterRecord;

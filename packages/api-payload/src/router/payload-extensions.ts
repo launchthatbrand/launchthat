@@ -1,6 +1,6 @@
-import { protectedProcedure, publicProcedure } from "../trpc";
-
 import { z } from "zod";
+
+import { protectedProcedure, publicProcedure } from "@acme/api/trpc";
 
 /**
  * Additional PayloadCMS functionality that extends the core PayloadCMS API.

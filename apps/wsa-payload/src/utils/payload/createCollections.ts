@@ -1,4 +1,4 @@
-import { Categories, Media, Pages, Posts } from '@acme/payload-cms/collections'
+import { Categories, Courses, Media, Pages, Posts } from '@acme/payload-cms/collections'
 
 import { CollectionConfig } from 'payload'
 import { Users } from '@/app/(payload)/admin/collections/users'
@@ -25,6 +25,6 @@ const applyCustomListView = (collections: CollectionConfig[]) => {
   }))
 }
 
-const collections = applyCustomListView([Users, Categories, Media, Pages, Posts])
+const collections = applyCustomListView([Users, Categories, Media, Pages, Posts, Courses])
 
 export default collections

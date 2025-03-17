@@ -1,17 +1,19 @@
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 
-import type { AppRouter } from "./root";
-import { appRouter } from "./root";
+import type { BaseRouter } from "./root";
+import { baseRouter } from "./root";
 import { createCallerFactory, createTRPCContext } from "./trpc";
 
 /**
  * Create a server-side caller for the tRPC API
  * @example
- * const trpc = createCaller(createContext);
+ * const trpc = createCaller(context);
  * const res = await trpc.post.all();
  *       ^? Post[]
  */
-const createCaller = createCallerFactory(appRouter);
+// Not creating a default caller anymore - let implementing packages create their own
+// with proper database type
+export const createCaller = createCallerFactory(baseRouter);
 
 /**
  * Inference helpers for input types
@@ -19,7 +21,7 @@ const createCaller = createCallerFactory(appRouter);
  * type PostByIdInput = RouterInputs['post']['byId']
  *      ^? { id: number }
  **/
-type RouterInputs = inferRouterInputs<AppRouter>;
+type RouterInputs = inferRouterInputs<BaseRouter>;
 
 /**
  * Inference helpers for output types
@@ -27,7 +29,7 @@ type RouterInputs = inferRouterInputs<AppRouter>;
  * type AllPostsOutput = RouterOutputs['post']['all']
  *      ^? Post[]
  **/
-type RouterOutputs = inferRouterOutputs<AppRouter>;
+type RouterOutputs = inferRouterOutputs<BaseRouter>;
 
-export { createTRPCContext, appRouter, createCaller };
-export type { AppRouter, RouterInputs, RouterOutputs };
+export { createTRPCContext, baseRouter, createCallerFactory };
+export type { BaseRouter, RouterInputs, RouterOutputs };

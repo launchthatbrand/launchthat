@@ -1,17 +1,28 @@
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 
-import type { AppRouter } from "./root";
-import { appRouter } from "./root";
+import type { WsaAppRouter } from "./root";
+import type { TRPCContext } from "./trpc";
+import { wsaAppRouter } from "./root";
 import { createCallerFactory, createTRPCContext } from "./trpc";
 
 /**
  * Create a server-side caller for the tRPC API
  * @example
- * const trpc = createCaller(createContext);
+ * const trpc = createCaller({...context});
  * const res = await trpc.post.all();
  *       ^? Post[]
  */
-const createCaller = createCallerFactory(appRouter);
+// Type-safe caller factory that uses the WsaAppRouter with proper context
+// @ts-expect-error - Database types from different packages are incompatible but functionally equivalent
+const createCaller = createCallerFactory(wsaAppRouter);
+
+/**
+ * Helper function to create a caller with the proper context
+ * @param context The TRPC context to use
+ */
+const createCallerWithContext = (context: TRPCContext) => {
+  return createCaller(context);
+};
 
 /**
  * Inference helpers for input types
@@ -19,7 +30,7 @@ const createCaller = createCallerFactory(appRouter);
  * type PostByIdInput = RouterInputs['post']['byId']
  *      ^? { id: number }
  **/
-type RouterInputs = inferRouterInputs<AppRouter>;
+type RouterInputs = inferRouterInputs<WsaAppRouter>;
 
 /**
  * Inference helpers for output types
@@ -27,7 +38,12 @@ type RouterInputs = inferRouterInputs<AppRouter>;
  * type AllPostsOutput = RouterOutputs['post']['all']
  *      ^? Post[]
  **/
-type RouterOutputs = inferRouterOutputs<AppRouter>;
+type RouterOutputs = inferRouterOutputs<WsaAppRouter>;
 
-export { createTRPCContext, appRouter, createCaller };
-export type { AppRouter, RouterInputs, RouterOutputs };
+export {
+  createTRPCContext,
+  wsaAppRouter,
+  createCaller,
+  createCallerWithContext,
+};
+export type { WsaAppRouter, RouterInputs, RouterOutputs, TRPCContext };

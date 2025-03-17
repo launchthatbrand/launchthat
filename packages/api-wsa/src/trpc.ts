@@ -6,13 +6,14 @@
  * tl;dr - this is where all the tRPC server stuff is created and plugged in.
  * The pieces you will need to use are documented accordingly near the end
  */
-import { TRPCError, initTRPC } from "@trpc/server";
-import { auth, validateToken } from "@acme/auth-wsa";
+import { initTRPC, TRPCError } from "@trpc/server";
+import superjson from "superjson";
+import { ZodError } from "zod";
 
 import type { Session } from "@acme/auth-wsa";
-import { ZodError } from "zod";
+import { auth, validateToken } from "@acme/auth-wsa";
+// Import database from db-wsa
 import { db } from "@acme/db-wsa/client";
-import superjson from "superjson";
 
 /**
  * Isomorphic Session getter for API requests
@@ -49,10 +50,13 @@ export const createTRPCContext = async (opts: {
 
   return {
     session,
-    db,
+    db, // Properly typed from db-wsa
     token: authToken,
   };
 };
+
+// Export the context type for use in other modules
+export type TRPCContext = Awaited<ReturnType<typeof createTRPCContext>>;
 
 /**
  * 2. INITIALIZATION

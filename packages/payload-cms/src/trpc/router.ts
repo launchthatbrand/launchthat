@@ -1,10 +1,10 @@
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "./trpc";
-
-import configPromise from "../payload.config";
 import { getPayload } from "payload";
 import { z } from "zod";
 
-export const payloadRouter = createTRPCRouter({
+import configPromise from "../payload.config";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "./trpc";
+
+export const appRouter = createTRPCRouter({
   users: createTRPCRouter({
     find: publicProcedure
       .input(
@@ -88,9 +88,9 @@ export const payloadRouter = createTRPCRouter({
 });
 
 // Create the root router
-export const appRouter = createTRPCRouter({
-  payload: payloadRouter,
+export const payloadRouter = createTRPCRouter({
+  payload: appRouter,
 });
 
 // Export type router type signature, not the router itself
-export type AppRouter = typeof appRouter;
+export type AppRouter = typeof payloadRouter;

@@ -10,7 +10,7 @@
     "dev": "rm -rf .next && pnpm generate:importmap && pnpm with-env next dev",
     "dev:prod": "pnpm with-env NODE_OPTIONS=--no-deprecation rm -rf .next && pnpm build && pnpm start",
     "generate:importmap": "pnpm with-env payload generate:importmap",
-    "generate:types": "pnpm with-env NODE_OPTIONS=--no-deprecation payload generate:types",
+    "generate:types": "pnpm with-env payload generate:types",
     "ii": "pnpm with-env NODE_OPTIONS=--no-deprecation pnpm --ignore-workspace install",
     "lint": "pnpm with-env NODE_OPTIONS=--no-deprecation next lint",
     "lint:fix": "pnpm with-env NODE_OPTIONS=--no-deprecation next lint --fix",
@@ -20,8 +20,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@acme/api": "workspace:*",
-    "@acme/api-payload": "workspace:*",
+    "@acme/api-wsa": "workspace:*",
     "@acme/auth": "workspace:*",
     "@acme/auth-wsa": "workspace:*",
     "@acme/db": "workspace:*",

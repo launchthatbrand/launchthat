@@ -1,26 +1,28 @@
-import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
+import {
+  type AnyRouter,
+  type inferRouterInputs,
+  type inferRouterOutputs,
+} from "@trpc/server";
 
-import type { AppRouter } from "./root";
-import { appRouter } from "./root";
-import { createTRPCContext } from "./trpc";
+import type { PayloadAppRouter } from "./root";
 
-/**
- * Inference helpers for input types
- * @example
- * type PostByIdInput = RouterInputs['payload']['users']['find']
- */
-type RouterInputs = inferRouterInputs<AppRouter>;
+// Root router export
+export { payloadRouter } from "./root";
 
-/**
- * Inference helpers for output types
- * @example
- * type UsersOutput = RouterOutputs['payload']['users']['find']
- */
-type RouterOutputs = inferRouterOutputs<AppRouter>;
+// Core tRPC exports
+export { createTRPCContext } from "./trpc";
+export type { TRPCContext } from "./trpc";
+export { createCallerFactory as createCaller } from "./trpc";
 
-// Re-export everything from api-base that's not overridden
-export * from "@acme/api";
+// Helper utilities
+export { createCallerWithContext } from "./utils/createCallerWithContext";
 
-// Export app-specific router and context
-export { appRouter, createTRPCContext };
-export type { AppRouter, RouterInputs, RouterOutputs };
+// Type exports for consuming applications
+export type { PayloadAppRouter };
+
+// Create a type that satisfies AnyRouter for inference purposes
+type PayloadRouterForInference = PayloadAppRouter & AnyRouter;
+
+// Inference helpers for input/output types
+export type RouterInputs = inferRouterInputs<PayloadRouterForInference>;
+export type RouterOutputs = inferRouterOutputs<PayloadRouterForInference>;

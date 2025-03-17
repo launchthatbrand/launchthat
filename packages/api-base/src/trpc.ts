@@ -12,7 +12,9 @@ import { ZodError } from "zod";
 
 import type { Session } from "@acme/auth";
 import { auth, validateToken } from "@acme/auth";
-import { db } from "@acme/db/client";
+
+// Remove hardcoded database import
+// import { db } from "@acme/db/client";
 
 /**
  * Isomorphic Session getter for API requests
@@ -40,6 +42,8 @@ const isomorphicGetSession = async (headers: Headers) => {
 export const createTRPCContext = async (opts: {
   headers: Headers;
   session: Session | null;
+  // Allow passing in the database from the implementing package
+  db: unknown;
 }) => {
   const authToken = opts.headers.get("Authorization") ?? null;
   const session = await isomorphicGetSession(opts.headers);
@@ -49,7 +53,7 @@ export const createTRPCContext = async (opts: {
 
   return {
     session,
-    db,
+    db: opts.db, // Use the passed database
     token: authToken,
   };
 };

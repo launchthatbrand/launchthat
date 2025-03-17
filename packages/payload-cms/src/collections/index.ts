@@ -13,3 +13,5 @@ export { Categories } from "./Categories";
 export { Posts } from "./Posts";
 export { Pages } from "./Pages";
 export { Users, createUsersCollection } from "./Users/index";
+export { Courses } from "./Courses";
+export { Divisions } from "./Divisions";
