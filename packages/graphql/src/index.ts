@@ -2,6 +2,17 @@
  * Shared GraphQL utilities for use across all applications
  */
 
+// GraphQL result interfaces
+interface GraphQLError {
+  message: string;
+  [key: string]: any;
+}
+
+interface GraphQLResponse {
+  data?: any;
+  errors?: GraphQLError[];
+}
+
 /**
  * Generic fetch function for GraphQL queries
  *
@@ -11,8 +22,7 @@
  * @param headers Additional headers to send
  * @returns Response data or null
  */
-
-export type HeadersInit = void;
+export type HeadersInit = Record<string, string>;
 export async function fetchGraphQL<T>(
   url: string,
   query: string,
@@ -24,7 +34,7 @@ export async function fetchGraphQL<T>(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...headers,
+        ...(headers || {}),
       },
       body: JSON.stringify({
         query,
@@ -36,15 +46,15 @@ export async function fetchGraphQL<T>(
       throw new Error(`GraphQL request failed with status ${response.status}`);
     }
 
-    const result = await response.json();
+    const result = (await response.json()) as GraphQLResponse;
 
-    if (result.errors) {
+    if (result.errors && result.errors.length > 0) {
       throw new Error(
-        `GraphQL errors: ${result.errors.map((e: any) => e.message).join(", ")}`,
+        `GraphQL errors: ${result.errors.map((e) => e.message).join(", ")}`,
       );
     }
 
-    return result.data as T;
+    return (result.data as T) || null;
   } catch (error) {
     console.error("GraphQL request error:", error);
     return null;

@@ -1,6 +1,7 @@
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 
 import type { BaseRouter } from "./root";
+import type { TRPCContextBase } from "./trpc";
 import { baseRouter } from "./root";
 import { createCallerFactory, createTRPCContext } from "./trpc";
 
@@ -32,4 +33,4 @@ type RouterInputs = inferRouterInputs<BaseRouter>;
 type RouterOutputs = inferRouterOutputs<BaseRouter>;
 
 export { createTRPCContext, baseRouter, createCallerFactory };
-export type { BaseRouter, RouterInputs, RouterOutputs };
+export type { BaseRouter, RouterInputs, RouterOutputs, TRPCContextBase };

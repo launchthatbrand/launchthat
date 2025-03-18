@@ -1,4 +1,4 @@
-import { payloadAppRouter } from "@acme/api-payload";
+import { payloadRouter } from "@acme/api-payload";
 import { createTRPCRouter } from "@acme/api/trpc";
 
 import { authRouter } from "./router/auth";
@@ -13,10 +13,8 @@ export const wsaAppRouter = createTRPCRouter({
   course: courseRouter,
 
   // Add Payload functionality with proper typing
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  payload: payloadAppRouter.payload,
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  payloadExt: payloadAppRouter.payloadExt,
+
+  payload: payloadRouter.payload,
 });
 
 // Export type definition of API

@@ -39,11 +39,11 @@ const isomorphicGetSession = async (headers: Headers) => {
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: {
+export const createTRPCContext = async <TDatabase = null>(opts: {
   headers: Headers;
   session: Session | null;
   // Allow passing in the database from the implementing package
-  db: unknown;
+  db?: TDatabase;
 }) => {
   const authToken = opts.headers.get("Authorization") ?? null;
   const session = await isomorphicGetSession(opts.headers);
@@ -53,10 +53,17 @@ export const createTRPCContext = async (opts: {
 
   return {
     session,
-    db: opts.db, // Use the passed database
+    db: opts.db as TDatabase, // Properly typed
     token: authToken,
   };
 };
+
+// Export interface for database-agnostic context
+export interface TRPCContextBase<TDatabase = null> {
+  session: Session | null;
+  db: TDatabase;
+  token: string | null;
+}
 
 /**
  * 2. INITIALIZATION
@@ -64,7 +71,8 @@ export const createTRPCContext = async (opts: {
  * This is where the trpc api is initialized, connecting the context and
  * transformer
  */
-const t = initTRPC.context<typeof createTRPCContext>().create({
+// Use a more generic context type that works with any database
+const t = initTRPC.context<TRPCContextBase<unknown>>().create({
   transformer: superjson,
   errorFormatter: ({ shape, error }) => ({
     ...shape,
@@ -144,6 +152,8 @@ export const protectedProcedure = t.procedure
       ctx: {
         // infers the `session` as non-nullable
         session: { ...ctx.session, user: ctx.session.user },
+        db: ctx.db,
+        token: ctx.token,
       },
     });
   });

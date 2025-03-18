@@ -1,4 +1,4 @@
-import { appRouter, createTRPCContext } from '@acme/api-payload'
+import { createTRPCContext, payloadRouter } from '@acme/api-payload'
 
 import { auth } from '@acme/auth'
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
@@ -25,7 +25,7 @@ export const OPTIONS = () => {
 const handler = auth(async (req) => {
   const response = await fetchRequestHandler({
     endpoint: '/api/trpc',
-    router: appRouter,
+    router: payloadRouter,
     req,
     createContext: () =>
       createTRPCContext({

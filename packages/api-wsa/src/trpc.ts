@@ -10,6 +10,8 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
+// Import TRPCContextBase from api-base
+import type { TRPCContextBase } from "@acme/api/trpc";
 import type { Session } from "@acme/auth-wsa";
 import { auth, validateToken } from "@acme/auth-wsa";
 // Import database from db-wsa
@@ -56,7 +58,8 @@ export const createTRPCContext = async (opts: {
 };
 
 // Export the context type for use in other modules
-export type TRPCContext = Awaited<ReturnType<typeof createTRPCContext>>;
+// Use TRPCContextBase with the specific database type
+export type TRPCContext = TRPCContextBase<typeof db>;
 
 /**
  * 2. INITIALIZATION

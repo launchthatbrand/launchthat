@@ -16,6 +16,10 @@
     "./router": {
       "types": "./dist/router/index.d.ts",
       "default": "./src/router/index.ts"
+    },
+    "./utils/createCallerWithContext": {
+      "types": "./dist/utils/createCallerWithContext.d.ts",
+      "default": "./src/utils/createCallerWithContext.ts"
     }
   },
   "scripts": {
