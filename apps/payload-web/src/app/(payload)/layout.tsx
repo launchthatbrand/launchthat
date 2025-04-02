@@ -3,7 +3,6 @@
 import './custom.scss'
 import '@payloadcms/next/css'
 
-import { PayloadSidebar } from './_components/PayloadSidebar'
 import { Providers } from '../providers'
 import React from 'react'
 import StandardLayout from '@acme/ui/layout/StandardLayout'

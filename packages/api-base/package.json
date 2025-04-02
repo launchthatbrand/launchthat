@@ -15,6 +15,10 @@
     "./router": {
       "types": "./dist/router/index.d.ts",
       "default": "./src/router/index.ts"
+    },
+    "./test": {
+      "types": "./dist/test.d.ts",
+      "default": "./src/test.ts"
     }
   },
   "license": "MIT",
