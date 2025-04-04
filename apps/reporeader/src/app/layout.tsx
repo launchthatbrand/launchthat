@@ -52,7 +52,11 @@ export default function RootLayout(props: {
         )}
       >
         <Providers>
-          <StandardLayout sidebar={props.sidebar} appName="Nextjs Template">
+          <StandardLayout
+            sidebar={props.sidebar}
+            appName="RepoReader"
+            className="items-center justify-center"
+          >
             {props.children}
           </StandardLayout>
         </Providers>

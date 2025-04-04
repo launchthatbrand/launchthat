@@ -8,6 +8,7 @@ import {
   SidebarRail,
 } from "@acme/ui/components/sidebar";
 
+import { cn } from "../lib/utils";
 import AppHeader from "./AppHeader";
 import { AppSidebar } from "./AppSidebar";
 
@@ -23,10 +24,11 @@ export default function StandardLayout(props: {
   sidebar?: React.ReactNode;
   appName: string;
   topbar?: React.ReactNode;
+  className?: string;
 }) {
   const sidebarToggle = props.sidebar !== undefined;
   return (
-    <div className="flex flex-1">
+    <div className={cn("flex flex-1", props.className)}>
       {props.sidebar !== undefined ? (
         <AppSidebar sidebar={props.sidebar} className="list-none" />
       ) : null}
@@ -37,7 +39,7 @@ export default function StandardLayout(props: {
           sidebarToggle={sidebarToggle}
           className="sticky top-0 p-2"
         />
-        <div className="TEST flex flex-1 flex-col items-stretch justify-center">
+        <div className="flex flex-1 flex-col items-center justify-center">
           {props.children}
         </div>
       </SidebarInset>
