@@ -10,7 +10,7 @@ pipeline {
         APP_NAME = 'resumebuilder'
         APP_DIR = 'apps/resumebuilder'
         // These credentials should be configured in Jenkins
-        CLIENT_REPO_CREDS = credentials('jenkins-work')
+        CLIENT_REPO_CREDS = credentials('jenkins-personal')
         CLIENT_REPO_URL = credentials('RESUMEBUILDER_REPO_URL')
         VERCEL_TOKEN = credentials('VERCEL_TOKEN')
         VERCEL_ORG_ID = credentials('QUCAUSA_VERCEL_ORG_ID') 
@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script {
                     // Get the list of changed files in this commit
-                    def changedFiles = sh(script: "git diff --name-only HEAD~1 HEAD", returnStdout: true).trim()
+                    def changedFiles = sh(script: "git diff --name-only HEAD~1 HEAD || echo ''", returnStdout: true).trim()
                     
                     // Check if any of the changed files are in the resumebuilder app directory
                     def appChanged = changedFiles.split('\n').any { file -> 
@@ -210,14 +210,20 @@ This code is on the ${CLIENT_BRANCH} branch of the repository." >> VERCEL_DEPLOY
     
     post {
         always {
-            // Clean up workspace
-            cleanWs()
+            script {
+                echo "Cleaning workspace after build"
+                cleanWs()
+            }
         }
         success {
-            echo "Successfully built and deployed ${APP_NAME} to Vercel and client repository branch ${params.CLIENT_BRANCH}"
+            script {
+                echo "Successfully built and deployed ${env.APP_NAME} to Vercel and client repository branch ${params.CLIENT_BRANCH}"
+            }
         }
         failure {
-            echo "Failed to build or deploy ${APP_NAME}"
+            script {
+                echo "Failed to build or deploy ${env.APP_NAME}"
+            }
         }
     }
 } 
