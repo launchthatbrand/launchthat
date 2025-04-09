@@ -1,11 +1,12 @@
 "use client";
 
+import type { TemplateStyles } from "@/config/templates";
+import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Trash } from "lucide-react";
+
 import { DragHandle } from "./DragHandle";
 import { EditableField } from "./EditableField";
-import type { TemplateStyles } from "@/config/templates";
-import { Trash } from "lucide-react";
-import { useSortable } from "@dnd-kit/sortable";
 
 interface SortableItemProps {
   id: string;
@@ -15,6 +16,7 @@ interface SortableItemProps {
   multiline?: boolean;
   templateStyles: TemplateStyles;
   onRemove?: () => void;
+  isSidebar?: boolean;
 }
 
 export const SortableItem = ({
@@ -25,6 +27,7 @@ export const SortableItem = ({
   multiline = false,
   templateStyles,
   onRemove,
+  isSidebar = false,
 }: SortableItemProps) => {
   const {
     attributes,
@@ -40,11 +43,17 @@ export const SortableItem = ({
     transition,
   };
 
+  // Use sidebar item styling if available and in sidebar mode
+  const itemClass =
+    isSidebar && templateStyles.sidebarItem
+      ? templateStyles.sidebarItem
+      : templateStyles.item;
+
   return (
     <div
       ref={setNodeRef}
       style={style}
-      className={`flex items-start gap-2 ${templateStyles.item} ${
+      className={`flex items-start gap-2 ${itemClass} ${
         isDragging ? "opacity-50" : ""
       } ${className}`}
     >
@@ -65,7 +74,7 @@ export const SortableItem = ({
           className="p-1 text-gray-400 hover:text-red-500 print:hidden"
           aria-label="Remove item"
         >
-          <Trash size={16} />
+          <Trash size={isSidebar ? 14 : 16} />
         </button>
       )}
     </div>

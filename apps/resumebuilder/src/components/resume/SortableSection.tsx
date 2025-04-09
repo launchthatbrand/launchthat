@@ -1,34 +1,33 @@
 "use client";
 
+import type { DragEndEvent } from "@dnd-kit/core";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { getTemplateStyles } from "@/config/templates";
 import {
+  closestCenter,
   DndContext,
   KeyboardSensor,
   PointerSensor,
-  closestCenter,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
-  SortableContext,
   arrayMove,
+  SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-
-import type { DragEndEvent } from "@dnd-kit/core";
-import { SortableItem } from "./SortableItem";
-import type { TemplateStyles } from "@/config/templates";
 import { Trash2 } from "lucide-react";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import { templates } from "@/config/templates";
 
-interface SortableItem {
+import { SortableItemsList } from "./sortable/SortableItemsList";
+
+export interface SortableItem {
   id: string;
   value: string;
 }
@@ -42,6 +41,7 @@ interface SortableSectionProps {
   templateName: string;
   onDelete?: () => void;
   defaultOpen?: boolean;
+  isSidebar?: boolean;
 }
 
 export const SortableSection = ({
@@ -53,6 +53,7 @@ export const SortableSection = ({
   templateName,
   onDelete,
   defaultOpen = true,
+  isSidebar = false,
 }: SortableSectionProps) => {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -92,23 +93,26 @@ export const SortableSection = ({
     onItemsChange(newItems);
   };
 
-  // Safely determine which template to use, with modern as default
-  const isValidTemplateName = (key: string): key is keyof typeof templates => {
-    return Object.keys(templates).includes(key);
-  };
-
-  // Set template style with proper type checking
-  const templateStyle: TemplateStyles =
-    templateName && isValidTemplateName(templateName)
-      ? templates[templateName]
-      : templates.modern;
+  // Get template styles directly using the helper function
+  const templateStyle = getTemplateStyles(templateName);
 
   // For print view or pdf export, we need to ensure all sections are expanded
   const accordionValue = defaultOpen ? "section-content" : undefined;
 
+  // Use sidebar styling if available and in sidebar mode
+  const sectionClass =
+    isSidebar && templateStyle.sidebarSection
+      ? templateStyle.sidebarSection
+      : templateStyle.section;
+
+  const titleClass =
+    isSidebar && templateStyle.sidebarTitle
+      ? templateStyle.sidebarTitle
+      : templateStyle.sectionTitle;
+
   return (
     <div
-      className={`group relative transition-all duration-200 ${templateStyle.section} ${className}`}
+      className={`group relative transition-all duration-200 ${sectionClass} ${className}`}
     >
       <Accordion
         type="single"
@@ -119,7 +123,7 @@ export const SortableSection = ({
         <AccordionItem value="section-content" className="border-none">
           <div className="mb-3 flex items-center justify-between">
             <AccordionTrigger
-              className={`relative transition-all duration-200 hover:no-underline ${templateStyle.sectionTitle} px-0 py-1`}
+              className={`relative transition-all duration-200 hover:no-underline ${titleClass} px-0 py-1`}
             >
               {title}
             </AccordionTrigger>
@@ -129,7 +133,7 @@ export const SortableSection = ({
                 className="rounded-full p-1 text-red-500 hover:bg-red-50 hover:text-red-700 print:hidden"
                 aria-label={`Delete ${title} section`}
               >
-                <Trash2 size={16} />
+                <Trash2 size={isSidebar ? 14 : 16} />
               </button>
             )}
           </div>
@@ -144,23 +148,14 @@ export const SortableSection = ({
                 items={items}
                 strategy={verticalListSortingStrategy}
               >
-                <div className="space-y-3">
-                  {items.map((item) => (
-                    <SortableItem
-                      key={item.id}
-                      id={item.id}
-                      value={item.value}
-                      onChange={(value) => handleItemChange(item.id, value)}
-                      multiline={multiline}
-                      templateStyles={templateStyle}
-                      onRemove={
-                        items.length > 1
-                          ? () => handleRemoveItem(item.id)
-                          : undefined
-                      }
-                    />
-                  ))}
-                </div>
+                <SortableItemsList
+                  items={items}
+                  multiline={multiline}
+                  templateStyle={templateStyle}
+                  onItemChange={handleItemChange}
+                  onRemoveItem={handleRemoveItem}
+                  isSidebar={isSidebar}
+                />
               </SortableContext>
             </DndContext>
 

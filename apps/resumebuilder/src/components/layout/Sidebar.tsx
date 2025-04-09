@@ -5,53 +5,71 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@acme/ui/components/accordion";
-import { RadioGroup, RadioGroupItem } from "@acme/ui/components/radio-group";
+} from "@/components/ui/accordion";
 
-import { Label } from "@acme/ui/components/label";
-import { ScrollArea } from "@acme/ui/components/scroll-area";
+import { AddSectionButton } from "@/components/resume/AddSectionButton";
+import { TemplateGrid } from "@/components/resume/TemplateGrid";
+import dynamic from "next/dynamic";
 
-interface SidebarProps {
+// Use dynamic import for the ResumeImportButton to avoid hydration issues
+const ResumeImportButton = dynamic(
+  () => import("@/components/resume/ResumeImportButton"),
+  { ssr: false },
+);
+
+export interface SidebarProps {
   selectedTemplate: string;
-  onTemplateChange: (template: string) => void;
+  onTemplateSelect: (templateName: string) => void;
+  onSectionAdd: (sectionName: string, sectionTitle: string) => void;
 }
 
-export function Sidebar({ selectedTemplate, onTemplateChange }: SidebarProps) {
-  const templates = [
-    { id: "modern", name: "Modern" },
-    { id: "professional", name: "Professional" },
-    { id: "minimal", name: "Minimal" },
-  ];
-
+export function Sidebar({
+  selectedTemplate,
+  onTemplateSelect,
+  onSectionAdd,
+}: SidebarProps) {
   return (
-    <div className="flex h-full w-[300px] flex-col border-r bg-background">
-      <div className="p-6">
-        <h2 className="text-lg font-semibold">Resume Settings</h2>
+    <div className="w-1/4 border-r p-4">
+      <Accordion
+        type="single"
+        collapsible
+        className="mb-6"
+        defaultValue="templates"
+      >
+        <AccordionItem value="templates">
+          <AccordionTrigger>Templates</AccordionTrigger>
+          <AccordionContent>
+            <TemplateGrid
+              selectedTemplate={selectedTemplate}
+              onTemplateSelect={onTemplateSelect}
+            />
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="import">
+          <AccordionTrigger>Import Resume</AccordionTrigger>
+          <AccordionContent>
+            <ResumeImportButton />
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+
+      <div className="mb-6">
+        <h3 className="mb-3 font-medium">Add New Section</h3>
+        <AddSectionButton onSectionAdd={onSectionAdd} />
       </div>
-      <ScrollArea className="flex-1 px-4">
-        <Accordion type="single" collapsible defaultValue="templates">
-          <AccordionItem value="templates">
-            <AccordionTrigger>Templates</AccordionTrigger>
-            <AccordionContent>
-              <RadioGroup
-                value={selectedTemplate}
-                onValueChange={onTemplateChange}
-                className="space-y-3"
-              >
-                {templates.map((template) => (
-                  <div
-                    key={template.id}
-                    className="flex items-center space-x-2"
-                  >
-                    <RadioGroupItem value={template.id} id={template.id} />
-                    <Label htmlFor={template.id}>{template.name}</Label>
-                  </div>
-                ))}
-              </RadioGroup>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </ScrollArea>
+
+      <div className="space-y-4">
+        <h3 className="font-medium">Resume Builder Tips</h3>
+        <ul className="list-disc space-y-2 pl-5 text-sm text-gray-600">
+          <li>Click on any text to edit it directly</li>
+          <li>Drag items to reorder them within a section</li>
+          <li>Try different templates to find the best fit</li>
+          <li>Add a professional photo for a personal touch</li>
+          <li>Use the PDF export to save your final resume</li>
+          <li>Import data from existing PDF or Word documents</li>
+        </ul>
+      </div>
     </div>
   );
 }

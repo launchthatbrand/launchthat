@@ -1,8 +1,8 @@
+import type { TemplateName, TemplateStyles } from "@/config/templates";
 import { devtools, persist } from "zustand/middleware";
+import { getTemplateStyles, templates } from "@/config/templates";
 
-import type { TemplateStyles } from "@/config/templates";
 import { create } from "zustand";
-import { templates } from "@/config/templates";
 
 // Define the types
 export interface HeaderData {
@@ -28,7 +28,7 @@ export interface SectionData {
 
 interface ResumeState {
   // Template selection
-  selectedTemplate: keyof typeof templates;
+  selectedTemplate: TemplateName;
   currentTemplate: TemplateStyles;
 
   // Resume content
@@ -97,11 +97,10 @@ export const useResumeStore = create<ResumeState>()(
         setTemplate: (templateName: string) => {
           // Ensure the template name is valid
           if (Object.keys(templates).includes(templateName)) {
-            set((state) => ({
-              selectedTemplate: templateName as keyof typeof templates,
-              currentTemplate:
-                templates[templateName as keyof typeof templates],
-            }));
+            set({
+              selectedTemplate: templateName as TemplateName,
+              currentTemplate: getTemplateStyles(templateName),
+            });
           } else {
             console.warn(`Invalid template name: ${templateName}`);
           }
