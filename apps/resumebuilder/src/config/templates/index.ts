@@ -1,15 +1,14 @@
 import type { Template, TemplateName, TemplateStyles } from "./types";
-
 import { corporateTemplate } from "./corporate";
 import { creativeTemplate } from "./creative";
 import { minimalistTemplate } from "./minimalist";
 import { modernTemplate } from "./modern";
 import { professionalTemplate } from "./professional";
 
-// Export all templates
+// Export all templates - with professional first as our primary template
 export const templates: Record<TemplateName, Template> = {
-  modern: modernTemplate,
   professional: professionalTemplate,
+  modern: modernTemplate,
   minimal: minimalistTemplate,
   creative: creativeTemplate,
   corporate: corporateTemplate,
@@ -25,8 +24,8 @@ export const getTemplate = (name: string): Template => {
     return templates[templateName];
   }
 
-  // Fallback to modern if template not found
-  return templates.modern;
+  // Fallback to professional if template not found
+  return templates.professional;
 };
 
 // Get template styles by name

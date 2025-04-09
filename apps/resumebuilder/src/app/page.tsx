@@ -1,5 +1,10 @@
 "use client";
 
+import { useEffect } from "react";
+import dynamic from "next/dynamic";
+// Need to create these components
+import { Sidebar } from "@/components/layout/Sidebar";
+import { downloadAsPdf } from "@/lib/utils";
 import {
   HeaderData,
   SectionItem,
@@ -7,11 +12,6 @@ import {
 } from "@/store/useResumeStore";
 
 import { ResumeContent } from "../components/resume/ResumeContent";
-// Need to create these components
-import { Sidebar } from "@/components/layout/Sidebar";
-import { downloadAsPdf } from "@/lib/utils";
-import dynamic from "next/dynamic";
-import { useEffect } from "react";
 
 // Use dynamic import for the ResumeImportButton to avoid hydration issues
 // This will be used later when implementing import functionality
@@ -23,8 +23,9 @@ const _ResumeImportButton = dynamic(
 // Function to clear old localStorage data
 const clearOldStorageData = () => {
   try {
-    // Remove the old storage key to ensure the new defaults are used
+    // Remove the old storage keys to ensure the new defaults are used
     localStorage.removeItem("resume-builder-storage");
+    localStorage.removeItem("resume-builder-storage-construction-v1");
 
     // Also remove any potential Zustand cache items for the resume builder
     for (let i = 0; i < localStorage.length; i++) {

@@ -1,8 +1,7 @@
 import type { TemplateName, TemplateStyles } from "@/config/templates";
-import { devtools, persist } from "zustand/middleware";
 import { getTemplateStyles, templates } from "@/config/templates";
-
 import { create } from "zustand";
+import { devtools, persist } from "zustand/middleware";
 
 // Define the types
 export interface HeaderData {
@@ -114,8 +113,8 @@ export const useResumeStore = create<ResumeState>()(
     persist(
       (set) => ({
         // Initial state
-        selectedTemplate: "modern",
-        currentTemplate: getTemplateStyles("modern"),
+        selectedTemplate: "professional",
+        currentTemplate: getTemplateStyles("professional"),
         headerData: initialHeaderData,
         sections: initialSections,
 
@@ -175,15 +174,15 @@ export const useResumeStore = create<ResumeState>()(
         // Reset to defaults
         resetToDefaults: () => {
           set({
-            selectedTemplate: "modern",
-            currentTemplate: getTemplateStyles("modern"),
+            selectedTemplate: "professional",
+            currentTemplate: getTemplateStyles("professional"),
             headerData: initialHeaderData,
             sections: initialSections,
           });
         },
       }),
       {
-        name: "resume-builder-storage-construction-v1", // Updated storage key to reset cached data
+        name: "resume-builder-storage-construction-v2", // Updated storage key to reset cached data with professional template
       },
     ),
   ),
