@@ -167,7 +167,10 @@ This repository contains a pre-built Next.js application ready for deployment to
 EOL
                     
                     # Add information about the branch
-                    echo -e "\n## Branch Information\n\nThis code is on the \`${CLIENT_BRANCH}\` branch of the repository." >> VERCEL_DEPLOYMENT.md
+                    echo "
+## Branch Information
+
+This code is on the ${CLIENT_BRANCH} branch of the repository." >> VERCEL_DEPLOYMENT.md
                     
                     # Commit and push changes
                     git config user.name "Jenkins CI"
