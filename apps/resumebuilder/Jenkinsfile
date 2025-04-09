@@ -68,17 +68,20 @@ pipeline {
                 sh '''
                 cd ${APP_DIR}
                 
-                # Create a .vercel directory if it doesn't exist
+                # Create .vercel directory if it doesn't exist
                 mkdir -p .vercel
                 
                 # Create project.json file with project settings
                 echo '{"orgId":"'${VERCEL_ORG_ID}'","projectId":"'${VERCEL_PROJECT_ID}'"}' > .vercel/project.json
                 
+                # Set up Vercel credentials
+                echo '{"token":"'${VERCEL_TOKEN}'"}' > .vercel/credentials.json
+                
                 # Pull Vercel project settings first
-                VERCEL_TOKEN=${VERCEL_TOKEN} pnpm dlx vercel pull --yes
+                pnpm dlx vercel pull --yes
                 
                 # Build the app using pnpm dlx instead of global installation
-                VERCEL_TOKEN=${VERCEL_TOKEN} pnpm dlx vercel build --yes
+                pnpm dlx vercel build --yes
                 '''
             }
         }
@@ -88,7 +91,7 @@ pipeline {
                 // Deploy to Vercel using pnpm dlx
                 sh '''
                 cd ${APP_DIR}
-                VERCEL_TOKEN=${VERCEL_TOKEN} pnpm dlx vercel deploy --prebuilt --prod --yes
+                pnpm dlx vercel deploy --prebuilt --prod --yes
                 '''
             }
         }
