@@ -1,11 +1,10 @@
 "use client";
 
-import type { TemplateStyles } from "@/config/templates";
-import { useState } from "react";
-
 import { HeaderDisplay } from "./header/HeaderDisplay";
 import { HeaderEditForm } from "./header/HeaderEditForm";
 import { ProfileImage } from "./header/ProfileImage";
+import type { TemplateStyles } from "@/config/templates";
+import { useState } from "react";
 
 interface ResumeHeaderProps {
   data: {

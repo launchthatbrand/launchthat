@@ -1,9 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
-// Need to create these components
-import { Sidebar } from "@/components/layout/Sidebar";
-import { downloadAsPdf } from "@/lib/utils";
 import {
   HeaderData,
   SectionItem,
@@ -11,6 +7,11 @@ import {
 } from "@/store/useResumeStore";
 
 import { ResumeContent } from "../components/resume/ResumeContent";
+// Need to create these components
+import { Sidebar } from "@/components/layout/Sidebar";
+import { downloadAsPdf } from "@/lib/utils";
+import dynamic from "next/dynamic";
+import { useEffect } from "react";
 
 // Use dynamic import for the ResumeImportButton to avoid hydration issues
 // This will be used later when implementing import functionality
@@ -18,6 +19,30 @@ const _ResumeImportButton = dynamic(
   () => import("@/components/resume/ResumeImportButton"),
   { ssr: false },
 );
+
+// Function to clear old localStorage data
+const clearOldStorageData = () => {
+  try {
+    // Remove the old storage key to ensure the new defaults are used
+    localStorage.removeItem("resume-builder-storage");
+
+    // Also remove any potential Zustand cache items for the resume builder
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (
+        key &&
+        (key.startsWith("resume-builder") || key.includes("zustand"))
+      ) {
+        localStorage.removeItem(key);
+        console.log(`Removed localStorage item: ${key}`);
+      }
+    }
+
+    console.log("Cleared resume builder storage data");
+  } catch (error) {
+    console.error("Error clearing localStorage:", error);
+  }
+};
 
 export default function Home() {
   // Get state and actions from the store
@@ -31,7 +56,15 @@ export default function Home() {
     updateSectionItems,
     addSection,
     deleteSection,
+    resetToDefaults,
   } = useResumeStore();
+
+  // Clear old storage data and reset to defaults on first load
+  useEffect(() => {
+    clearOldStorageData();
+    // Reset to construction-themed defaults
+    resetToDefaults();
+  }, [resetToDefaults]);
 
   const handleSectionChange = (sectionId: string, newItems: SectionItem[]) => {
     updateSectionItems(sectionId, newItems);
@@ -71,7 +104,10 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen w-full" style={mainBackgroundStyle}>
+    <main
+      className="container flex min-h-screen w-full"
+      style={mainBackgroundStyle}
+    >
       <Sidebar
         selectedTemplate={selectedTemplate}
         onTemplateSelect={handleTemplateChange}

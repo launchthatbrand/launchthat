@@ -41,6 +41,7 @@ interface ResumeState {
   updateSectionItems: (sectionId: string, items: SectionItem[]) => void;
   addSection: (sectionName: string, sectionTitle: string) => void;
   deleteSection: (sectionId: string) => void;
+  resetToDefaults: () => void;
 }
 
 // Initial data
@@ -49,36 +50,61 @@ const initialSections: SectionData[] = [
     id: "experience",
     title: "Experience",
     items: [
-      { id: "exp1", value: "Software Engineer at Tech Corp" },
-      { id: "exp2", value: "Web Developer at Digital Agency" },
+      {
+        id: "exp1",
+        value:
+          "Civil Engineer at Bridge Construction Corp | 2018-Present | Led structural integrity analysis for 3 major bridge projects.",
+      },
+      {
+        id: "exp2",
+        value:
+          "Project Manager at Highway Development Inc | 2015-2018 | Managed road construction projects with $5M+ budgets.",
+      },
     ],
   },
   {
     id: "education",
     title: "Education",
     items: [
-      { id: "edu1", value: "BS in Computer Science" },
-      { id: "edu2", value: "High School Diploma" },
+      {
+        id: "edu1",
+        value: "BS in Civil Engineering, University of Engineering | 2011-2015",
+      },
+      {
+        id: "edu2",
+        value:
+          "Professional Engineering License, State Board of Engineering | 2017",
+      },
     ],
   },
   {
     id: "skills",
     title: "Skills",
     items: [
-      { id: "skill1", value: "JavaScript" },
-      { id: "skill2", value: "React" },
-      { id: "skill3", value: "Node.js" },
+      { id: "skill1", value: "Structural Analysis" },
+      { id: "skill2", value: "AutoCAD" },
+      { id: "skill3", value: "Construction Management" },
+      { id: "skill4", value: "Project Planning" },
+      { id: "skill5", value: "Quality Control" },
+    ],
+  },
+  {
+    id: "certifications",
+    title: "Certifications",
+    items: [
+      { id: "cert1", value: "Certified Construction Manager (CCM)" },
+      { id: "cert2", value: "OSHA 30-Hour Safety Certification" },
     ],
   },
 ];
 
 const initialHeaderData: HeaderData = {
-  fullName: "John Doe",
-  title: "Full Stack Developer",
-  email: "john.doe@example.com",
-  phone: "(123) 456-7890",
-  location: "San Francisco, CA",
-  website: "johndoe.com",
+  fullName: "Robert Johnson",
+  title: "Civil Engineer & Project Manager",
+  email: "robert.johnson@example.com",
+  phone: "(555) 123-4567",
+  location: "Portland, OR",
+  website: "robertjohnsonengineering.com",
   profileImage: "",
 };
 
@@ -89,7 +115,7 @@ export const useResumeStore = create<ResumeState>()(
       (set) => ({
         // Initial state
         selectedTemplate: "modern",
-        currentTemplate: templates.modern,
+        currentTemplate: getTemplateStyles("modern"),
         headerData: initialHeaderData,
         sections: initialSections,
 
@@ -145,9 +171,19 @@ export const useResumeStore = create<ResumeState>()(
             ),
           }));
         },
+
+        // Reset to defaults
+        resetToDefaults: () => {
+          set({
+            selectedTemplate: "modern",
+            currentTemplate: getTemplateStyles("modern"),
+            headerData: initialHeaderData,
+            sections: initialSections,
+          });
+        },
       }),
       {
-        name: "resume-builder-storage", // Unique name for localStorage
+        name: "resume-builder-storage-construction-v1", // Updated storage key to reset cached data
       },
     ),
   ),

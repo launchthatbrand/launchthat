@@ -1,11 +1,12 @@
 "use client";
 
+import type { TemplateStyles } from "@/config/templates";
+import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Trash } from "lucide-react";
+
 import { DragHandle } from "./DragHandle";
 import { EditableField } from "./EditableField";
-import type { TemplateStyles } from "@/config/templates";
-import { Trash } from "lucide-react";
-import { useSortable } from "@dnd-kit/sortable";
 
 interface SortableItemProps {
   id: string;
@@ -14,6 +15,7 @@ interface SortableItemProps {
   className?: string;
   multiline?: boolean;
   templateStyles: TemplateStyles;
+  templateName?: string;
   onRemove?: () => void;
   isSidebar?: boolean;
 }
@@ -25,6 +27,7 @@ export const SortableItem = ({
   className = "",
   multiline = false,
   templateStyles,
+  templateName = "",
   onRemove,
   isSidebar = false,
 }: SortableItemProps) => {
@@ -54,6 +57,8 @@ export const SortableItem = ({
       style={style}
       className={`flex items-start gap-2 ${itemClass} ${
         isDragging ? "opacity-50" : ""
+      } ${!isSidebar && templateName === "creative" ? "text-gray-800" : ""} ${
+        isSidebar && templateName === "creative" ? "text-white" : ""
       } ${className}`}
       data-item-id={id}
       data-sortable-item="true"
@@ -68,6 +73,8 @@ export const SortableItem = ({
           onChange={onChange}
           multiline={multiline}
           className={templateStyles.input}
+          isSidebar={isSidebar}
+          templateName={templateName}
         />
       </div>
       {onRemove && (

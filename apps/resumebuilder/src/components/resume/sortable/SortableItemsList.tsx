@@ -13,6 +13,7 @@ interface SortableItemsListProps {
   items: SortableItemType[];
   multiline: boolean;
   templateStyle: TemplateStyles;
+  templateName: string;
   onItemChange: (id: string, value: string) => void;
   onRemoveItem: (id: string) => void;
   isSidebar?: boolean;
@@ -22,6 +23,7 @@ export function SortableItemsList({
   items,
   multiline,
   templateStyle,
+  templateName,
   onItemChange,
   onRemoveItem,
   isSidebar = false,
@@ -37,6 +39,7 @@ export function SortableItemsList({
             onChange={(value) => onItemChange(item.id, value)}
             multiline={multiline}
             templateStyles={templateStyle}
+            templateName={templateName}
             onRemove={
               items.length > 1 ? () => onRemoveItem(item.id) : undefined
             }

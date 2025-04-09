@@ -1,10 +1,9 @@
 "use client";
 
+import type { TemplateStyles } from "@/config/templates";
 import type { HeaderData, SectionData } from "@/store/useResumeStore";
-
 import { ResumeHeader } from "@/components/resume/ResumeHeader";
 import { SortableSection } from "@/components/resume/SortableSection";
-import type { TemplateStyles } from "@/config/templates";
 
 interface LayoutRendererProps {
   headerData: HeaderData;
@@ -89,7 +88,7 @@ export const LayoutRenderer = ({
     );
 
     const sidebarClasses = `${templateStyles.sidebar ?? "w-1/3 p-6"} sidebar-content`;
-    const mainClasses = "flex-1 p-6 space-y-6 main-content";
+    const mainClasses = `flex-1 p-6 space-y-6 main-content ${templateName === "creative" ? "text-gray-900" : ""}`;
 
     const sidebarContent = (
       <div className={sidebarClasses} data-content-type="sidebar">

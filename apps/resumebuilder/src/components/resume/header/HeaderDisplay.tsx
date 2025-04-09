@@ -1,7 +1,8 @@
 "use client";
 
-import type { TemplateStyles } from "@/config/templates";
 import { Globe, Mail, MapPin, Phone } from "lucide-react";
+
+import type { TemplateStyles } from "@/config/templates";
 
 export interface HeaderDisplayProps {
   data: {

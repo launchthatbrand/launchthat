@@ -1,31 +1,31 @@
 "use client";
 
+import type { DragEndEvent } from "@dnd-kit/core";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { getTemplateStyles } from "@/config/templates";
 import {
+  closestCenter,
   DndContext,
   KeyboardSensor,
   PointerSensor,
-  closestCenter,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
-  SortableContext,
   arrayMove,
+  SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-
-import type { DragEndEvent } from "@dnd-kit/core";
-import { SortableItemsList } from "./sortable/SortableItemsList";
 import { Trash2 } from "lucide-react";
-import { getTemplateStyles } from "@/config/templates";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+
+import { SortableItemsList } from "./sortable/SortableItemsList";
 
 export interface SortableItem {
   id: string;
@@ -126,7 +126,9 @@ export const SortableSection = ({
         <AccordionItem value="section-content" className="border-none">
           <div className="mb-3 flex items-center justify-between">
             <AccordionTrigger
-              className={`section-title relative transition-all duration-200 hover:no-underline ${titleClass} px-0 py-1`}
+              className={`section-title relative transition-all duration-200 hover:no-underline ${titleClass} px-0 py-1 ${
+                !isSidebar && templateName === "creative" ? "text-gray-900" : ""
+              }`}
               data-title-text={title}
             >
               {title}
@@ -159,6 +161,7 @@ export const SortableSection = ({
                   items={items}
                   multiline={multiline}
                   templateStyle={templateStyle}
+                  templateName={templateName}
                   onItemChange={handleItemChange}
                   onRemoveItem={handleRemoveItem}
                   isSidebar={isSidebar}

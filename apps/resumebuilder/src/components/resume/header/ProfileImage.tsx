@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef } from "react";
-import Image from "next/image";
 import { Camera, X } from "lucide-react";
+
+import Image from "next/image";
+import { useRef } from "react";
 
 export interface ProfileImageProps {
   profileImage?: string;

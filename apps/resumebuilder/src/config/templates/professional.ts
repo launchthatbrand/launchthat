@@ -1,16 +1,16 @@
 import type { Template } from "./types";
 
-// Professional template inspired by Sophie Wright resume
+// Professional template adapted for construction professionals
 export const professionalTemplate: Template = {
   name: "professional",
   label: "Professional",
   description:
-    "A structured, business-ready layout with clean sections and clear information hierarchy.",
+    "A structured layout for construction and engineering professionals with emphasis on certifications and project experience.",
   styles: {
     layout: "standard",
-    primaryColor: "#000000", // Black
-    secondaryColor: "#e7e7e7", // Light gray
-    accentColor: "#000000",
+    primaryColor: "#2a4365", // Navy blue for construction/engineering
+    secondaryColor: "#e2e8f0", // Light gray/steel color
+    accentColor: "#c53030", // Construction red accent
     textColor: "#333333",
     backgroundColor: "#ffffff",
     fontFamily: "Lato, sans-serif",
@@ -32,14 +32,14 @@ export const professionalTemplate: Template = {
 
     // Custom classes for specific elements
     customClasses: {
-      contactIcon: "inline-block mr-2 text-gray-600",
+      contactIcon: "inline-block mr-2 text-[#c53030]",
       profileImage:
         "rounded-full w-28 h-28 object-cover mx-auto mb-3 border border-gray-300",
-      sectionIcon: "mr-2 text-gray-600",
+      sectionIcon: "mr-2 text-[#2a4365]",
       bullet:
-        "absolute left-0 top-1.5 w-2 h-2 border border-black rounded-full",
+        "absolute left-0 top-1.5 w-2 h-2 border border-[#2a4365] rounded-full",
       skillTag:
-        "inline-block bg-gray-200 rounded-full px-3 py-1 text-sm mr-2 mb-2",
+        "inline-block bg-[#e2e8f0] rounded-full px-3 py-1 text-sm mr-2 mb-2 border-l-2 border-[#c53030]",
       detailSection: "border-r border-gray-300 pr-4",
       dateRange: "text-gray-500 text-sm mb-1 italic",
       jobTitle: "font-bold",
