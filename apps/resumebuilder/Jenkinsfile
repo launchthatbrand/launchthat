@@ -60,12 +60,7 @@ pipeline {
             }
         }
         
-        stage('Install Vercel CLI') {
-            steps {
-                // Install Vercel CLI globally
-                sh 'pnpm install -g vercel'
-            }
-        }
+ 
 
         stage('Build with Vercel') {
             steps {
