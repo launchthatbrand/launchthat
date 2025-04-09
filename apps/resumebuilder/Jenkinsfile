@@ -1,15 +1,19 @@
 pipeline {
     agent any
 
+    parameters {
+        string(name: 'CLIENT_BRANCH', defaultValue: 'dev', description: 'The branch to push to in the client repository')
+    }
+
     environment {
         // Define environment variables
         APP_NAME = 'resumebuilder'
         APP_DIR = 'apps/resumebuilder'
         // These credentials should be configured in Jenkins
         CLIENT_REPO_CREDS = credentials('jenkins-work')
-        CLIENT_REPO_URL = credentials('RESUMEBUILDER_REPO_URL')
+        CLIENT_REPO_URL = env.RESUMEBUILDER_REPO_URL
         VERCEL_TOKEN = credentials('VERCEL_TOKEN')
-        VERCEL_ORG_ID = credentials('VERCEL_ORG_ID') 
+        VERCEL_ORG_ID = credentials('QUCAUSA_VERCEL_ORG_ID') 
         VERCEL_PROJECT_ID = 'resumebuilder'
     }
 
@@ -78,18 +82,32 @@ pipeline {
                     # Clone the client repository
                     GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git clone ${CLIENT_REPO_URL} ${TEMP_DIR}
                     
+                    # Navigate to the client repo
+                    cd ${TEMP_DIR}
+                    
+                    # Check if the target branch exists
+                    if ! git show-ref --verify --quiet refs/remotes/origin/${CLIENT_BRANCH}; then
+                        echo "Branch ${CLIENT_BRANCH} doesn't exist, creating it..."
+                        
+                        # Create the branch from current HEAD
+                        git checkout -b ${CLIENT_BRANCH}
+                    else
+                        # Branch exists, check it out
+                        git checkout ${CLIENT_BRANCH} || git checkout -b ${CLIENT_BRANCH} origin/${CLIENT_BRANCH}
+                    fi
+                    
                     # Clear existing content but keep .git
-                    find ${TEMP_DIR} -mindepth 1 -maxdepth 1 -not -path "${TEMP_DIR}/.git" -exec rm -rf {} \\;
+                    find . -mindepth 1 -maxdepth 1 -not -path "./.git" -exec rm -rf {} \\;
                     
                     # Copy the app source code (excluding .git, node_modules, etc.)
-                    rsync -av --exclude='.git' --exclude='node_modules' --exclude='.turbo' ${APP_DIR}/ ${TEMP_DIR}/
+                    rsync -av --exclude='.git' --exclude='node_modules' --exclude='.turbo' ${WORKSPACE}/${APP_DIR}/ ${TEMP_DIR}/
                     
                     # Copy Vercel build output to ensure it's available
-                    mkdir -p ${TEMP_DIR}/.vercel
-                    rsync -av ${APP_DIR}/.vercel/output/ ${TEMP_DIR}/.vercel/output/
+                    mkdir -p .vercel
+                    rsync -av ${WORKSPACE}/${APP_DIR}/.vercel/output/ .vercel/output/
                     
                     # Create a simple deployment script for the client
-                    cat > ${TEMP_DIR}/deploy-to-vercel.sh << 'EOL'
+                    cat > deploy-to-vercel.sh << 'EOL'
 #!/bin/bash
 # Script to deploy the pre-built output to Vercel
 # Requires Vercel CLI and authentication token
@@ -106,10 +124,10 @@ vercel deploy --prebuilt --prod
 
 echo "Deployment complete!"
 EOL
-                    chmod +x ${TEMP_DIR}/deploy-to-vercel.sh
+                    chmod +x deploy-to-vercel.sh
                     
                     # Create a README explaining the deployment process
-                    cat > ${TEMP_DIR}/VERCEL_DEPLOYMENT.md << 'EOL'
+                    cat > VERCEL_DEPLOYMENT.md << 'EOL'
 # Vercel Deployment
 
 This repository contains a pre-built Next.js application ready for deployment to Vercel.
@@ -148,15 +166,20 @@ This repository contains a pre-built Next.js application ready for deployment to
 - Updates to this repository are pushed automatically from the monorepo build system.
 EOL
                     
+                    # Add information about the branch
+                    echo -e "\n## Branch Information\n\nThis code is on the \`${CLIENT_BRANCH}\` branch of the repository." >> VERCEL_DEPLOYMENT.md
+                    
                     # Commit and push changes
-                    cd ${TEMP_DIR}
                     git config user.name "Jenkins CI"
                     git config user.email "jenkins@example.com"
                     git add .
-                    git commit -m "Deploy: Pre-built app $(date) from monorepo CI" || echo "No changes to commit"
-                    GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git push origin main
+                    git commit -m "Deploy: Pre-built app $(date) to branch ${CLIENT_BRANCH} from monorepo CI" || echo "No changes to commit"
+                    
+                    # Push to the specified branch
+                    GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git push origin ${CLIENT_BRANCH}
                     
                     # Clean up
+                    cd ${WORKSPACE}
                     rm -rf ${TEMP_DIR}
                     '''
                 }
@@ -170,7 +193,7 @@ EOL
             cleanWs()
         }
         success {
-            echo "Successfully built and deployed ${APP_NAME} to Vercel and client repository"
+            echo "Successfully built and deployed ${APP_NAME} to Vercel and client repository branch ${params.CLIENT_BRANCH}"
         }
         failure {
             echo "Failed to build or deploy ${APP_NAME}"
