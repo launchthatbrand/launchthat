@@ -1,6 +1,7 @@
 import { dirname, join } from "path";
-import { fileURLToPath } from "url";
+
 import createJiti from "jiti";
+import { fileURLToPath } from "url";
 
 // Import env files to validate at build time. Use jiti so we can load .ts files in here.
 createJiti(fileURLToPath(import.meta.url))("./src/env");
@@ -31,7 +32,8 @@ const config = {
     },
     // Tell Next.js to use these packages exclusively on the server
     // This is critical for packages that use Node.js built-in modules
-    serverComponentsExternalPackages: ["pdf-parse", "pdf-lib", "pdfjs-dist"],
+    // We've removed pdf-parse and pdfjs-dist from here as we're handling them in webpack config
+    serverComponentsExternalPackages: ["pdf-lib"],
   },
 
   webpack: (config, { isServer }) => {
@@ -59,6 +61,12 @@ const config = {
         net: false,
         tls: false,
         child_process: false,
+      };
+
+      // Ensure browser versions of these packages are used
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        "pdf-parse": false, // Disable pdf-parse on client-side
       };
     }
 

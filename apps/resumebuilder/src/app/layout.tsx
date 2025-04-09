@@ -1,14 +1,20 @@
 import "~/app/globals.css";
+import "@/styles/print.css";
 
 import type { Metadata, Viewport } from "next";
+
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
-
+import { Inter } from "next/font/google";
+import { Providers } from "./providers";
 import StandardLayout from "@acme/ui/layout/StandardLayout";
 import { cn } from "@acme/ui/lib/utils";
-
 import { env } from "~/env";
-import { Providers } from "./providers";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -16,8 +22,8 @@ export const metadata: Metadata = {
       ? "https://turbo.t3.gg"
       : "http://localhost:3000",
   ),
-  title: "Create T3 Turbo",
-  description: "Simple monorepo with shared backend for web & mobile apps",
+  title: "Resume Builder",
+  description: "Build and customize your resume",
   openGraph: {
     title: "Create T3 Turbo",
     description: "Simple monorepo with shared backend for web & mobile apps",
@@ -29,6 +35,7 @@ export const metadata: Metadata = {
     site: "@jullerino",
     creator: "@jullerino",
   },
+  icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
 export const viewport: Viewport = {
@@ -49,10 +56,11 @@ export default function RootLayout(props: {
           "min-h-screen bg-background font-sans text-foreground antialiased",
           GeistSans.variable,
           GeistMono.variable,
+          inter.variable,
         )}
       >
         <Providers>
-          <StandardLayout sidebar={props.sidebar} appName="Monday">
+          <StandardLayout sidebar={props.sidebar} appName="Resume Builder">
             {props.children}
           </StandardLayout>
         </Providers>

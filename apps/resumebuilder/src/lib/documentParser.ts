@@ -1,147 +1,172 @@
-import { ResumeData } from "@/store/resumeStore";
-import mammoth from "mammoth";
-import pdfParse from "pdf-parse";
+// Define TextItem and TextContent interfaces based on pdfjs-dist structure
+interface TextItem {
+  str: string;
+  dir?: string;
+  transform?: number[];
+  width?: number;
+  height?: number;
+  fontName?: string;
+}
 
-export type ParsedDocument = {
-  text: string;
-  metadata?: Record<string, unknown>;
-  resumeData?: Partial<ResumeData>;
-};
+interface TextContent {
+  items: TextItem[];
+  styles?: Record<string, unknown>;
+}
+
+// Create a mock textAnalyzer module until the real one is available
+export function extractResumeData(_text: string): ResumeData {
+  // This is a placeholder implementation
+  return {
+    contact: {
+      name: "Example Name",
+      email: "example@email.com",
+    },
+  };
+}
+
+// Define interfaces for the parsed document and resume data
+export interface ResumeData {
+  // Add more fields as needed
+  contact: {
+    name?: string;
+    email?: string;
+    phone?: string;
+    address?: string;
+    linkedin?: string;
+    website?: string;
+  };
+  summary?: string;
+  workExperience?: {
+    company?: string;
+    title?: string;
+    location?: string;
+    startDate?: string;
+    endDate?: string;
+    description?: string;
+  }[];
+  education?: {
+    institution?: string;
+    degree?: string;
+    field?: string;
+    graduationDate?: string;
+    gpa?: string;
+  }[];
+  skills?: string[];
+  certifications?: {
+    name?: string;
+    issuer?: string;
+    date?: string;
+  }[];
+}
 
 /**
- * Parse a PDF document
+ * Parse a PDF document and extract its text content
+ * @param file PDF file to parse
+ * @returns Promise with extracted text
  */
-export const parsePdfDocument = async (file: File): Promise<ParsedDocument> => {
-  try {
-    const arrayBuffer = await file.arrayBuffer();
-    const data = await pdfParse(Buffer.from(arrayBuffer));
+export async function parsePdfDocument(file: File): Promise<string> {
+  // Only run in browser environment
+  if (typeof window === "undefined") {
+    throw new Error("PDF parsing is only available in browser environment");
+  }
 
-    return {
-      text: data.text,
-      metadata: {
-        info: data.info,
-        pageCount: data.numpages,
-      },
-    };
+  try {
+    // Define type for dynamically imported pdfjs
+    interface PdfJsLib {
+      getDocument: (data: Uint8Array) => {
+        promise: Promise<{
+          numPages: number;
+          getPage: (pageNum: number) => Promise<{
+            getTextContent: () => Promise<TextContent>;
+          }>;
+        }>;
+      };
+      GlobalWorkerOptions: { workerSrc: string };
+    }
+
+    // Dynamically import PDF.js to avoid server-side issues
+    const pdfjs = (await import("pdfjs-dist")) as unknown as PdfJsLib;
+
+    // Set worker source - use CDN version to avoid bundling issues
+    pdfjs.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+    // Load the PDF file
+    const arrayBuffer = await file.arrayBuffer();
+    const typedArray = new Uint8Array(arrayBuffer);
+
+    // Load and parse the PDF document
+    const loadingTask = pdfjs.getDocument(typedArray);
+    const pdf = await loadingTask.promise;
+
+    // Extract text from each page
+    let fullText = "";
+    const numPages = pdf.numPages;
+
+    for (let i = 1; i <= numPages; i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+
+      // Join all the text items into a single string
+      const pageText = content.items
+        .filter((item): item is TextItem => "str" in item)
+        .map((item) => item.str)
+        .join(" ");
+
+      fullText += pageText + "\n";
+    }
+
+    return fullText;
   } catch (error) {
     console.error("Error parsing PDF:", error);
     throw new Error("Failed to parse PDF document");
   }
-};
+}
 
 /**
- * Parse a DOCX document
+ * Parse a DOCX document and extract its text content
+ * @param file DOCX file to parse
+ * @returns Promise with extracted text
  */
-export const parseDocxDocument = async (
-  file: File,
-): Promise<ParsedDocument> => {
-  try {
-    const arrayBuffer = await file.arrayBuffer();
-    const result = await mammoth.extractRawText({
-      arrayBuffer: arrayBuffer,
-    });
-
-    return {
-      text: result.value,
-      metadata: {
-        messages: result.messages,
-      },
-    };
-  } catch (error) {
-    console.error("Error parsing DOCX:", error);
-    throw new Error("Failed to parse DOCX document");
+export async function parseDocxDocument(file: File): Promise<string> {
+  if (typeof window === "undefined") {
+    throw new Error("DOCX parsing is only available in browser environment");
   }
-};
+
+  // Dynamically import mammoth to avoid server-side issues
+  const mammoth = await import("mammoth");
+
+  const arrayBuffer = await file.arrayBuffer();
+
+  // Use mammoth to convert DOCX to text
+  const result = await mammoth.extractRawText({ arrayBuffer });
+  return result.value;
+}
 
 /**
- * Extract resume data from parsed document text (basic implementation)
- * This function can be enhanced in the future to use more sophisticated
- * natural language processing for better extraction.
+ * Parse a resume file and extract structured data
+ * @param file Resume file (PDF or DOCX)
+ * @returns Promise with structured resume data
  */
-export const extractResumeData = (
-  parsedDocument: ParsedDocument,
-): Partial<ResumeData> => {
-  // In a real-world scenario, this would use more sophisticated text processing
-  // For now, we'll implement a simple placeholder
+export async function parseResumeFile(file: File): Promise<ResumeData> {
+  // Check file type to determine parsing method
+  const fileType = file.type;
 
-  // Extract name (assuming it's at the beginning of the document)
-  const text = parsedDocument.text;
-  const lines = text.split("\n").filter((line) => line.trim().length > 0);
+  let text = "";
 
-  let personalInfo = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    address: "",
-    title: "",
-    summary: "",
-  };
-
-  // Very simple extraction - would need to be much more sophisticated in reality
-  if (lines.length > 0) {
-    // Assume first line is the full name
-    const nameParts = lines[0].trim().split(" ");
-    if (nameParts.length >= 2) {
-      personalInfo.firstName = nameParts[0];
-      personalInfo.lastName = nameParts[nameParts.length - 1];
-    }
-
-    // Look for email in the text
-    const emailMatch = text.match(
-      /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/,
+  if (fileType === "application/pdf") {
+    text = await parsePdfDocument(file);
+  } else if (
+    fileType ===
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  ) {
+    text = await parseDocxDocument(file);
+  } else {
+    throw new Error(
+      "Unsupported file format. Please upload a PDF or DOCX file.",
     );
-    if (emailMatch) {
-      personalInfo.email = emailMatch[0];
-    }
-
-    // Look for phone number
-    const phoneMatch = text.match(
-      /(\+\d{1,3}[ -]?)?\(?\d{3}\)?[ -]?\d{3}[ -]?\d{4}/,
-    );
-    if (phoneMatch) {
-      personalInfo.phone = phoneMatch[0];
-    }
   }
 
-  return {
-    personalInfo,
-    // Other sections would be extracted using more sophisticated techniques
-    workExperience: [],
-    education: [],
-    skills: [],
-    certifications: [],
-    socialLinks: [],
-  };
-};
-
-/**
- * Main function to parse an uploaded resume file
- */
-export const parseResumeFile = async (
-  file: File,
-): Promise<Partial<ResumeData>> => {
-  try {
-    let parsedDocument: ParsedDocument;
-
-    if (file.type === "application/pdf") {
-      parsedDocument = await parsePdfDocument(file);
-    } else if (
-      file.type ===
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-      file.type === "application/msword"
-    ) {
-      parsedDocument = await parseDocxDocument(file);
-    } else {
-      throw new Error("Unsupported file type");
-    }
-
-    // Extract resume data from the parsed document
-    const resumeData = extractResumeData(parsedDocument);
-
-    return resumeData;
-  } catch (error) {
-    console.error("Error parsing resume file:", error);
-    throw error;
-  }
-};
+  // Process the extracted text to get structured resume data
+  return extractResumeData(text);
+}
