@@ -78,10 +78,10 @@ pipeline {
                 echo '{"token":"'${VERCEL_TOKEN}'"}' > .vercel/credentials.json
                 
                 # Pull Vercel project settings first
-                pnpm dlx vercel pull --yes
+                pnpm dlx vercel pull --yes --token ${VERCEL_TOKEN}
                 
                 # Build the app using pnpm dlx instead of global installation
-                pnpm dlx vercel build --yes
+                pnpm dlx vercel build --yes --token ${VERCEL_TOKEN}
                 '''
             }
         }
@@ -91,7 +91,7 @@ pipeline {
                 // Deploy to Vercel using pnpm dlx
                 sh '''
                 cd ${APP_DIR}
-                pnpm dlx vercel deploy --prebuilt --prod --yes
+                pnpm dlx vercel deploy --prebuilt --prod --yes --token ${VERCEL_TOKEN}
                 '''
             }
         }
