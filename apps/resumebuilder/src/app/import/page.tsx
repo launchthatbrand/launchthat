@@ -1,11 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { ResumeDataPayload } from "../api/receive-data/route";
 import { useResumeStore } from "@/store/useResumeStore";
 
-import { ResumeDataPayload } from "../api/receive-data/route";
+// Function to handle promises without warning
+const ignoredPromise = (promise: Promise<unknown>): void => {
+  promise.catch((error) => console.error("Ignored promise error:", error));
+};
 
 interface ErrorResponse {
   error: string;
@@ -15,7 +20,7 @@ interface ImportResponse {
   resumeData: ResumeDataPayload;
 }
 
-export default function ImportPage() {
+function ImportContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
@@ -28,7 +33,7 @@ export default function ImportPage() {
     useResumeStore();
 
   useEffect(() => {
-    async function processImportData() {
+    async function fetchImportData() {
       try {
         setIsLoading(true);
 
@@ -43,12 +48,12 @@ export default function ImportPage() {
 
         if (!response.ok) {
           const errorData = (await response.json()) as ErrorResponse;
-          throw new Error(errorData.error ?? "Failed to import resume data");
+          throw new Error(errorData.error || "Failed to import resume data");
         }
 
         const data = (await response.json()) as ImportResponse;
 
-        if (data.resumeData === undefined) {
+        if (!data.resumeData) {
           throw new Error("No resume data found");
         }
 
@@ -100,27 +105,36 @@ export default function ImportPage() {
         }
 
         // Redirect to the main editor after successful import
-        setTimeout(() => {
-          router.push("/");
-        }, 1500);
-      } catch (err) {
-        console.error("Error importing resume data:", err);
+        ignoredPromise(
+          new Promise((resolve) => {
+            setTimeout(() => {
+              router.push("/");
+              resolve(true);
+            }, 1500);
+          }),
+        );
+      } catch (error) {
+        console.error("Error importing resume data:", error);
         setError(
-          err instanceof Error ? err.message : "Failed to import resume data",
+          error instanceof Error
+            ? error.message
+            : "Failed to import resume data",
         );
       } finally {
         setIsLoading(false);
       }
     }
 
-    processImportData();
+    if (token) {
+      ignoredPromise(fetchImportData());
+    }
   }, [
     token,
+    router,
     updateHeaderData,
     updateSectionItems,
     addSection,
     setTemplate,
-    router,
   ]);
 
   if (isLoading) {
@@ -216,5 +230,30 @@ export default function ImportPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+// Wrap the component in a Suspense boundary for useSearchParams
+export default function ImportPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50">
+          <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
+            <h1 className="mb-6 text-center text-2xl font-bold text-gray-900">
+              Loading Import Page
+            </h1>
+            <div className="flex flex-col items-center justify-center">
+              <LoadingSpinner size="lg" />
+              <p className="mt-4 text-center text-gray-600">
+                Preparing to import resume data...
+              </p>
+            </div>
+          </div>
+        </div>
+      }
+    >
+      <ImportContent />
+    </Suspense>
   );
 }

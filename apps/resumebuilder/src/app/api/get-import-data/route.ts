@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     let resumeData: ResumeDataPayload;
     try {
       resumeData = JSON.parse(storedData) as ResumeDataPayload;
-    } catch (_) {
+    } catch {
       return NextResponse.json(
         { error: "Invalid resume data format" },
         { status: 400 },
