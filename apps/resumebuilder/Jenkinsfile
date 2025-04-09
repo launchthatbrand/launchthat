@@ -17,12 +17,30 @@ pipeline {
         VERCEL_PROJECT_ID = 'resumebuilder'
     }
 
-    // Only run this pipeline if changes are made to this app's directory
-    triggers {
-        changeset "apps/resumebuilder/**"
-    }
-
     stages {
+        stage('Check for App Changes') {
+            steps {
+                script {
+                    // Get the list of changed files in this commit
+                    def changedFiles = sh(script: "git diff --name-only HEAD~1 HEAD", returnStdout: true).trim()
+                    
+                    // Check if any of the changed files are in the resumebuilder app directory
+                    def appChanged = changedFiles.split('\n').any { file -> 
+                        file.startsWith('apps/resumebuilder/') 
+                    }
+                    
+                    // Skip remaining stages if app wasn't changed
+                    if (!appChanged && !currentBuild.getBuildCauses('UserIdCause')) {
+                        echo "No changes detected in ${APP_DIR}. Skipping build."
+                        currentBuild.result = 'ABORTED'
+                        error("No changes detected in ${APP_DIR}. Build aborted.")
+                    } else {
+                        echo "Changes detected in ${APP_DIR} or manual build triggered. Proceeding with build."
+                    }
+                }
+            }
+        }
+        
         stage('Checkout') {
             steps {
                 // Checkout the monorepo
