@@ -85,6 +85,14 @@ pipeline {
                 # Pull Vercel project settings first
                 pnpm dlx vercel pull --yes --token ${VERCEL_TOKEN}
                 
+                # Convert .env.local to .env if it exists
+                if [ -f .env.local ]; then
+                    mv .env.local .env
+                    echo "Converted .env.local to .env"
+                else
+                    echo "Warning: .env.local not found after vercel pull"
+                fi
+                
                 # Build the app using pnpm dlx instead of global installation
                 pnpm dlx vercel build --yes --token ${VERCEL_TOKEN} 
                 '''
