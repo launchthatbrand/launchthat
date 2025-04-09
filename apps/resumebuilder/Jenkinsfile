@@ -44,6 +44,14 @@ pipeline {
                                 mkdir -p $HOME/nodejs
                                 tar -xzf node.tar.gz -C $HOME/nodejs --strip-components=1
                                 export PATH="$HOME/nodejs/bin:$PATH"
+                                # Add to .bashrc for persistence in same session
+                                echo 'export PATH="$HOME/nodejs/bin:$PATH"' >> $HOME/.bashrc
+                                # Source to make it available in this shell
+                                source $HOME/.bashrc
+                                # Write to Jenkins environment file for cross-stage persistence
+                                echo "PATH=$PATH" >> $WORKSPACE/.jenkins_env
+                                # Validate path is set correctly
+                                echo "Updated PATH: $PATH"
                                 rm node.tar.gz
                             elif command -v wget &> /dev/null; then
                                 echo "Downloading and installing Node.js using wget"
@@ -51,6 +59,14 @@ pipeline {
                                 mkdir -p $HOME/nodejs
                                 tar -xzf node.tar.gz -C $HOME/nodejs --strip-components=1
                                 export PATH="$HOME/nodejs/bin:$PATH"
+                                # Add to .bashrc for persistence in same session
+                                echo 'export PATH="$HOME/nodejs/bin:$PATH"' >> $HOME/.bashrc
+                                # Source to make it available in this shell
+                                source $HOME/.bashrc
+                                # Write to Jenkins environment file for cross-stage persistence
+                                echo "PATH=$PATH" >> $WORKSPACE/.jenkins_env
+                                # Validate path is set correctly
+                                echo "Updated PATH: $PATH"
                                 rm node.tar.gz
                             else
                                 echo "ERROR: Neither curl nor wget are available. Cannot install Node.js."
@@ -62,6 +78,23 @@ pipeline {
                     
                     // Verify Node.js installation
                     sh '''
+                    # Source bashrc to ensure the PATH is updated if it was modified in previous steps
+                    source $HOME/.bashrc
+                    
+                    # Load environment variables from previous steps if available
+                    if [ -f "$WORKSPACE/.jenkins_env" ]; then
+                        source $WORKSPACE/.jenkins_env
+                    fi
+                    
+                    # Export PATH directly if nodejs directory exists
+                    if [ -d "$HOME/nodejs/bin" ]; then
+                        export PATH="$HOME/nodejs/bin:$PATH"
+                        # Update environment file
+                        echo "PATH=$PATH" > $WORKSPACE/.jenkins_env
+                    fi
+                    
+                    echo "Current PATH: $PATH"
+                    
                     if command -v node &> /dev/null; then
                         echo "Node.js installed successfully:"
                         node -v
@@ -103,14 +136,23 @@ pipeline {
                             # Add pnpm to PATH if installed via script
                             export PNPM_HOME="${HOME}/.local/share/pnpm"
                             export PATH="${PNPM_HOME}:${PATH}"
+                            
+                            # Add to PATH persistence
+                            echo 'export PNPM_HOME="${HOME}/.local/share/pnpm"' >> $HOME/.bashrc
+                            echo 'export PATH="${PNPM_HOME}:${PATH}"' >> $HOME/.bashrc
+                            source $HOME/.bashrc
+                            
+                            # Update environment file for cross-stage persistence
+                            echo "PNPM_HOME=$PNPM_HOME" >> $WORKSPACE/.jenkins_env
+                            echo "PATH=$PATH" > $WORKSPACE/.jenkins_env
                         fi
                     fi
                     
                     # Verify installations
                     echo "Node.js version:"
-                    node -v
+                    node -v || echo "Node.js is not available in PATH: $PATH"
                     echo "pnpm version:"
-                    pnpm -v || echo "pnpm still not available"
+                    pnpm -v || echo "pnpm is not available in PATH: $PATH"
                     '''
                 }
             }
@@ -150,6 +192,11 @@ pipeline {
             steps {
                 // Install dependencies using pnpm
                 sh '''
+                # Load environment variables from previous steps
+                if [ -f "$WORKSPACE/.jenkins_env" ]; then
+                    source $WORKSPACE/.jenkins_env
+                fi
+                
                 # Ensure we're using the right Node.js version if nvm is available
                 if [ -f "$HOME/.nvm/nvm.sh" ]; then
                     . "$HOME/.nvm/nvm.sh"
@@ -167,6 +214,11 @@ pipeline {
             steps {
                 // Install Vercel CLI globally
                 sh '''
+                # Load environment variables from previous steps
+                if [ -f "$WORKSPACE/.jenkins_env" ]; then
+                    source $WORKSPACE/.jenkins_env
+                fi
+                
                 # Ensure we're using the right Node.js version if nvm is available
                 if [ -f "$HOME/.nvm/nvm.sh" ]; then
                     . "$HOME/.nvm/nvm.sh"
@@ -184,6 +236,11 @@ pipeline {
             steps {
                 // Build the app using Vercel build
                 sh '''
+                # Load environment variables from previous steps
+                if [ -f "$WORKSPACE/.jenkins_env" ]; then
+                    source $WORKSPACE/.jenkins_env
+                fi
+                
                 # Ensure we're using the right Node.js version if nvm is available
                 if [ -f "$HOME/.nvm/nvm.sh" ]; then
                     . "$HOME/.nvm/nvm.sh"
@@ -208,6 +265,11 @@ pipeline {
             steps {
                 // Deploy to Vercel using the prebuilt flag
                 sh '''
+                # Load environment variables from previous steps
+                if [ -f "$WORKSPACE/.jenkins_env" ]; then
+                    source $WORKSPACE/.jenkins_env
+                fi
+                
                 # Ensure we're using the right Node.js version if nvm is available
                 if [ -f "$HOME/.nvm/nvm.sh" ]; then
                     . "$HOME/.nvm/nvm.sh"
@@ -226,6 +288,11 @@ pipeline {
                 script {
                     // Set up SSH for Git operations
                     sh '''
+                    # Load environment variables from previous steps
+                    if [ -f "$WORKSPACE/.jenkins_env" ]; then
+                        source $WORKSPACE/.jenkins_env
+                    fi
+                    
                     # Set up a temporary directory
                     TEMP_DIR=$(mktemp -d)
                     echo "Setting up client repository in ${TEMP_DIR}..."
