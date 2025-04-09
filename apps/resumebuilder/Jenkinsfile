@@ -81,7 +81,7 @@ pipeline {
                 pnpm dlx vercel pull --yes --token ${VERCEL_TOKEN}
                 
                 # Build the app using pnpm dlx instead of global installation
-                pnpm dlx vercel build --yes --token ${VERCEL_TOKEN} --ignore-scripts
+                pnpm dlx vercel build --yes --token ${VERCEL_TOKEN} --no-install
                 '''
             }
         }
