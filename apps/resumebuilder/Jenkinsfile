@@ -50,8 +50,11 @@ pipeline {
         
         stage('Install Dependencies') {
             steps {
-                // Install dependencies using pnpm
-                sh 'pnpm install'
+                // Install only the necessary dependencies using pnpm filtering
+                sh '''
+                # Install shared dependencies first
+                pnpm install --filter="@acme/resumebuilder..." --prefer-offline --frozen-lockfile
+                '''
             }
         }
         
