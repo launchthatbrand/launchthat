@@ -50,10 +50,12 @@ pipeline {
         
         stage('Install Dependencies') {
             steps {
-                // Install only the necessary dependencies using pnpm filtering
+                // Install dependencies but skip postinstall scripts
                 sh '''
-                # Install shared dependencies first
-                pnpm install --filter="@acme/resumebuilder..." --prefer-offline --frozen-lockfile
+                pnpm install --filter="@acme/resumebuilder..." --frozen-lockfile --ignore-scripts
+                
+                # If needed, manually run specific setup scripts that we still want
+                # Example: pnpm --filter="@acme/db" generate
                 '''
             }
         }
