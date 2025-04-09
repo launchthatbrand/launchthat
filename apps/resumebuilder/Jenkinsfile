@@ -63,13 +63,13 @@ pipeline {
         stage('Install Vercel CLI') {
             steps {
                 // Install Vercel CLI globally
-                sh 'npm install -g vercel'
+                sh 'pnpm install -g vercel'
             }
         }
 
         stage('Build with Vercel') {
             steps {
-                // Build the app using Vercel build
+                // Build the app using Vercel build via pnpm dlx
                 sh '''
                 cd ${APP_DIR}
                 # Create a .vercel directory if it doesn't exist
@@ -78,18 +78,18 @@ pipeline {
                 # Create project.json file with project settings
                 echo '{"orgId":"'${VERCEL_ORG_ID}'","projectId":"'${VERCEL_PROJECT_ID}'"}' > .vercel/project.json
                 
-                # Build the app
-                VERCEL_TOKEN=${VERCEL_TOKEN} vercel build
+                # Build the app using pnpm dlx instead of global installation
+                VERCEL_TOKEN=${VERCEL_TOKEN} pnpm dlx vercel build
                 '''
             }
         }
         
         stage('Deploy to Vercel') {
             steps {
-                // Deploy to Vercel using the prebuilt flag
+                // Deploy to Vercel using pnpm dlx
                 sh '''
                 cd ${APP_DIR}
-                VERCEL_TOKEN=${VERCEL_TOKEN} vercel deploy --prebuilt --prod
+                VERCEL_TOKEN=${VERCEL_TOKEN} pnpm dlx vercel deploy --prebuilt --prod
                 '''
             }
         }
@@ -138,7 +138,7 @@ pipeline {
 # Check if Vercel CLI is installed
 if ! command -v vercel &> /dev/null; then
     echo "Vercel CLI not found. Installing..."
-    npm install -g vercel
+    pnpm install -g vercel
 fi
 
 # Deploy the pre-built app
@@ -161,7 +161,7 @@ This repository contains a pre-built Next.js application ready for deployment to
 
 1. Make sure you have Vercel CLI installed:
    ```
-   npm install -g vercel
+   pnpm install -g vercel
    ```
 
 2. Authenticate with Vercel:
