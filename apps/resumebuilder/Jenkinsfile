@@ -1,0 +1,179 @@
+pipeline {
+    agent any
+
+    environment {
+        // Define environment variables
+        APP_NAME = 'resumebuilder'
+        APP_DIR = 'apps/resumebuilder'
+        // These credentials should be configured in Jenkins
+        CLIENT_REPO_CREDS = credentials('jenkins-work')
+        CLIENT_REPO_URL = credentials('RESUMEBUILDER_REPO_URL')
+        VERCEL_TOKEN = credentials('VERCEL_TOKEN')
+        VERCEL_ORG_ID = credentials('VERCEL_ORG_ID') 
+        VERCEL_PROJECT_ID = 'resumebuilder'
+    }
+
+    // Only run this pipeline if changes are made to this app's directory
+    triggers {
+        changeset "apps/resumebuilder/**"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the monorepo
+                checkout scm
+            }
+        }
+        
+        stage('Install Dependencies') {
+            steps {
+                // Install dependencies using pnpm
+                sh 'pnpm install'
+            }
+        }
+        
+        stage('Install Vercel CLI') {
+            steps {
+                // Install Vercel CLI globally
+                sh 'npm install -g vercel'
+            }
+        }
+
+        stage('Build with Vercel') {
+            steps {
+                // Build the app using Vercel build
+                sh '''
+                cd ${APP_DIR}
+                # Create a .vercel directory if it doesn't exist
+                mkdir -p .vercel
+                
+                # Create project.json file with project settings
+                echo '{"orgId":"'${VERCEL_ORG_ID}'","projectId":"'${VERCEL_PROJECT_ID}'"}' > .vercel/project.json
+                
+                # Build the app
+                VERCEL_TOKEN=${VERCEL_TOKEN} vercel build
+                '''
+            }
+        }
+        
+        stage('Deploy to Vercel') {
+            steps {
+                // Deploy to Vercel using the prebuilt flag
+                sh '''
+                cd ${APP_DIR}
+                VERCEL_TOKEN=${VERCEL_TOKEN} vercel deploy --prebuilt --prod
+                '''
+            }
+        }
+        
+        stage('Push to Client Repo') {
+            steps {
+                script {
+                    // Set up SSH for Git operations
+                    sh '''
+                    # Set up a temporary directory
+                    TEMP_DIR=$(mktemp -d)
+                    
+                    # Clone the client repository
+                    GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git clone ${CLIENT_REPO_URL} ${TEMP_DIR}
+                    
+                    # Clear existing content but keep .git
+                    find ${TEMP_DIR} -mindepth 1 -maxdepth 1 -not -path "${TEMP_DIR}/.git" -exec rm -rf {} \\;
+                    
+                    # Copy the app source code (excluding .git, node_modules, etc.)
+                    rsync -av --exclude='.git' --exclude='node_modules' --exclude='.turbo' ${APP_DIR}/ ${TEMP_DIR}/
+                    
+                    # Copy Vercel build output to ensure it's available
+                    mkdir -p ${TEMP_DIR}/.vercel
+                    rsync -av ${APP_DIR}/.vercel/output/ ${TEMP_DIR}/.vercel/output/
+                    
+                    # Create a simple deployment script for the client
+                    cat > ${TEMP_DIR}/deploy-to-vercel.sh << 'EOL'
+#!/bin/bash
+# Script to deploy the pre-built output to Vercel
+# Requires Vercel CLI and authentication token
+
+# Check if Vercel CLI is installed
+if ! command -v vercel &> /dev/null; then
+    echo "Vercel CLI not found. Installing..."
+    npm install -g vercel
+fi
+
+# Deploy the pre-built app
+echo "Deploying pre-built app to Vercel..."
+vercel deploy --prebuilt --prod
+
+echo "Deployment complete!"
+EOL
+                    chmod +x ${TEMP_DIR}/deploy-to-vercel.sh
+                    
+                    # Create a README explaining the deployment process
+                    cat > ${TEMP_DIR}/VERCEL_DEPLOYMENT.md << 'EOL'
+# Vercel Deployment
+
+This repository contains a pre-built Next.js application ready for deployment to Vercel.
+
+## Deployment Options
+
+### Option 1: Manual Deployment
+
+1. Make sure you have Vercel CLI installed:
+   ```
+   npm install -g vercel
+   ```
+
+2. Authenticate with Vercel:
+   ```
+   vercel login
+   ```
+
+3. Run the deployment script:
+   ```
+   ./deploy-to-vercel.sh
+   ```
+
+### Option 2: Vercel Dashboard
+
+1. Connect this repository to Vercel through the Vercel dashboard.
+2. Configure the build settings:
+   - Framework Preset: Next.js
+   - Build Command: Skip the build command, as the app is pre-built
+   - Output Directory: .vercel/output
+
+## Important Notes
+
+- The `.vercel/output` directory contains the pre-built application.
+- Do not delete this directory as it contains the production-ready build.
+- Updates to this repository are pushed automatically from the monorepo build system.
+EOL
+                    
+                    # Commit and push changes
+                    cd ${TEMP_DIR}
+                    git config user.name "Jenkins CI"
+                    git config user.email "jenkins@example.com"
+                    git add .
+                    git commit -m "Deploy: Pre-built app $(date) from monorepo CI" || echo "No changes to commit"
+                    GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git push origin main
+                    
+                    # Clean up
+                    rm -rf ${TEMP_DIR}
+                    '''
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            // Clean up workspace
+            cleanWs()
+        }
+        success {
+            echo "Successfully built and deployed ${APP_NAME} to Vercel and client repository"
+        }
+        failure {
+            echo "Failed to build or deploy ${APP_NAME}"
+        }
+    }
+} 
