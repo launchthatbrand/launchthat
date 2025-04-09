@@ -11,7 +11,7 @@ pipeline {
         APP_DIR = 'apps/resumebuilder'
         // These credentials should be configured in Jenkins
         CLIENT_REPO_CREDS = credentials('jenkins-work')
-        CLIENT_REPO_URL = env.RESUMEBUILDER_REPO_URL
+        CLIENT_REPO_URL = credentials('RESUMEBUILDER_REPO_URL')
         VERCEL_TOKEN = credentials('VERCEL_TOKEN')
         VERCEL_ORG_ID = credentials('QUCAUSA_VERCEL_ORG_ID') 
         VERCEL_PROJECT_ID = 'resumebuilder'
