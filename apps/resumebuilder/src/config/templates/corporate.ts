@@ -1,4 +1,4 @@
-import { Template } from "./types";
+import type { Template } from "./types";
 
 // Corporate template for business-focused profiles
 export const corporateTemplate: Template = {

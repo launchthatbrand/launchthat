@@ -1,4 +1,4 @@
-import { Template } from "./types";
+import type { Template } from "./types";
 
 // Minimalist template inspired by Olivia Wilson resume
 export const minimalistTemplate: Template = {

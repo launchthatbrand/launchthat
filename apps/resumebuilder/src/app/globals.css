@@ -2,27 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --workforce-blue: #175f96;
+  --workforce-light-blue: #5391c2;
+  --workforce-orange: #f4a046;
+  --workforce-light-gray: #f7f9fb;
+  --workforce-gray: #768092;
+  --workforce-dark-gray: #4a5568;
+  --workforce-border: #e2e8f0;
+}
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --background: 210 40% 98%;
+    --foreground: 217 19% 27%;
+
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 217 19% 27%;
+
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 327 66% 69%;
-    --primary-foreground: 337 65.5% 17.1%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 72.22% 50.59%;
+    --popover-foreground: 217 19% 27%;
+
+    --primary: 210 70% 34%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 28 89% 62%;
+    --secondary-foreground: 217 19% 27%;
+
+    --muted: 210 10% 96%;
+    --muted-foreground: 213 10% 45%;
+
+    --accent: 28 89% 62%;
+    --accent-foreground: 217 19% 27%;
+
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5% 64.9%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 213 10% 45%;
+
     --radius: 0.5rem;
   }
 
@@ -46,5 +65,60 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .workforce-button {
+    @apply rounded bg-[var(--workforce-blue)] px-4 py-2 text-white transition-colors hover:bg-[var(--workforce-light-blue)];
+  }
+
+  .workforce-sidebar {
+    @apply min-h-screen w-64 border-r border-[var(--workforce-border)] bg-white;
+  }
+
+  .workforce-sidebar-item {
+    @apply flex items-center gap-3 px-4 py-3 text-[var(--workforce-dark-gray)] transition-colors hover:bg-[var(--workforce-light-gray)];
+  }
+
+  .workforce-sidebar-item.active {
+    @apply bg-[var(--workforce-light-gray)] font-medium text-[var(--workforce-blue)];
+  }
+
+  .workforce-header {
+    @apply flex items-center justify-between border-b border-[var(--workforce-border)] bg-white px-6 py-3;
+  }
+
+  .workforce-card {
+    @apply rounded-md border border-[var(--workforce-border)] bg-white shadow-sm;
+  }
+
+  .workforce-input {
+    @apply rounded-md border border-[var(--workforce-border)] px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[var(--workforce-blue)];
+  }
+
+  .workforce-heading-1 {
+    @apply text-2xl font-bold text-[var(--workforce-dark-gray)];
+  }
+
+  .workforce-heading-2 {
+    @apply text-xl font-semibold text-[var(--workforce-dark-gray)];
+  }
+
+  .workforce-heading-3 {
+    @apply text-lg font-medium text-[var(--workforce-dark-gray)];
+  }
+
+  .workforce-link {
+    @apply text-[var(--workforce-blue)] transition-colors hover:text-[var(--workforce-light-blue)];
   }
 }

@@ -25,18 +25,46 @@
     padding: 48px;
     margin: 0;
     box-sizing: border-box;
+    overflow: visible !important;
   }
 
-  /* Remove any backgrounds and ensure proper text color */
-  #resume-content {
-    background: white !important;
-    color: black !important;
+  /* Preserve template colors and styling */
+  #resume-content * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Ensure template-specific colors are preserved */
+  .text-primary,
+  h1,
+  h2,
+  h3,
+  [class*="text-"],
+  [class*="bg-"],
+  [style*="color"],
+  [style*="background"] {
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Preserve borders and other decorative elements */
+  [class*="border"],
+  [class*="shadow"],
+  [class*="rounded"],
+  [style*="border"],
+  [style*="box-shadow"],
+  [style*="border-radius"] {
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
   }
 
   /* Hide all interactive elements */
   button,
   [role="button"],
-  .interactive-only {
+  .interactive-only,
+  .print:hidden {
     display: none !important;
   }
 
@@ -45,9 +73,44 @@
     text-decoration: none !important;
   }
 
-  /* Ensure proper font rendering */
+  /* Force page breaks where needed */
+  .page-break-before {
+    page-break-before: always;
+  }
+
+  .page-break-after {
+    page-break-after: always;
+  }
+
+  /* Preserve font styles */
   * {
-    -webkit-print-color-adjust: exact !important;
+    font-family: inherit !important;
+  }
+
+  /* Ensure template fonts and sizes are preserved */
+  [class*="font-"],
+  [class*="text-"],
+  [style*="font"],
+  [style*="text"] {
+    font-weight: inherit !important;
+    font-size: inherit !important;
+    font-family: inherit !important;
+  }
+
+  /* Ensure the workplace-styled components print correctly */
+  .workforce-header,
+  .workforce-footer,
+  .workforce-sidebar-item,
+  .workforce-button,
+  .workforce-card {
     print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  /* Ensure resume sections are correctly displayed */
+  #resume-content .section,
+  #resume-content [class*="section"] {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 }

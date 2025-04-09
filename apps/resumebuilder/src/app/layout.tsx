@@ -1,13 +1,13 @@
 import "~/app/globals.css";
 import "@/styles/print.css";
+import "@/styles/print-templates.css";
 
 import type { Metadata, Viewport } from "next";
 
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import { Inter } from "next/font/google";
-import { Providers } from "./providers";
-import StandardLayout from "@acme/ui/layout/StandardLayout";
+import { TRPCReactProvider } from "@/trpc/react";
 import { cn } from "@acme/ui/lib/utils";
 import { env } from "~/env";
 
@@ -22,8 +22,8 @@ export const metadata: Metadata = {
       ? "https://turbo.t3.gg"
       : "http://localhost:3000",
   ),
-  title: "Resume Builder",
-  description: "Build and customize your resume",
+  title: "Resume Builder - Workforce Development",
+  description: "Create professional resumes in minutes",
   openGraph: {
     title: "Create T3 Turbo",
     description: "Simple monorepo with shared backend for web & mobile apps",
@@ -35,7 +35,9 @@ export const metadata: Metadata = {
     site: "@jullerino",
     creator: "@jullerino",
   },
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export const viewport: Viewport = {
@@ -45,9 +47,10 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout(props: {
+export default function RootLayout({
+  children,
+}: {
   children: React.ReactNode;
-  sidebar: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -59,11 +62,15 @@ export default function RootLayout(props: {
           inter.variable,
         )}
       >
-        <Providers>
-          <StandardLayout sidebar={props.sidebar} appName="Resume Builder">
-            {props.children}
-          </StandardLayout>
-        </Providers>
+        <div className="theme-provider light">
+          <TRPCReactProvider>
+            <div className="flex min-h-screen flex-col">
+              <main className="flex-1 bg-[var(--workforce-light-gray)]">
+                {children}
+              </main>
+            </div>
+          </TRPCReactProvider>
+        </div>
       </body>
     </html>
   );

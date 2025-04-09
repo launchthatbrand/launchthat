@@ -1,4 +1,4 @@
-import { Template } from "./types";
+import type { Template } from "./types";
 
 // Professional template inspired by Sophie Wright resume
 export const professionalTemplate: Template = {

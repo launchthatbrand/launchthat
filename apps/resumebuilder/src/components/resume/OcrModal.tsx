@@ -8,12 +8,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { SectionData, useResumeStore } from "@/store/useResumeStore";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import type { SectionData } from "@/store/useResumeStore";
+import { useResumeStore } from "@/store/useResumeStore";
 
 interface OcrModalProps {
   isOpen: boolean;

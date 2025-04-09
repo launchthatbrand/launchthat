@@ -1,4 +1,4 @@
-import { Template } from "./types";
+import type { Template } from "./types";
 
 // Creative template inspired by Austin Bronson resume
 export const creativeTemplate: Template = {

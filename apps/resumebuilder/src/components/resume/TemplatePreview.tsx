@@ -1,5 +1,7 @@
 "use client";
 
+import type { TemplateName, TemplateStyles } from "@/config/templates/types";
+
 import { cn } from "@/lib/utils";
 import { templates } from "@/config/templates";
 import { useState } from "react";
@@ -9,9 +11,6 @@ interface TemplatePreviewProps {
   isSelected: boolean;
   onClick: () => void;
 }
-
-// Create a safer typing for templateName
-type TemplateName = keyof typeof templates;
 
 export const TemplatePreview = ({
   templateName,
@@ -27,11 +26,14 @@ export const TemplatePreview = ({
 
   // Always fall back to 'modern' template if the requested one doesn't exist
   const actualTemplateName = Object.keys(templates).includes(templateName)
-    ? templateName
-    : "modern";
+    ? (templateName as TemplateName)
+    : ("modern" as TemplateName);
 
   // Now we can safely access the template - TypeScript now knows it's defined
-  const template = templates[actualTemplateName as TemplateName];
+  const template = templates[actualTemplateName];
+
+  // Extract styles for use in the component
+  const templateStyles: TemplateStyles = template.styles;
 
   // Handle the click with animation
   const handleClick = () => {
@@ -66,11 +68,11 @@ export const TemplatePreview = ({
         {/* Template thumbnail */}
         <div className="aspect-[8.5/11] w-full bg-white p-3">
           {/* Header section preview */}
-          <div className={cn("w-full scale-90", template.header)}>
-            <div className={template.headerName}>
+          <div className={cn("w-full scale-90", templateStyles.header)}>
+            <div className={templateStyles.headerName}>
               <div className="h-3 w-1/2 rounded-full bg-gray-300" />
             </div>
-            <div className={template.headerTitle}>
+            <div className={templateStyles.headerTitle}>
               <div className="h-2 w-1/3 rounded-full bg-gray-200" />
             </div>
             <div className="mt-1 flex flex-wrap gap-2">
@@ -80,8 +82,8 @@ export const TemplatePreview = ({
           </div>
 
           {/* Experience section preview */}
-          <div className={cn("mt-2", template.section)}>
-            <div className={template.sectionTitle}>
+          <div className={cn("mt-2", templateStyles.section)}>
+            <div className={templateStyles.sectionTitle}>
               <div className="h-2 w-1/3 rounded-full bg-gray-300" />
             </div>
             <div className="mt-1 space-y-1">
@@ -91,8 +93,8 @@ export const TemplatePreview = ({
           </div>
 
           {/* Skills section preview */}
-          <div className={cn("mt-2", template.section)}>
-            <div className={template.sectionTitle}>
+          <div className={cn("mt-2", templateStyles.section)}>
+            <div className={templateStyles.sectionTitle}>
               <div className="h-2 w-1/4 rounded-full bg-gray-300" />
             </div>
             <div className="mt-1 flex flex-wrap gap-1">

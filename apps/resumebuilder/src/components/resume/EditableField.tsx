@@ -53,6 +53,8 @@ export const EditableField = ({
     }
   }, [isEditing]);
 
+  const enableEditing = () => setIsEditing(true);
+
   if (isEditing) {
     return multiline ? (
       <textarea
@@ -64,6 +66,7 @@ export const EditableField = ({
         className={`w-full resize-none bg-white p-1 focus:outline-none focus:ring-2 focus:ring-blue-300 ${className}`}
         rows={Math.max(2, editValue.split("\n").length)}
         autoFocus
+        data-field-value="edit"
       />
     ) : (
       <input
@@ -75,25 +78,33 @@ export const EditableField = ({
         onKeyDown={handleKeyDown}
         className={`w-full bg-white p-1 focus:outline-none focus:ring-2 focus:ring-blue-300 ${className}`}
         autoFocus
+        data-field-value="edit"
       />
     );
   }
 
   return (
     <div
-      onClick={() => setIsEditing(true)}
-      className={`cursor-text whitespace-pre-wrap p-1 ${
-        value ? "" : "italic text-gray-400"
-      } ${className}`}
-      tabIndex={0}
-      aria-label="Edit text"
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          setIsEditing(true);
-        }
-      }}
+      className={`group relative ${className || ""}`}
+      data-editable-field="true"
+      data-field-type={multiline ? "multiline" : "singleline"}
     >
-      {value || "Click to edit"}
+      <div
+        className={`min-h-[1.5rem] cursor-text whitespace-pre-wrap break-words empty:before:text-gray-400 empty:before:content-['Click_to_edit'] ${
+          value ? "" : "text-gray-400"
+        }`}
+        onClick={enableEditing}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            enableEditing();
+          }
+        }}
+        tabIndex={0}
+        data-field-value="display"
+        aria-label="Click to edit text"
+      >
+        {value}
+      </div>
     </div>
   );
 };

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { FileUp } from "lucide-react";
-import { SectionData } from "@/store/useResumeStore";
+import type { SectionData } from "@/store/useResumeStore";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { HeaderData, SectionData } from "@/store/useResumeStore";
+import type { HeaderData, SectionData } from "@/store/useResumeStore";
 
 import { ResumeHeader } from "@/components/resume/ResumeHeader";
 import { SortableSection } from "@/components/resume/SortableSection";
@@ -44,7 +44,10 @@ export const LayoutRenderer = ({
   // Standard layout with all sections in a single column
   const renderStandardLayout = () => {
     return (
-      <div className="mx-auto max-w-3xl space-y-8 p-8">
+      <div
+        className="mx-auto max-w-3xl space-y-8 p-8"
+        data-layout-type="standard"
+      >
         <ResumeHeader
           data={headerData}
           onChange={onHeaderChange}
@@ -85,11 +88,11 @@ export const LayoutRenderer = ({
       (section) => !sidebarSectionIds.includes(section.id),
     );
 
-    const sidebarClasses = `${templateStyles.sidebar ?? "w-1/3 p-6"}`;
-    const mainClasses = "flex-1 p-6 space-y-6";
+    const sidebarClasses = `${templateStyles.sidebar ?? "w-1/3 p-6"} sidebar-content`;
+    const mainClasses = "flex-1 p-6 space-y-6 main-content";
 
     const sidebarContent = (
-      <div className={sidebarClasses}>
+      <div className={sidebarClasses} data-content-type="sidebar">
         <div className="mb-6">
           <ResumeHeader
             data={headerData}
@@ -119,7 +122,7 @@ export const LayoutRenderer = ({
     );
 
     const mainContent = (
-      <div className={mainClasses}>
+      <div className={mainClasses} data-content-type="main">
         {mainSections.map((section) => (
           <SortableSection
             key={section.id}
@@ -141,7 +144,10 @@ export const LayoutRenderer = ({
     );
 
     return (
-      <div className="mx-auto flex max-w-3xl">
+      <div
+        className="mx-auto flex max-w-3xl"
+        data-layout-type={`sidebar-${position}`}
+      >
         {position === "left" ? (
           <>
             {sidebarContent}
@@ -177,41 +183,27 @@ export const LayoutRenderer = ({
     );
 
     return (
-      <div className="mx-auto max-w-3xl space-y-8 p-8">
+      <div className="mx-auto max-w-3xl space-y-8 p-8" data-layout-type="split">
         <ResumeHeader
           data={headerData}
           onChange={onHeaderChange}
           templateStyles={templateStyles}
         />
 
-        {otherSections.length > 0 && (
-          <div className="mb-6">
-            {otherSections.map((section) => (
-              <SortableSection
-                key={section.id}
-                title={section.title}
-                items={section.items}
-                onItemsChange={(items) => onSectionChange(section.id, items)}
-                multiline={true}
-                templateName={templateName}
-                onDelete={() => onDeleteSection(section.id)}
-              />
-            ))}
-          </div>
-        )}
-
-        <div className="flex gap-4">
-          <div className="flex-1 space-y-6">
+        <div className="flex gap-8" data-section-row="split">
+          <div className="flex-1 space-y-6" data-column="left">
             {leftSections.map((section) => (
               <SortableSection
                 key={section.id}
                 title={section.title}
                 items={section.items}
                 onItemsChange={(items) => onSectionChange(section.id, items)}
-                multiline={true}
+                multiline={
+                  section.id === "experience" || section.id === "education"
+                }
                 templateName={templateName}
                 onDelete={
-                  !["experience"].includes(section.id)
+                  !["experience", "education"].includes(section.id)
                     ? () => onDeleteSection(section.id)
                     : undefined
                 }
@@ -219,14 +211,16 @@ export const LayoutRenderer = ({
             ))}
           </div>
 
-          <div className="flex-1 space-y-6">
+          <div className="flex-1 space-y-6" data-column="right">
             {rightSections.map((section) => (
               <SortableSection
                 key={section.id}
                 title={section.title}
                 items={section.items}
                 onItemsChange={(items) => onSectionChange(section.id, items)}
-                multiline={section.id === "education"}
+                multiline={
+                  section.id === "experience" || section.id === "education"
+                }
                 templateName={templateName}
                 onDelete={
                   !["education", "skills"].includes(section.id)
@@ -237,6 +231,24 @@ export const LayoutRenderer = ({
             ))}
           </div>
         </div>
+
+        {otherSections.length > 0 && (
+          <div className="mt-8 space-y-6" data-section-row="other">
+            {otherSections.map((section) => (
+              <SortableSection
+                key={section.id}
+                title={section.title}
+                items={section.items}
+                onItemsChange={(items) => onSectionChange(section.id, items)}
+                multiline={
+                  section.id === "experience" || section.id === "education"
+                }
+                templateName={templateName}
+                onDelete={() => onDeleteSection(section.id)}
+              />
+            ))}
+          </div>
+        )}
       </div>
     );
   };

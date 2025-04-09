@@ -1,31 +1,31 @@
 "use client";
 
-import type { DragEndEvent } from "@dnd-kit/core";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { getTemplateStyles } from "@/config/templates";
 import {
-  closestCenter,
   DndContext,
   KeyboardSensor,
   PointerSensor,
+  closestCenter,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
-  arrayMove,
   SortableContext,
+  arrayMove,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Trash2 } from "lucide-react";
 
+import type { DragEndEvent } from "@dnd-kit/core";
 import { SortableItemsList } from "./sortable/SortableItemsList";
+import { Trash2 } from "lucide-react";
+import { getTemplateStyles } from "@/config/templates";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 
 export interface SortableItem {
   id: string;
@@ -112,7 +112,10 @@ export const SortableSection = ({
 
   return (
     <div
-      className={`group relative transition-all duration-200 ${sectionClass} ${className}`}
+      className={`group relative transition-all duration-200 ${sectionClass} ${className} section`}
+      data-section-id={title.toLowerCase().replace(/\s+/g, "-")}
+      data-section-type={title.toLowerCase().replace(/\s+/g, "-")}
+      data-is-sidebar={isSidebar.toString()}
     >
       <Accordion
         type="single"
@@ -123,7 +126,8 @@ export const SortableSection = ({
         <AccordionItem value="section-content" className="border-none">
           <div className="mb-3 flex items-center justify-between">
             <AccordionTrigger
-              className={`relative transition-all duration-200 hover:no-underline ${titleClass} px-0 py-1`}
+              className={`section-title relative transition-all duration-200 hover:no-underline ${titleClass} px-0 py-1`}
+              data-title-text={title}
             >
               {title}
             </AccordionTrigger>
@@ -137,7 +141,10 @@ export const SortableSection = ({
               </button>
             )}
           </div>
-          <AccordionContent className="pb-0 pt-2">
+          <AccordionContent
+            className="section-content pb-0 pt-2"
+            data-content-type="section-items"
+          >
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}

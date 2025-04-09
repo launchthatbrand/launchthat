@@ -1,4 +1,4 @@
-import { Template } from "./types";
+import type { Template } from "./types";
 
 // Modern template inspired by Frank Graham resume
 export const modernTemplate: Template = {

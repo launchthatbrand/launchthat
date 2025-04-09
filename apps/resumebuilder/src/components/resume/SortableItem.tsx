@@ -1,12 +1,11 @@
 "use client";
 
-import type { TemplateStyles } from "@/config/templates";
-import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Trash } from "lucide-react";
-
 import { DragHandle } from "./DragHandle";
 import { EditableField } from "./EditableField";
+import type { TemplateStyles } from "@/config/templates";
+import { Trash } from "lucide-react";
+import { useSortable } from "@dnd-kit/sortable";
 
 interface SortableItemProps {
   id: string;
@@ -56,11 +55,14 @@ export const SortableItem = ({
       className={`flex items-start gap-2 ${itemClass} ${
         isDragging ? "opacity-50" : ""
       } ${className}`}
+      data-item-id={id}
+      data-sortable-item="true"
+      data-item-type={isSidebar ? "sidebar-item" : "main-item"}
     >
       <div {...attributes} {...listeners} className="print:hidden">
         <DragHandle />
       </div>
-      <div className="flex-1 print:pl-0">
+      <div className="flex-1 print:pl-0" data-item-content="true">
         <EditableField
           value={value}
           onChange={onChange}

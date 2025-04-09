@@ -1,6 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
-import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
+
+import { create } from "zustand";
+import { v4 as uuidv4 } from "uuid";
 
 // Define types for resume data
 export type ResumeSection =
@@ -341,12 +342,13 @@ export const useResumeStore = create<ResumeState>()(
 
         setActiveTemplate: (templateId) =>
           set((state) => {
-            // Use type assertion to ensure TypeScript knows we'll always have a valid template
-            const activeTemplate =
-              state.availableTemplates.find((t) => t.id === templateId) ??
-              (resumeTemplates[0] as ResumeTemplate);
-
-            return { activeTemplate };
+            // Find the template or fall back to DEFAULT_TEMPLATE which we know exists
+            // and is guaranteed to be a valid ResumeTemplate
+            const foundTemplate = state.availableTemplates.find(
+              (t) => t.id === templateId,
+            );
+            // We use DEFAULT_TEMPLATE directly which is already typed as ResumeTemplate
+            return { activeTemplate: foundTemplate ?? DEFAULT_TEMPLATE };
           }),
 
         resetResumeData: () =>

@@ -1,4 +1,4 @@
-import { Template, TemplateName, TemplateStyles } from "./types";
+import type { Template, TemplateName, TemplateStyles } from "./types";
 
 import { corporateTemplate } from "./corporate";
 import { creativeTemplate } from "./creative";

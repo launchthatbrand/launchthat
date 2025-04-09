@@ -1,6 +1,6 @@
 "use client";
 
-import { Template } from "@/config/templates/types";
+import type { Template } from "@/config/templates/types";
 import { templates } from "@/config/templates";
 
 interface TemplateGridProps {
