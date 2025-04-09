@@ -15,9 +15,107 @@ pipeline {
         VERCEL_TOKEN = credentials('VERCEL_TOKEN')
         VERCEL_ORG_ID = credentials('QUCAUSA_VERCEL_ORG_ID') 
         VERCEL_PROJECT_ID = 'resumebuilder'
+        // Node.js and package manager versions
+        NODE_VERSION = '18.17.0'
+        PNPM_VERSION = '9.15.4'
     }
 
     stages {
+        stage('Setup Environment') {
+            steps {
+                script {
+                    // Check if node is installed with correct version
+                    sh '''
+                    if ! command -v node &> /dev/null || [[ "$(node -v)" != *"${NODE_VERSION}"* ]]; then
+                        echo "Node.js ${NODE_VERSION} needs to be installed"
+                        
+                        # Try to use NVM if available
+                        if [ -s "$HOME/.nvm/nvm.sh" ]; then
+                            echo "Using NVM to install Node.js"
+                            . "$HOME/.nvm/nvm.sh"
+                            nvm install ${NODE_VERSION}
+                            nvm use ${NODE_VERSION}
+                        else
+                            # Try to install Node.js directly
+                            echo "NVM not found, trying to install Node.js directly"
+                            if command -v curl &> /dev/null; then
+                                echo "Downloading and installing Node.js using curl"
+                                curl -sL https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz -o node.tar.gz
+                                mkdir -p $HOME/nodejs
+                                tar -xzf node.tar.gz -C $HOME/nodejs --strip-components=1
+                                export PATH="$HOME/nodejs/bin:$PATH"
+                                rm node.tar.gz
+                            elif command -v wget &> /dev/null; then
+                                echo "Downloading and installing Node.js using wget"
+                                wget -q https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz -O node.tar.gz
+                                mkdir -p $HOME/nodejs
+                                tar -xzf node.tar.gz -C $HOME/nodejs --strip-components=1
+                                export PATH="$HOME/nodejs/bin:$PATH"
+                                rm node.tar.gz
+                            else
+                                echo "ERROR: Neither curl nor wget are available. Cannot install Node.js."
+                                exit 1
+                            fi
+                        fi
+                    fi
+                    '''
+                    
+                    // Verify Node.js installation
+                    sh '''
+                    if command -v node &> /dev/null; then
+                        echo "Node.js installed successfully:"
+                        node -v
+                        
+                        # Verify Node.js version meets requirements
+                        NODE_VERSION=$(node -v | cut -d "v" -f 2)
+                        REQUIRED_VERSION="18.0.0"
+                        
+                        if [ "$(printf '%s\\n' "$REQUIRED_VERSION" "$NODE_VERSION" | sort -V | head -n1)" = "$REQUIRED_VERSION" ]; then
+                            echo "Node.js version $NODE_VERSION meets the minimum required version $REQUIRED_VERSION"
+                        else
+                            echo "ERROR: Node.js version $NODE_VERSION does not meet the minimum required version $REQUIRED_VERSION. Exiting build."
+                            exit 1
+                        fi
+                    else
+                        echo "ERROR: Failed to install Node.js. Exiting build."
+                        exit 1
+                    fi
+                    '''
+                    
+                    // Check if pnpm is available
+                    sh '''
+                    if ! command -v pnpm &> /dev/null; then
+                        echo "Installing pnpm using npm"
+                        if command -v npm &> /dev/null; then
+                            npm install -g pnpm@${PNPM_VERSION}
+                        else
+                            echo "npm not found, trying to install pnpm directly"
+                            # Try to use curl or wget to install pnpm directly
+                            if command -v curl &> /dev/null; then
+                                curl -fsSL https://get.pnpm.io/install.sh | sh -
+                            elif command -v wget &> /dev/null; then
+                                wget -qO- https://get.pnpm.io/install.sh | sh -
+                            else
+                                echo "ERROR: Neither npm, curl, nor wget are available. Cannot install pnpm."
+                                exit 1
+                            fi
+                            
+                            # Add pnpm to PATH if installed via script
+                            export PNPM_HOME="${HOME}/.local/share/pnpm"
+                            export PATH="${PNPM_HOME}:${PATH}"
+                        fi
+                    fi
+                    
+                    # Verify installations
+                    echo "Node.js version:"
+                    node -v
+                    echo "pnpm version:"
+                    pnpm -v || echo "pnpm still not available"
+                    '''
+                }
+            }
+        }
+        
         stage('Check for App Changes') {
             steps {
                 script {
@@ -51,14 +149,34 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Install dependencies using pnpm
-                sh 'pnpm install'
+                sh '''
+                # Ensure we're using the right Node.js version if nvm is available
+                if [ -f "$HOME/.nvm/nvm.sh" ]; then
+                    . "$HOME/.nvm/nvm.sh"
+                    nvm use ${NODE_VERSION} || echo "Failed to use Node.js ${NODE_VERSION}"
+                fi
+                
+                # Install dependencies
+                echo "Installing dependencies with pnpm..."
+                pnpm install
+                '''
             }
         }
         
         stage('Install Vercel CLI') {
             steps {
                 // Install Vercel CLI globally
-                sh 'npm install -g vercel'
+                sh '''
+                # Ensure we're using the right Node.js version if nvm is available
+                if [ -f "$HOME/.nvm/nvm.sh" ]; then
+                    . "$HOME/.nvm/nvm.sh"
+                    nvm use ${NODE_VERSION} || echo "Failed to use Node.js ${NODE_VERSION}"
+                fi
+                
+                # Install Vercel CLI
+                echo "Installing Vercel CLI..."
+                npm install -g vercel
+                '''
             }
         }
 
@@ -66,6 +184,12 @@ pipeline {
             steps {
                 // Build the app using Vercel build
                 sh '''
+                # Ensure we're using the right Node.js version if nvm is available
+                if [ -f "$HOME/.nvm/nvm.sh" ]; then
+                    . "$HOME/.nvm/nvm.sh"
+                    nvm use ${NODE_VERSION} || echo "Failed to use Node.js ${NODE_VERSION}"
+                fi
+                
                 cd ${APP_DIR}
                 # Create a .vercel directory if it doesn't exist
                 mkdir -p .vercel
@@ -74,6 +198,7 @@ pipeline {
                 echo '{"orgId":"'${VERCEL_ORG_ID}'","projectId":"'${VERCEL_PROJECT_ID}'"}' > .vercel/project.json
                 
                 # Build the app
+                echo "Building with Vercel..."
                 VERCEL_TOKEN=${VERCEL_TOKEN} vercel build
                 '''
             }
@@ -83,7 +208,14 @@ pipeline {
             steps {
                 // Deploy to Vercel using the prebuilt flag
                 sh '''
+                # Ensure we're using the right Node.js version if nvm is available
+                if [ -f "$HOME/.nvm/nvm.sh" ]; then
+                    . "$HOME/.nvm/nvm.sh"
+                    nvm use ${NODE_VERSION} || echo "Failed to use Node.js ${NODE_VERSION}"
+                fi
+                
                 cd ${APP_DIR}
+                echo "Deploying to Vercel..."
                 VERCEL_TOKEN=${VERCEL_TOKEN} vercel deploy --prebuilt --prod
                 '''
             }
@@ -96,14 +228,17 @@ pipeline {
                     sh '''
                     # Set up a temporary directory
                     TEMP_DIR=$(mktemp -d)
+                    echo "Setting up client repository in ${TEMP_DIR}..."
                     
                     # Clone the client repository
+                    echo "Cloning client repository..."
                     GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git clone ${CLIENT_REPO_URL} ${TEMP_DIR}
                     
                     # Navigate to the client repo
                     cd ${TEMP_DIR}
                     
                     # Check if the target branch exists
+                    echo "Checking for branch: ${CLIENT_BRANCH}"
                     if ! git show-ref --verify --quiet refs/remotes/origin/${CLIENT_BRANCH}; then
                         echo "Branch ${CLIENT_BRANCH} doesn't exist, creating it..."
                         
@@ -111,20 +246,25 @@ pipeline {
                         git checkout -b ${CLIENT_BRANCH}
                     else
                         # Branch exists, check it out
+                        echo "Branch ${CLIENT_BRANCH} exists, checking it out..."
                         git checkout ${CLIENT_BRANCH} || git checkout -b ${CLIENT_BRANCH} origin/${CLIENT_BRANCH}
                     fi
                     
                     # Clear existing content but keep .git
+                    echo "Clearing existing content..."
                     find . -mindepth 1 -maxdepth 1 -not -path "./.git" -exec rm -rf {} \\;
                     
                     # Copy the app source code (excluding .git, node_modules, etc.)
+                    echo "Copying app source code..."
                     rsync -av --exclude='.git' --exclude='node_modules' --exclude='.turbo' ${WORKSPACE}/${APP_DIR}/ ${TEMP_DIR}/
                     
                     # Copy Vercel build output to ensure it's available
+                    echo "Copying Vercel build output..."
                     mkdir -p .vercel
                     rsync -av ${WORKSPACE}/${APP_DIR}/.vercel/output/ .vercel/output/
                     
                     # Create a simple deployment script for the client
+                    echo "Creating deployment script..."
                     cat > deploy-to-vercel.sh << 'EOL'
 #!/bin/bash
 # Script to deploy the pre-built output to Vercel
@@ -145,6 +285,7 @@ EOL
                     chmod +x deploy-to-vercel.sh
                     
                     # Create a README explaining the deployment process
+                    echo "Creating documentation..."
                     cat > VERCEL_DEPLOYMENT.md << 'EOL'
 # Vercel Deployment
 
@@ -185,21 +326,25 @@ This repository contains a pre-built Next.js application ready for deployment to
 EOL
                     
                     # Add information about the branch
+                    echo "Adding branch information..."
                     echo "
 ## Branch Information
 
 This code is on the ${CLIENT_BRANCH} branch of the repository." >> VERCEL_DEPLOYMENT.md
                     
                     # Commit and push changes
+                    echo "Committing changes..."
                     git config user.name "Jenkins CI"
                     git config user.email "jenkins@example.com"
                     git add .
                     git commit -m "Deploy: Pre-built app $(date) to branch ${CLIENT_BRANCH} from monorepo CI" || echo "No changes to commit"
                     
                     # Push to the specified branch
+                    echo "Pushing to branch: ${CLIENT_BRANCH}..."
                     GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git push origin ${CLIENT_BRANCH}
                     
                     # Clean up
+                    echo "Cleaning up temporary directory..."
                     cd ${WORKSPACE}
                     rm -rf ${TEMP_DIR}
                     '''
@@ -223,6 +368,7 @@ This code is on the ${CLIENT_BRANCH} branch of the repository." >> VERCEL_DEPLOY
         failure {
             script {
                 echo "Failed to build or deploy ${env.APP_NAME}"
+                echo "Check the Jenkins logs for more information"
             }
         }
     }
