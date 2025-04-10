@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { useMemo } from "react";
 
-import { useTheme } from "./ThemeProvider";
+import { useTheme } from "./UnifiedThemeProvider";
 
 export interface ThemeSelectorProps {
   /**

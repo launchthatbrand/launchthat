@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import type { ThemeDefinition } from "../types";
-import { useTheme } from "./ThemeProvider";
+import { useTheme } from "./UnifiedThemeProvider";
 
 export interface ThemeCarouselProps {
   className?: string;

@@ -26,7 +26,7 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "@acme/ui/components/toggle-group";
 
 import { ThemeCarousel } from "./ThemeCarousel";
-import { useTheme } from "./ThemeProvider";
+import { useTheme } from "./UnifiedThemeProvider";
 
 export interface ThemeSwitcherProps {
   className?: string;
@@ -50,7 +50,7 @@ export function ThemeSwitcher({
     availableThemes,
     canChangeBaseTheme,
     canChangeThemeStyle,
-    config,
+    extensions,
     debugMode,
   } = useTheme();
 
@@ -71,6 +71,9 @@ export function ThemeSwitcher({
     "top-right": "top-4 right-4",
     "top-left": "top-4 left-4",
   };
+
+  // Check if there are any extensions available
+  const hasExtensions = Object.keys(extensions).length > 0;
 
   return (
     <div
@@ -116,10 +119,7 @@ export function ThemeSwitcher({
                   <TabsTrigger
                     value="extensions"
                     className="flex-1"
-                    disabled={
-                      !config.extensions ||
-                      Object.keys(config.extensions).length === 0
-                    }
+                    disabled={!hasExtensions}
                   >
                     Extensions
                   </TabsTrigger>
@@ -186,17 +186,23 @@ export function ThemeSwitcher({
                       App-specific theme settings will appear here
                     </p>
 
-                    {config.extensions &&
-                    Object.keys(config.extensions).length > 0 ? (
+                    {hasExtensions ? (
                       <div className="grid grid-cols-1 gap-4">
-                        {Object.entries(config.extensions).map(
-                          ([id, extension]) => (
+                        {Object.entries(extensions).map(([id, extension]) => {
+                          // Type assertion for extension properties
+                          const typedExtension = extension as {
+                            name: string;
+                            templates: Array<unknown>;
+                          };
+
+                          return (
                             <div key={id} className="rounded-md border p-4">
                               <h3 className="mb-2 font-medium">
-                                {extension.name}
+                                {typedExtension.name || "Extension"}
                               </h3>
                               <p className="mb-2 text-sm text-muted-foreground">
-                                {extension.templates.length} templates available
+                                {typedExtension.templates?.length || 0}{" "}
+                                templates available
                               </p>
                               <Button
                                 variant="outline"
@@ -206,8 +212,8 @@ export function ThemeSwitcher({
                                 Configure
                               </Button>
                             </div>
-                          ),
-                        )}
+                          );
+                        })}
                       </div>
                     ) : (
                       <p className="text-sm italic text-muted-foreground">

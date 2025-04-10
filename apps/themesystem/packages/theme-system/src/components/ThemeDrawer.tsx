@@ -26,7 +26,7 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "@acme/ui/components/toggle-group";
 
 import { ThemeCarousel } from "./ThemeCarousel";
-import { useTheme } from "./ThemeProvider";
+import { useTheme } from "./UnifiedThemeProvider";
 
 export interface ThemeDrawerProps {
   className?: string;

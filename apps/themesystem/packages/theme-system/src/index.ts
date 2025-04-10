@@ -1,40 +1,39 @@
-// Export types
-export * from "./types";
+// Export ThemeSystemConfig with alias to avoid conflicts
+import { ThemeSystemConfig as OriginalThemeSystemConfig } from "./types";
+
+// Export basic types
+export type { ThemeDefinition, ThemePreviewProvider } from "./types";
+
+// Just export the legacy type for backwards compatibility
+export type { OriginalThemeSystemConfig as ThemeSystemConfig };
 
 // Export providers
 export * from "./providers/StaticPreviewProvider";
 
-// Export components
-export * from "./components/ThemeProvider";
-export * from "./components/ThemePreview";
-export * from "./components/ThemeSelector";
-export * from "./components/ThemeCarousel";
-export * from "./components/ThemeDrawer";
-export * from "./components/ThemeSwitcher";
-export * from "./components/ThemeToggle";
-export * from "./components/ThemeInitializer";
+// Export all components (including UnifiedThemeProvider and ServerThemeProvider)
+export * from "./components";
 
-// Re-export some types from components
+// Export types from theme-constants
+export type { BaseTheme, PermissionLevel } from "./components/theme-constants";
+
+// Export types from UnifiedThemeProvider
 export type {
-  BaseTheme,
-  PermissionLevel,
-  ThemeSystemPermissions,
-  ThemeSystemConfig,
-  ThemeExtension,
-  ThemeExtensionTemplate,
+  ThemeConfig,
   ThemeProviderProps,
-} from "./components/ThemeProvider";
+} from "./components/UnifiedThemeProvider";
 
+// Export UI component types
 export type { ThemePreviewProps } from "./components/ThemePreview";
-
 export type {
   ThemeSelectorProps,
   ThemeItemProps,
   ContainerProps,
 } from "./components/ThemeSelector";
-
-export type { ThemeSwitcherProps } from "./components/ThemeSwitcher";
+export type { ThemeSwitcherProps } from "./components/FloatingThemeSwitcher";
 export type { ThemeToggleProps } from "./components/ThemeToggle";
+
+// Export constants
+export * from "./components/theme-constants";
 
 // Utilities
 export { generateGradientFromColor } from "./utils/gradient";

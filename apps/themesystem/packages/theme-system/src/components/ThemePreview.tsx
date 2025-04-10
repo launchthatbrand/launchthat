@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import type { ThemeDefinition } from "../types";
-import { useTheme } from "./ThemeProvider";
+import { useTheme } from "./UnifiedThemeProvider";
 
 export interface ThemePreviewProps {
   /**
@@ -83,6 +83,7 @@ export function ThemePreview({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [previewSrc, setPreviewSrc] = useState<string | null>(null);
 
   // Determine the theme to preview
   const previewTheme =
@@ -102,6 +103,12 @@ export function ThemePreview({
   const getPreviewSource = () => {
     if (!previewTheme) return null;
 
+    // Check if we're in a browser environment
+    if (typeof window === "undefined") {
+      // Server-side rendering, return null or a placeholder
+      return null;
+    }
+
     const targetTheme = applyTheme ? previewTheme.id : themeStyle;
     const url = new URL(previewUrl, window.location.origin);
     url.searchParams.set("theme", targetTheme);
@@ -109,7 +116,10 @@ export function ThemePreview({
     return url.toString();
   };
 
-  const previewSrc = getPreviewSource();
+  // Use useEffect to set the preview source client-side only
+  useEffect(() => {
+    setPreviewSrc(getPreviewSource());
+  }, [previewTheme, themeStyle, previewUrl, applyTheme]);
 
   useEffect(() => {
     if (!previewTheme) {
@@ -196,7 +206,7 @@ export function ThemePreview({
     );
   };
 
-  // Show fallback in case of errors
+  // Show fallback in case of errors or during server-side rendering
   if (error || !previewSrc) {
     return renderFallback();
   }
