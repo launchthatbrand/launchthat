@@ -71,17 +71,47 @@ function ThemeStateManager({
 
     const root = document.documentElement;
 
-    // First remove any previous theme classes
-    root.classList.forEach((cls) => {
-      if (
-        cls.startsWith("theme-") ||
-        cls === "glass" ||
-        cls === "brutalist" ||
-        cls === "aggressive"
-      ) {
-        root.classList.remove(cls);
+    if (debugMode) {
+      console.log(`[ThemeSystem] Applying theme style: ${themeStyle}`);
+      console.log(
+        `[ThemeSystem] Current classes on HTML:`,
+        Array.from(root.classList),
+      );
+    }
+
+    // Get all known theme identifiers from ThemeStyle type
+    const allThemeIds = [
+      "glass",
+      "brutalist",
+      "aggressive",
+      "minimal",
+      "modern",
+    ];
+
+    // First remove any previous theme classes using a more comprehensive approach
+    const classesToRemove = [];
+
+    // Check if the class is a "theme-*" prefix
+    for (const cls of Array.from(root.classList)) {
+      if (cls.startsWith("theme-")) {
+        classesToRemove.push(cls);
       }
-    });
+    }
+
+    // Check if the class is a direct theme identifier (glass, brutalist, etc.)
+    for (const themeId of allThemeIds) {
+      if (root.classList.contains(themeId)) {
+        classesToRemove.push(themeId);
+      }
+    }
+
+    // Now remove all identified classes
+    for (const cls of classesToRemove) {
+      if (debugMode) {
+        console.log(`[ThemeSystem] Removing class: ${cls}`);
+      }
+      root.classList.remove(cls);
+    }
 
     // Add the current theme class
     root.classList.add(`theme-${themeStyle}`);
@@ -92,6 +122,10 @@ function ThemeStateManager({
 
     if (debugMode) {
       console.log(`[ThemeSystem] Applied theme: ${themeStyle}`);
+      console.log(
+        `[ThemeSystem] Updated classes on HTML:`,
+        Array.from(root.classList),
+      );
     }
   }, [themeStyle, debugMode]);
 
@@ -119,7 +153,7 @@ export function ThemeProvider({
   children,
   config = {},
   userRole = "user",
-  initialDebugMode = false,
+  initialDebugMode = true,
 }: ThemeProviderProps) {
   // Get the stored theme style
   const initialThemeStyle = () => {

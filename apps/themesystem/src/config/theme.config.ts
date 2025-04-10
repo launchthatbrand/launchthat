@@ -102,7 +102,7 @@ const themeConfig: ThemeConfig = {
   },
   permissions: {
     baseTheme: "user", // 'user', 'admin', 'none'
-    themeLibrary: "admin", // Who can change the global theme
+    themeLibrary: "user", // Who can change the global theme (changed from "admin" to "user" for testing)
     extensions: "user", // Who can use extensions
   },
   defaultTheme: "system",
