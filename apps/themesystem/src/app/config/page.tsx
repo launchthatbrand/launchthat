@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 
+import { useTheme } from "@acme/theme-system";
 import {
   Card,
   CardContent,
@@ -16,8 +17,6 @@ import {
   TabsList,
   TabsTrigger,
 } from "@acme/ui/components/tabs";
-
-import { useTheme } from "~/providers/ThemeProvider";
 
 export default function ConfigPage() {
   const { config } = useTheme();
@@ -104,7 +103,7 @@ export type PermissionLevel = "user" | "admin" | "none";
                       <div>
                         <h3 className="mb-2 font-medium">Theme Library</h3>
                         <div className="flex flex-wrap gap-2">
-                          {config.themeLibrary.map((theme) => (
+                          {config.themes.map((theme) => (
                             <span
                               key={theme.id}
                               className="rounded bg-muted px-2 py-1 text-xs"

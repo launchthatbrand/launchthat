@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 
+import { useTheme } from "@acme/theme-system";
 import {
   Card,
   CardContent,
@@ -18,8 +19,6 @@ import {
   TableHeader,
   TableRow,
 } from "@acme/ui/components/table";
-
-import { useTheme } from "~/providers/ThemeProvider";
 
 export default function PermissionsPage() {
   const { config } = useTheme();

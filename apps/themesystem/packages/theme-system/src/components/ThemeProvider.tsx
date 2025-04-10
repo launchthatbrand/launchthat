@@ -123,17 +123,44 @@ function ThemeStateManager({
       );
     }
 
-    // Get all theme classes (this should be expanded with your actual theme ids)
-    const themeClassesToRemove = Array.from(root.classList).filter(
-      (cls) => cls.startsWith("theme-") || cls === themeStyle,
-    );
+    // Skip if themeStyle is empty or undefined
+    if (!themeStyle) {
+      console.warn("[ThemeSystem] Attempted to apply empty theme style");
+      return;
+    }
 
-    // Remove previous theme classes
-    for (const cls of themeClassesToRemove) {
-      if (debugMode) {
-        console.log(`[ThemeSystem] Removing class: ${cls}`);
+    // Get a fixed list of all known theme IDs - expand this as needed
+    const allThemeIds = [
+      "glass",
+      "brutalist",
+      "aggressive",
+      "minimal",
+      "modern",
+      "template",
+      "system",
+    ];
+
+    // Create a static copy of the classList to avoid modification issues during iteration
+    const currentClasses = Array.from(root.classList);
+
+    // First, check for any theme-* classes
+    for (const cls of currentClasses) {
+      if (cls.startsWith("theme-")) {
+        if (debugMode) {
+          console.log(`[ThemeSystem] Removing theme class: ${cls}`);
+        }
+        root.classList.remove(cls);
       }
-      root.classList.remove(cls);
+    }
+
+    // Then remove any direct theme classes (glass, brutalist, etc.)
+    for (const themeId of allThemeIds) {
+      if (root.classList.contains(themeId)) {
+        if (debugMode) {
+          console.log(`[ThemeSystem] Removing direct theme class: ${themeId}`);
+        }
+        root.classList.remove(themeId);
+      }
     }
 
     // Add the current theme class
@@ -142,6 +169,11 @@ function ThemeStateManager({
 
     // Store in localStorage
     localStorage.setItem(THEME_STYLE_KEY, themeStyle);
+    if (debugMode) {
+      console.log(
+        `[ThemeSystem] Saved theme style to localStorage: ${themeStyle}`,
+      );
+    }
 
     if (debugMode) {
       console.log(`[ThemeSystem] Applied theme: ${themeStyle}`);
@@ -243,12 +275,33 @@ export function ThemeProvider({
   const initialThemeStyle = useMemo(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem(THEME_STYLE_KEY);
-      if (stored && mergedConfig.themes.some((t) => t.id === stored)) {
-        return stored;
+
+      if (stored) {
+        // Check if the stored theme is valid
+        const isValid = mergedConfig.themes.some((t) => t.id === stored);
+
+        if (isValid) {
+          if (initialDebugMode) {
+            console.log(`[ThemeSystem] Loaded stored theme: ${stored}`);
+          }
+          return stored;
+        } else {
+          if (initialDebugMode) {
+            console.warn(
+              `[ThemeSystem] Stored theme "${stored}" is not valid, falling back to default`,
+            );
+          }
+        }
+      } else {
+        if (initialDebugMode) {
+          console.log(
+            `[ThemeSystem] No stored theme found, using default: ${mergedConfig.defaultStyle}`,
+          );
+        }
       }
     }
     return mergedConfig.defaultStyle;
-  }, [mergedConfig.defaultStyle, mergedConfig.themes]);
+  }, [mergedConfig.defaultStyle, mergedConfig.themes, initialDebugMode]);
 
   // Initialize the base theme
   const initialBaseTheme = useMemo(() => {
@@ -325,16 +378,38 @@ export function ThemeProvider({
   // Theme style setter
   const handleSetThemeStyle = useCallback(
     (style: string) => {
-      if (!canChangeThemeStyle) return;
+      if (!canChangeThemeStyle) {
+        if (debugMode) {
+          console.warn(
+            "[ThemeSystem] Permission denied: Cannot change theme style",
+          );
+        }
+        return;
+      }
+
+      // Validate that the theme exists in available themes
+      const isValidTheme = mergedConfig.themes.some((t) => t.id === style);
+      if (!isValidTheme) {
+        console.warn(`[ThemeSystem] Invalid theme style: ${style}`);
+        return;
+      }
 
       setThemeStyleState(style);
-      localStorage.setItem(THEME_STYLE_KEY, style);
 
-      if (debugMode) {
-        console.log(`[ThemeSystem] Theme style set to: ${style}`);
+      // Persist to localStorage
+      try {
+        localStorage.setItem(THEME_STYLE_KEY, style);
+        if (debugMode) {
+          console.log(`[ThemeSystem] Theme style set and persisted: ${style}`);
+        }
+      } catch (error) {
+        console.error(
+          "[ThemeSystem] Failed to save theme to localStorage:",
+          error,
+        );
       }
     },
-    [canChangeThemeStyle, debugMode],
+    [canChangeThemeStyle, debugMode, mergedConfig.themes],
   );
 
   // Extension theme getters and setters

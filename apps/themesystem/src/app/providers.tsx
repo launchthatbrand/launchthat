@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 
-import { ThemeProvider, ThemeToggle } from "@acme/ui/components/theme";
+import { ThemeToggle } from "@acme/theme-system";
 import BaseProvider from "@acme/ui/providers/BaseProvider";
 
 import { TRPCReactProvider } from "~/trpc/react";

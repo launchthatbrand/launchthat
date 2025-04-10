@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 
+import { useTheme } from "@acme/theme-system";
 import { Button } from "@acme/ui/components/button";
 import {
   Card,
@@ -18,8 +19,6 @@ import {
   TabsList,
   TabsTrigger,
 } from "@acme/ui/components/tabs";
-
-import { useTheme } from "~/providers/ThemeProvider";
 
 export default function ExtensionsPage() {
   const { config } = useTheme();

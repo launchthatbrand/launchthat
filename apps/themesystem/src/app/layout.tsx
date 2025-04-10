@@ -4,9 +4,14 @@ import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 
 import type { ThemeDefinition } from "@acme/theme-system";
-import { ThemeProvider, ThemeSwitcher } from "@acme/theme-system";
+import {
+  ThemeInitializer,
+  ThemeProvider,
+  ThemeSwitcher,
+} from "@acme/theme-system";
 import { cn } from "@acme/ui/lib/utils";
 
+// Theme definitions (in a specific order)
 const themes: ThemeDefinition[] = [
   {
     id: "glass",
@@ -136,6 +141,7 @@ export default function RootLayout({
           }}
           initialDebugMode={true}
         >
+          {/* <ThemeInitializer /> */}
           <div className="relative flex min-h-screen flex-col">
             {children}
             <ThemeSwitcher position="bottom-right" />

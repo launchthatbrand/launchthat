@@ -12,6 +12,7 @@ export * from "./components/ThemeCarousel";
 export * from "./components/ThemeDrawer";
 export * from "./components/ThemeSwitcher";
 export * from "./components/ThemeToggle";
+export * from "./components/ThemeInitializer";
 
 // Re-export some types from components
 export type {

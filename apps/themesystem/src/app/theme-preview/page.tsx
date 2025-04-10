@@ -8,17 +8,20 @@ import { useTheme } from "@acme/theme-system";
 export default function ThemePreviewPage() {
   const searchParams = useSearchParams();
   const themeParam = searchParams.get("theme");
-  const { setThemeStyle, availableThemes, themeStyle, debugMode } = useTheme();
+  const { availableThemes, themeStyle, debugMode } = useTheme();
   const [isReady, setIsReady] = useState(false);
+  const [previewTheme, setPreviewTheme] = useState(themeParam ?? themeStyle);
 
-  // Apply the theme style based on query parameter
+  // Apply the theme classes directly to the preview container instead of changing the global theme
   useEffect(() => {
-    if (themeParam && themeParam !== themeStyle) {
-      if (debugMode) {
-        console.log(`[ThemePreview] Setting theme to: ${themeParam}`);
-      }
-      setThemeStyle(themeParam);
+    if (!themeParam) return;
+
+    if (debugMode) {
+      console.log(`[ThemePreview] Rendering preview for theme: ${themeParam}`);
     }
+
+    // Use local state for preview
+    setPreviewTheme(themeParam);
 
     // Mark as ready after a brief delay to ensure theme has been applied
     const timer = setTimeout(() => {
@@ -29,12 +32,10 @@ export default function ThemePreviewPage() {
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [themeParam, themeStyle, setThemeStyle, debugMode]);
+  }, [themeParam, debugMode]);
 
   // Find the current theme details
-  const currentTheme = availableThemes.find(
-    (t) => t.id === (themeParam ?? themeStyle),
-  );
+  const currentTheme = availableThemes.find((t) => t.id === previewTheme);
 
   if (!isReady) {
     return (
@@ -44,8 +45,14 @@ export default function ThemePreviewPage() {
     );
   }
 
+  // Apply the theme classes directly to the preview container
+  // This won't affect the global theme
+  const themeClasses = `theme-${previewTheme} ${previewTheme}`;
+
   return (
-    <div className="theme-preview-component flex h-full w-full flex-col gap-4 p-4">
+    <div
+      className={`theme-preview-component flex h-full w-full flex-col gap-4 p-4 ${themeClasses}`}
+    >
       {/* Card Component Preview */}
       <div className="rounded-md border border-border bg-card p-4 shadow-sm">
         <h3 className="mb-2 text-lg font-medium">
