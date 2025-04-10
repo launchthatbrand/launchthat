@@ -1,7 +1,5 @@
+import previewImg from './assets/preview.png';
 import type { ThemeDefinition } from "@acme/theme-system";
-
-// Import preview image
-import previewUrl from "./assets/preview.png";
 
 const glassTheme: ThemeDefinition = {
   id: "glass",
@@ -10,7 +8,9 @@ const glassTheme: ThemeDefinition = {
     "Clean, minimal interface with subtle transparency effects and soft shadows.",
   preview: {
     strategy: "static",
-    asset: previewUrl,
+    asset: "/theme-previews/glass.png"
+  },
+    asset: "/theme-previews/glass.png",
   },
   variables: {
     // These would normally be extracted from the CSS

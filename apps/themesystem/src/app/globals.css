@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import theme system */
-@import "../styles/themes/index.css";
+/* Import all theme styles from the theme system package */
+@import "../../packages/theme-system/src/styles/index.css";
 
 @layer base {
   /* Base styles that apply to all themes */

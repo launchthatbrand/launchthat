@@ -1,132 +1,88 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { CameraIcon, DownloadIcon } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
-import { Button } from "@acme/ui/button";
-
-import { ThemePreviewGenerator } from "~/components/ThemePreviewGenerator";
+import { useTheme } from "@acme/theme-system";
 
 export default function ThemePreviewPage() {
   const searchParams = useSearchParams();
-  const router = useRouter();
-  const [theme, setTheme] = useState<string>("glass");
-  const [previewUrls, setPreviewUrls] = useState<Record<string, string>>({});
-  const themeOptions = ["glass", "brutalist", "aggressive", "minimal"];
+  const themeParam = searchParams.get("theme");
+  const { setThemeStyle, availableThemes, themeStyle, debugMode } = useTheme();
+  const [isReady, setIsReady] = useState(false);
 
-  // Get theme from URL if available
+  // Apply the theme style based on query parameter
   useEffect(() => {
-    const themeParam = searchParams.get("theme");
-    if (themeParam && themeOptions.includes(themeParam)) {
-      setTheme(themeParam);
+    if (themeParam && themeParam !== themeStyle) {
+      if (debugMode) {
+        console.log(`[ThemePreview] Setting theme to: ${themeParam}`);
+      }
+      setThemeStyle(themeParam);
     }
-  }, [searchParams]);
 
-  // Change theme
-  const changeTheme = (newTheme: string) => {
-    setTheme(newTheme);
-    router.push(`/theme-preview?theme=${newTheme}`);
-  };
+    // Mark as ready after a brief delay to ensure theme has been applied
+    const timer = setTimeout(() => {
+      setIsReady(true);
+      if (debugMode) {
+        console.log("[ThemePreview] Preview is ready");
+      }
+    }, 100);
 
-  // Handle preview generation
-  const handleImageGenerated = (dataUrl: string) => {
-    setPreviewUrls((prev) => ({
-      ...prev,
-      [theme]: dataUrl,
-    }));
-  };
+    return () => clearTimeout(timer);
+  }, [themeParam, themeStyle, setThemeStyle, debugMode]);
 
-  // Download image
-  const downloadImage = (dataUrl: string, fileName: string) => {
-    const a = document.createElement("a");
-    a.href = dataUrl;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  };
+  // Find the current theme details
+  const currentTheme = availableThemes.find(
+    (t) => t.id === (themeParam ?? themeStyle),
+  );
+
+  if (!isReady) {
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        Loading...
+      </div>
+    );
+  }
 
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="mb-6 text-3xl font-bold">Theme Preview Generator</h1>
-
-      {/* Theme selector */}
-      <div className="mb-6 flex gap-2">
-        {themeOptions.map((themeName) => (
-          <Button
-            key={themeName}
-            variant={theme === themeName ? "default" : "outline"}
-            onClick={() => changeTheme(themeName)}
-          >
-            {themeName.charAt(0).toUpperCase() + themeName.slice(1)}
-          </Button>
-        ))}
-      </div>
-
-      {/* Preview generator */}
-      <div className="rounded-lg bg-gray-100 p-6 dark:bg-gray-800">
-        <ThemePreviewGenerator
-          themeId={theme}
-          onImageGenerated={handleImageGenerated}
-        />
-      </div>
-
-      {/* Gallery of generated previews */}
-      {Object.keys(previewUrls).length > 0 && (
-        <div className="mt-8">
-          <h2 className="mb-4 text-2xl font-bold">Generated Previews</h2>
-          <div className="grid grid-cols-2 gap-6">
-            {Object.entries(previewUrls).map(([themeName, url]) => (
-              <div
-                key={themeName}
-                className="overflow-hidden rounded-lg border"
-              >
-                <div className="flex items-center justify-between bg-gray-100 p-2 dark:bg-gray-800">
-                  <span className="font-medium">
-                    {themeName.charAt(0).toUpperCase() + themeName.slice(1)}{" "}
-                    Theme
-                  </span>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() =>
-                      downloadImage(url, `theme-preview-${themeName}.png`)
-                    }
-                  >
-                    <DownloadIcon className="mr-1 h-4 w-4" />
-                    Download
-                  </Button>
-                </div>
-                <img
-                  src={url}
-                  alt={`${themeName} theme preview`}
-                  className="w-full"
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Generate all button */}
-          {themeOptions.length !== Object.keys(previewUrls).length && (
-            <Button
-              className="mt-4"
-              onClick={() => {
-                // Find themes without previews
-                const themesToGenerate = themeOptions.filter(
-                  (t) => !previewUrls[t],
-                );
-                if (themesToGenerate.length > 0) {
-                  changeTheme(themesToGenerate[0]);
-                }
-              }}
-            >
-              <CameraIcon className="mr-1 h-4 w-4" />
-              Generate Missing Previews
-            </Button>
-          )}
+    <div className="theme-preview-component flex h-full w-full flex-col gap-4 p-4">
+      {/* Card Component Preview */}
+      <div className="rounded-md border border-border bg-card p-4 shadow-sm">
+        <h3 className="mb-2 text-lg font-medium">
+          {currentTheme?.name ?? "Theme"} Card
+        </h3>
+        <p className="text-sm text-muted-foreground">
+          This is a card component styled with the current theme.
+        </p>
+        <div className="mt-4 flex gap-2">
+          <button className="rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground">
+            Primary Button
+          </button>
+          <button className="rounded-md bg-secondary px-3 py-1 text-sm text-secondary-foreground">
+            Secondary
+          </button>
         </div>
-      )}
+      </div>
+
+      {/* Form Elements Preview */}
+      <div className="rounded-md border border-border bg-card p-4 shadow-sm">
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium">Input Field</label>
+          <input
+            type="text"
+            className="rounded-md border border-input bg-background px-3 py-1 text-sm"
+            placeholder="Type something..."
+          />
+        </div>
+      </div>
+
+      {/* Colors Preview */}
+      <div className="grid grid-cols-4 gap-2">
+        <div className="h-8 rounded-md bg-primary"></div>
+        <div className="h-8 rounded-md bg-secondary"></div>
+        <div className="h-8 rounded-md bg-accent"></div>
+        <div className="h-8 rounded-md bg-muted"></div>
+      </div>
     </div>
   );
 }

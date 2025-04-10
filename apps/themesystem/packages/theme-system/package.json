@@ -4,10 +4,18 @@
   "description": "Pluggable theme system for ACME applications",
   "author": "ACME Corp",
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.js",
+  "style": "src/styles/index.css",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.ts"
+    },
+    "./styles": "./src/styles/index.css"
+  },
   "files": [
     "dist",
+    "src/styles",
     "README.md"
   ],
   "scripts": {

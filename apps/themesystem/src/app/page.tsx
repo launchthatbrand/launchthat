@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { ThemePreview, ThemeToggle } from "@acme/theme-system";
 import { Button } from "@acme/ui/components/button";
 import {
   Card,
@@ -9,8 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@acme/ui/components/card";
-
-import { LightDarkToggle } from "~/components/LightDarkToggle";
 
 export default function ThemeSystemDemo() {
   return (
@@ -37,8 +36,10 @@ export default function ThemeSystemDemo() {
               modes with smooth transitions and system preference detection.
             </p>
           </CardContent>
-          <CardFooter>
-            <LightDarkToggle className="w-full" />
+          <CardFooter className="flex justify-center">
+            <div className="w-full max-w-xs">
+              <ThemeToggle variant="compact" size="sm" showLabels={false} />
+            </div>
           </CardFooter>
         </Card>
 
@@ -136,6 +137,38 @@ export default function ThemeSystemDemo() {
             </Button>
           </CardFooter>
         </Card>
+      </div>
+
+      <div className="mt-12 max-w-6xl">
+        <h2 className="mb-6 text-center text-2xl font-bold">
+          Available Themes
+        </h2>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <div className="flex flex-col items-center gap-2">
+            <div className="h-32 w-full overflow-hidden rounded-md">
+              <ThemePreview themeId="glass" showFallback={true} />
+            </div>
+            <span className="font-medium">Glass</span>
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <div className="h-32 w-full overflow-hidden rounded-md">
+              <ThemePreview themeId="brutalist" showFallback={true} />
+            </div>
+            <span className="font-medium">Brutalist</span>
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <div className="h-32 w-full overflow-hidden rounded-md">
+              <ThemePreview themeId="aggressive" showFallback={true} />
+            </div>
+            <span className="font-medium">Aggressive</span>
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <div className="h-32 w-full overflow-hidden rounded-md">
+              <ThemePreview themeId="minimal" showFallback={true} />
+            </div>
+            <span className="font-medium">Minimal</span>
+          </div>
+        </div>
       </div>
 
       <div className="mt-12 max-w-2xl text-center">

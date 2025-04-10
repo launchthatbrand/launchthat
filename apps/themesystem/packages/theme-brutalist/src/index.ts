@@ -1,7 +1,5 @@
+import previewImg from './assets/preview.png';
 import type { ThemeDefinition } from "@acme/theme-system";
-
-// Import preview image
-import previewUrl from "./assets/preview.png";
 
 const brutalistTheme: ThemeDefinition = {
   id: "brutalist",
@@ -10,7 +8,9 @@ const brutalistTheme: ThemeDefinition = {
     "Bold, raw design with high contrast, sharp edges, and minimal decoration.",
   preview: {
     strategy: "static",
-    asset: previewUrl,
+    asset: "/theme-previews/brutalist.png"
+  },
+    asset: "/theme-previews/brutalist.png",
   },
   variables: {
     // These would normally be extracted from the CSS

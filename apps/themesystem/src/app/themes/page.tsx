@@ -3,25 +3,32 @@
 import Link from "next/link";
 import { ArrowLeftIcon, CheckIcon } from "@radix-ui/react-icons";
 
+import { ThemePreview, ThemeSelector, useTheme } from "@acme/theme-system";
 import { Button } from "@acme/ui/components/button";
 import { Card, CardContent } from "@acme/ui/components/card";
 import { cn } from "@acme/ui/lib/utils";
 
-import type { ThemeStyle } from "~/config/theme.config";
-import { ThemeStyleToggle } from "~/components/ThemeStyleToggle";
-import { useTheme } from "~/providers/ThemeProvider";
-
 export default function ThemesPage() {
-  const { themeStyle, setThemeStyle, canChangeThemeStyle, config } = useTheme();
+  const {
+    themeStyle,
+    setThemeStyle,
+    canChangeThemeStyle,
+    availableThemes,
+    debugMode,
+  } = useTheme();
 
   // Function to handle theme change when a theme card is clicked
   const handleThemeChange = (themeId: string) => {
-    console.log("Attempting to change theme to:", themeId);
-    console.log("Can change theme style:", canChangeThemeStyle);
+    if (debugMode) {
+      console.log("Attempting to change theme to:", themeId);
+      console.log("Can change theme style:", canChangeThemeStyle);
+    }
 
     if (canChangeThemeStyle) {
-      setThemeStyle(themeId as ThemeStyle);
-      console.log("Theme style changed to:", themeId);
+      setThemeStyle(themeId);
+      if (debugMode) {
+        console.log("Theme style changed to:", themeId);
+      }
     } else {
       // Alert the user that they don't have permission
       alert(
@@ -92,7 +99,11 @@ export default function ThemesPage() {
                 theme applies a unique set of CSS variables to transform colors,
                 typography, borders, and more.
               </p>
-              <ThemeStyleToggle />
+              <ThemeSelector
+                showDescriptions={true}
+                showPreviews={true}
+                className="mt-4"
+              />
             </CardContent>
           </Card>
 
@@ -104,7 +115,7 @@ export default function ThemesPage() {
             </p>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {config.themeLibrary.map((theme) => (
+              {availableThemes.map((theme) => (
                 <div
                   key={theme.id}
                   className={cn(
@@ -136,13 +147,13 @@ export default function ThemesPage() {
                       {theme.description}
                     </p>
                   </div>
-                  <div
-                    className="mt-4 h-20 w-full overflow-hidden rounded-md bg-muted"
-                    aria-hidden="true"
-                  >
-                    <div
-                      className={`h-full w-full bg-gradient-to-br ${getThemeGradient(theme.id)}`}
-                    ></div>
+                  <div className="mt-4 h-20 w-full overflow-hidden rounded-md">
+                    <ThemePreview
+                      themeId={theme.id}
+                      width={300}
+                      height={80}
+                      showFallback={true}
+                    />
                   </div>
                 </div>
               ))}
@@ -198,20 +209,4 @@ export default function ThemesPage() {
       </div>
     </main>
   );
-}
-
-// Helper function to get gradient colors for theme preview
-function getThemeGradient(themeId: string): string {
-  switch (themeId) {
-    case "glass":
-      return "from-blue-100 to-blue-300 dark:from-blue-900 dark:to-blue-700";
-    case "brutalist":
-      return "from-stone-200 to-stone-400 dark:from-stone-800 dark:to-stone-600";
-    case "aggressive":
-      return "from-red-200 via-purple-300 to-blue-300 dark:from-red-900 dark:via-purple-800 dark:to-blue-800";
-    case "minimal":
-      return "from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-800";
-    default:
-      return "from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-700";
-  }
 }

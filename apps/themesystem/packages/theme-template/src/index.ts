@@ -1,25 +1,23 @@
+import previewImg from './assets/preview.png';
 import type { ThemeDefinition } from "@acme/theme-system";
-
-// Import preview image
-import previewUrl from "./assets/preview.png";
 
 const templateTheme: ThemeDefinition = {
   id: "template",
   name: "Template",
   description:
-    "A starter template theme that you can customize to create your own unique visual style.",
+    "A starter template for creating custom themes for the ACME Theme System.",
   preview: {
     strategy: "static",
-    asset: previewUrl,
+    asset: "/theme-previews/template.png"
+  },
+    asset: "/theme-previews/template.png",
   },
   variables: {
-    // These would normally be extracted from the CSS
-    "--template-background": "rgba(250, 250, 255, 0.9)",
-    "--template-blur": "5px",
-    "--template-border": "1px solid rgba(200, 200, 255, 0.3)",
-    "--template-shadow": "0 8px 20px rgba(0, 0, 0, 0.1)",
-    "--template-radius": "0.5rem",
-    // Add more variables as needed
+    // Define your CSS variables here
+    "--card-bg": "#ffffff",
+    "--card-border": "1px solid #e5e5e5",
+    "--card-shadow": "0 1px 3px rgba(0,0,0,0.12)",
+    // ...add more variables
   },
 };
 
