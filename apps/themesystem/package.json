@@ -11,7 +11,18 @@
     "lint": "eslint",
     "start": "pnpm with-env next start",
     "typecheck": "tsc --noEmit",
-    "with-env": "dotenv -e ../../.env --"
+    "with-env": "dotenv -e ../../.env --",
+    "generate-previews": "node scripts/generate-theme-preview.js --all",
+    "generate-preview:glass": "node scripts/generate-theme-preview.js --theme=glass",
+    "generate-preview:brutalist": "node scripts/generate-theme-preview.js --theme=brutalist",
+    "generate-png-previews": "tsx scripts/generate-theme-previews.ts",
+    "generate-png-preview:glass": "tsx scripts/generate-theme-previews.ts glass",
+    "generate-png-preview:brutalist": "tsx scripts/generate-theme-previews.ts brutalist",
+    "generate-png-preview:aggressive": "tsx scripts/generate-theme-previews.ts aggressive",
+    "capture-theme-previews": "tsx scripts/capture-theme-previews.ts",
+    "build-themes": "node scripts/build-themes.js --all",
+    "build-theme:glass": "node scripts/build-themes.js --theme=glass",
+    "build-theme:brutalist": "node scripts/build-themes.js --theme=brutalist"
   },
   "dependencies": {
     "@acme/api": "workspace:*",
@@ -29,7 +40,8 @@
     "react": "catalog:react18",
     "react-dom": "catalog:react18",
     "superjson": "2.2.2",
-    "zod": "catalog:"
+    "zod": "catalog:",
+    "commander": "^9.4.1"
   },
   "devDependencies": {
     "@acme/eslint-config": "workspace:*",
@@ -41,9 +53,14 @@
     "@types/react-dom": "catalog:react18",
     "dotenv-cli": "catalog:",
     "eslint": "catalog:",
+    "html-to-image": "^1.11.11",
     "jiti": "^1.21.7",
+    "lucide-react": "^0.363.0",
+    "playwright": "^1.41.2",
     "prettier": "catalog:",
+    "sharp": "^0.32.6",
     "tailwindcss": "catalog:",
+    "tsx": "^4.7.0",
     "typescript": "catalog:"
   },
   "prettier": "@acme/prettier-config"

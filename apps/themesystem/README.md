@@ -1,28 +1,60 @@
-# Create T3 App
+# ACME Theme System
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+A flexible, extensible, and developer-friendly theme system for React applications.
 
-## What's next? How do I make an app with this?
+## Features
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- 🎨 Multiple ready-to-use themes (Glass, Brutalist, Aggressive, Minimal)
+- 🔌 Plugin-based architecture for custom themes
+- 🌓 Built-in dark mode support
+- 📱 Responsive design across devices
+- ♿ Accessibility focused
+- 🛠️ Developer tools for theme creation
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Quick Start
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+```bash
+# Install dependencies
+pnpm install
 
-## Learn More
+# Start development server
+pnpm dev
+```
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+Visit http://localhost:3000 to see the theme system in action.
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## Theme Development
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+We now provide a template theme package you can use as a starting point for building custom themes:
 
-## How do I deploy this?
+```bash
+# Copy the template
+cp -r packages/theme-template packages/theme-mytheme
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+# Follow the instructions in the README.md file inside theme-mytheme
+```
+
+The theme template includes:
+
+- Basic structure for theme packages
+- CSS variables for light and dark modes
+- Preview generation tools
+- Documentation on customizing and integrating your theme
+
+For more detailed guidance, see the following resources in the theme template:
+
+- `README.md` - Step-by-step guide to using the template
+- `CHEATSHEET.md` - Quick reference for theme development
+- `INTEGRATION.md` - Detailed guide on integrating with the theme system
+
+## Available Scripts
+
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm generate-previews` - Generate theme previews
+- `pnpm capture-theme-previews` - Generate screenshots of themes
+- `pnpm build-themes` - Build all theme packages
+
+## Documentation
+
+For more details on using and customizing the theme system, see the `docs` directory.
