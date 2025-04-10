@@ -1,10 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
-
-import { ResumeDataPayload } from "../receive-data/route";
 import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
 
 // This ensures the route is not statically generated
 export const dynamic = "force-dynamic";
+
+// Define the expected shape of resume data
+type ResumeData = Record<string, unknown>;
 
 export async function GET(request: NextRequest) {
   try {
@@ -36,31 +37,19 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    let resumeData: ResumeDataPayload;
     try {
-      resumeData = JSON.parse(storedData) as ResumeDataPayload;
+      // attempt to decode and parse the data
+      const resumeData = JSON.parse(storedData) as ResumeData;
+      return NextResponse.json({ success: true, data: resumeData });
     } catch {
+      // If parsing fails, return an error
       return NextResponse.json(
         { error: "Invalid resume data format" },
         { status: 400 },
       );
     }
-
-    // Clear the cookies after retrieving the data
-    cookies().set("resume_token", "", {
-      maxAge: 0,
-      path: "/",
-    });
-
-    cookies().set("resume_data", "", {
-      maxAge: 0,
-      path: "/",
-    });
-
-    // Return the resume data
-    return NextResponse.json({ resumeData });
-  } catch (error) {
-    console.error("Error retrieving resume data:", error);
+  } catch {
+    // No need to capture the error variable if not used
     return NextResponse.json(
       { error: "Failed to retrieve resume data" },
       { status: 500 },

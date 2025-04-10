@@ -1,13 +1,13 @@
 "use client";
 
-import type { TemplateStyles } from "@/config/templates";
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-import type { SortableItem as SortableItemType } from "../SortableSection";
 import { SortableItem } from "../SortableItem";
+import type { SortableItem as SortableItemType } from "../SortableSection";
+import type { TemplateStyles } from "@/config/templates";
 
 interface SortableItemsListProps {
   items: SortableItemType[];

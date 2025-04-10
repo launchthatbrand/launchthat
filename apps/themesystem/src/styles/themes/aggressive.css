@@ -1,0 +1,243 @@
+/* Aggressive Theme */
+.theme-aggressive {
+  /* Aggressive theme variables */
+  --aggressive-primary: #ff3333;
+  --aggressive-secondary: #ff9933;
+  --aggressive-accent: #ffcc00;
+  --aggressive-text: #ffffff;
+  --aggressive-shadow: 0 4px 0 #cc0000, 0 6px 12px rgba(255, 0, 0, 0.3);
+  --aggressive-hover-shadow: 0 6px 0 #cc0000, 0 8px 16px rgba(255, 0, 0, 0.4);
+  --aggressive-active-shadow: 0 2px 0 #cc0000, 0 4px 8px rgba(255, 0, 0, 0.2);
+  --aggressive-border: 4px;
+  --aggressive-angle: -5deg;
+  --aggressive-scale: 1.05;
+
+  /* Override base variables */
+  --background: 0 0% 95%;
+  --foreground: 0 85% 40%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 85% 40%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 85% 40%;
+  --primary: 0 85% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 25 85% 60%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 0 0% 90%;
+  --muted-foreground: 0 0% 40%;
+  --accent: 45 85% 50%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 85% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 80%;
+  --input: 0 0% 80%;
+  --ring: 0 85% 60%;
+  --radius: 0;
+
+  /* Aggressive theme fonts */
+  --font-sans: "Roboto Condensed", sans-serif;
+  --font-mono: "Fira Code", monospace;
+  --font-display: "Teko", sans-serif;
+  --font-body: "Roboto Condensed", sans-serif;
+}
+
+/* Card specific styles */
+.theme-aggressive [class*="bg-card"] {
+  background: linear-gradient(
+    135deg,
+    var(--aggressive-primary) 0%,
+    #cc0000 100%
+  );
+  border: none;
+  box-shadow: var(--aggressive-shadow);
+  transform: skew(var(--aggressive-angle));
+  border-radius: 0;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.theme-aggressive [class*="bg-card"]::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% {
+    transform: rotate(45deg) translateX(-100%);
+  }
+  100% {
+    transform: rotate(45deg) translateX(100%);
+  }
+}
+
+.theme-aggressive [class*="bg-card"]:hover {
+  transform: skew(var(--aggressive-angle)) scale(var(--aggressive-scale));
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.7);
+}
+
+.theme-aggressive [class*="bg-card"] h1,
+.theme-aggressive [class*="bg-card"] h2,
+.theme-aggressive [class*="bg-card"] h3 {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: inline-block;
+}
+
+.theme-aggressive [class*="bg-card"] h1::after,
+.theme-aggressive [class*="bg-card"] h2::after,
+.theme-aggressive [class*="bg-card"] h3::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.theme-aggressive [class*="bg-card"]:hover h1::after,
+.theme-aggressive [class*="bg-card"]:hover h2::after,
+.theme-aggressive [class*="bg-card"]:hover h3::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.dark.theme-aggressive {
+  --aggressive-primary-dark: #ff6666;
+  --aggressive-secondary-dark: #ffcc66;
+  --aggressive-accent-dark: #ffee66;
+  --aggressive-text-dark: #000000;
+  --aggressive-shadow-dark: 0 4px 0 #990000, 0 6px 12px rgba(255, 0, 0, 0.4);
+  --aggressive-hover-shadow-dark: 0 6px 0 #990000,
+    0 8px 16px rgba(255, 0, 0, 0.5);
+  --aggressive-active-shadow-dark: 0 2px 0 #990000,
+    0 4px 8px rgba(255, 0, 0, 0.3);
+
+  --background: 0 0% 10%;
+  --foreground: 0 85% 90%;
+  --card: 0 0% 15%;
+  --card-foreground: 0 85% 90%;
+  --popover: 0 0% 15%;
+  --popover-foreground: 0 85% 90%;
+  --primary: 0 85% 70%;
+  --primary-foreground: 0 0% 0%;
+  --secondary: 25 85% 70%;
+  --secondary-foreground: 0 0% 0%;
+  --muted: 0 0% 20%;
+  --muted-foreground: 0 0% 60%;
+  --accent: 45 85% 60%;
+  --accent-foreground: 0 0% 0%;
+  --destructive: 0 85% 70%;
+  --destructive-foreground: 0 0% 0%;
+  --border: 0 0% 20%;
+  --input: 0 0% 20%;
+  --ring: 0 85% 70%;
+}
+
+/* Button styles */
+.theme-aggressive button {
+  background: var(--aggressive-primary);
+  color: var(--aggressive-text, #fff);
+  border: none;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    0 100%
+  );
+  /* padding: 1rem 2rem; */
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: var(--aggressive-shadow);
+}
+
+.theme-aggressive button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.theme-aggressive button:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: var(--aggressive-hover-shadow);
+}
+
+.theme-aggressive button:hover::before {
+  transform: translateX(100%);
+}
+
+.theme-aggressive button:active {
+  transform: scale(0.95) translateY(1px);
+  box-shadow: var(--aggressive-active-shadow);
+}
+
+/* Focus styles for accessibility */
+.theme-aggressive button:focus {
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--aggressive-accent),
+    var(--aggressive-shadow);
+}
+
+.theme-aggressive button:focus:not(:focus-visible) {
+  box-shadow: var(--aggressive-shadow);
+}
+
+/* Dark mode button styles */
+.dark.theme-aggressive button {
+  background: var(--aggressive-primary-dark, #ff3333);
+  color: var(--aggressive-text-dark, #000);
+  box-shadow: var(--aggressive-shadow-dark);
+}
+
+.dark.theme-aggressive button:hover {
+  box-shadow: var(--aggressive-hover-shadow-dark);
+}
+
+.dark.theme-aggressive button:active {
+  box-shadow: var(--aggressive-active-shadow-dark);
+}
+
+.dark.theme-aggressive button:focus {
+  box-shadow:
+    0 0 0 3px var(--aggressive-accent-dark),
+    var(--aggressive-shadow-dark);
+}
+
+.dark.theme-aggressive button:focus:not(:focus-visible) {
+  box-shadow: var(--aggressive-shadow-dark);
+}

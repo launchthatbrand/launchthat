@@ -2,15 +2,10 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { ResumeDataPayload } from "../api/receive-data/route";
 import { useResumeStore } from "@/store/useResumeStore";
 
-// Function to handle promises without warning
-const ignoredPromise = (promise: Promise<unknown>): void => {
-  promise.catch((error) => console.error("Ignored promise error:", error));
-};
+import { ResumeDataPayload } from "../api/receive-data/route";
 
 interface ErrorResponse {
   error: string;
@@ -105,14 +100,9 @@ function ImportContent() {
         }
 
         // Redirect to the main editor after successful import
-        ignoredPromise(
-          new Promise((resolve) => {
-            setTimeout(() => {
-              router.push("/");
-              resolve(true);
-            }, 1500);
-          }),
-        );
+        setTimeout(() => {
+          void router.push("/");
+        }, 1500);
       } catch (error) {
         console.error("Error importing resume data:", error);
         setError(
@@ -126,7 +116,7 @@ function ImportContent() {
     }
 
     if (token) {
-      ignoredPromise(fetchImportData());
+      void fetchImportData();
     }
   }, [
     token,

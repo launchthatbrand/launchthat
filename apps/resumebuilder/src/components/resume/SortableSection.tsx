@@ -1,31 +1,31 @@
 "use client";
 
-import type { DragEndEvent } from "@dnd-kit/core";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { getTemplateStyles } from "@/config/templates";
 import {
-  closestCenter,
   DndContext,
   KeyboardSensor,
   PointerSensor,
+  closestCenter,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
-  arrayMove,
   SortableContext,
+  arrayMove,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Trash2 } from "lucide-react";
 
+import type { DragEndEvent } from "@dnd-kit/core";
 import { SortableItemsList } from "./sortable/SortableItemsList";
+import { Trash2 } from "lucide-react";
+import { getTemplateStyles } from "@/config/templates";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 
 export interface SortableItem {
   id: string;

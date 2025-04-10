@@ -3,18 +3,24 @@ import "@/styles/print.css";
 import "@/styles/print-templates.css";
 
 import type { Metadata, Viewport } from "next";
-
+import { Inter } from "next/font/google";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
-import { Inter } from "next/font/google";
-import { TRPCReactProvider } from "@/trpc/react";
+
+import { ThemeDebugPanel } from "@acme/ui/components/theme-debug-panel";
+import StandardLayout from "@acme/ui/layout/StandardLayout";
 import { cn } from "@acme/ui/lib/utils";
+
 import { env } from "~/env";
+import { Providers } from "./providers";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
 });
+
+// Only show theme debug panel in development
+const showDebugPanel = env.NODE_ENV === "development";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -47,10 +53,9 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
-  children,
-}: {
+export default function RootLayout(props: {
   children: React.ReactNode;
+  sidebar: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -62,15 +67,17 @@ export default function RootLayout({
           inter.variable,
         )}
       >
-        <div className="theme-provider light">
-          <TRPCReactProvider>
-            <div className="flex min-h-screen flex-col">
-              <main className="flex-1 bg-[var(--workforce-light-gray)]">
-                {children}
-              </main>
-            </div>
-          </TRPCReactProvider>
-        </div>
+        {" "}
+        <Providers>
+          <StandardLayout
+            sidebar={props.sidebar}
+            appName="RepoReader"
+            className="items-center justify-center"
+          >
+            {props.children}
+          </StandardLayout>
+          {showDebugPanel && <ThemeDebugPanel />}
+        </Providers>
       </body>
     </html>
   );

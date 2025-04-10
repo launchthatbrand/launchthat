@@ -54,8 +54,8 @@ export function Sidebar({
           <AccordionTrigger>Import Resume</AccordionTrigger>
           <AccordionContent>
             <ResumeImportButton />
-          </AccordionContent>
-        </AccordionItem>
+            </AccordionContent>
+          </AccordionItem>
         */}
       </Accordion>
 

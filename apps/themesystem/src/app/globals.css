@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import theme system */
+@import "../styles/themes/index.css";
+
+@layer base {
+  /* Base styles that apply to all themes */
+  html {
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply min-h-screen bg-background text-foreground antialiased;
+  }
+
+  /* Selection styles */
+  ::selection {
+    @apply bg-primary/20 text-foreground;
+  }
+
+  /* Focus outline styles */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+}
+
+/* 
+  Add any special component overrides here to prevent theme styles
+  from affecting them inappropriately
+*/
+@layer components {
+  /* Example of a component that should be exempted from theme styling */
+  [data-theme-exempt="true"] {
+    /* Reset any theme-specific styling */
+    font-family: var(--font-sans) !important;
+    box-shadow: none !important;
+    border-radius: var(--radius) !important;
+    transform: none !important;
+  }
+}
