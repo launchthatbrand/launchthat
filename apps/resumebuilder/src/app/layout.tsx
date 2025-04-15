@@ -1,6 +1,5 @@
 import "~/app/globals.css";
 import "@/styles/print.css";
-import "@/styles/print-templates.css";
 
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";

@@ -16,7 +16,7 @@ export const minimalistTemplate: Template = {
     fontFamily: "Montserrat, sans-serif",
 
     // Main content styling
-    section: "mb-8 px-6",
+    section: "mb-8 px-2",
     sectionTitle:
       "text-base font-medium uppercase tracking-wide mb-4 text-gray-700 relative",
     item: "mb-5 border-l-2 border-gray-200 pl-4 py-1 hover:border-gray-400 transition-colors",

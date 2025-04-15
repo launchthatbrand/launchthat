@@ -27,12 +27,14 @@ export interface TemplateStyles {
   header: string;
   headerName: string;
   headerTitle: string;
+  headerContact?: string;
 
   // Sidebar styling (if applicable)
   sidebar?: string;
   sidebarSection?: string;
   sidebarTitle?: string;
   sidebarItem?: string;
+  sidebarInput?: string;
 
   // Skill display (bars, dots, tags, etc.)
   skillDisplay: "bars" | "dots" | "tags" | "text";

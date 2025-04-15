@@ -12,8 +12,13 @@ export const TemplateGrid = ({
   selectedTemplate,
   onTemplateSelect,
 }: TemplateGridProps) => {
-  // Get all templates
-  const templatesList = Object.values(templates);
+  // Define allowed templates
+  const allowedTemplateNames = ["professional", "modern", "minimal"];
+
+  // Get all templates and filter them
+  const templatesList = Object.values(templates).filter((template) =>
+    allowedTemplateNames.includes(template.name),
+  );
 
   const handleTemplateSelect = (templateName: string) => {
     console.log(`Template selected: ${templateName}`);

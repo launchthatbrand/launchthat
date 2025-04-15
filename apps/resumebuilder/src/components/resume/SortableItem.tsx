@@ -51,6 +51,12 @@ export const SortableItem = ({
       ? templateStyles.sidebarItem
       : templateStyles.item;
 
+  // Determine the appropriate input style based on context
+  const inputStyleClass =
+    isSidebar && templateStyles.sidebarInput
+      ? templateStyles.sidebarInput
+      : templateStyles.input;
+
   return (
     <div
       ref={setNodeRef}
@@ -64,15 +70,29 @@ export const SortableItem = ({
       data-sortable-item="true"
       data-item-type={isSidebar ? "sidebar-item" : "main-item"}
     >
-      <div {...attributes} {...listeners} className="print:hidden">
+      <div
+        {...attributes}
+        {...listeners}
+        className="cursor-grab touch-none print:hidden"
+      >
         <DragHandle />
       </div>
-      <div className="flex-1 print:pl-0" data-item-content="true">
+      <div className="hidden print:block print:pt-[9px]" aria-hidden="true">
+        <div
+          className="h-1.5 w-1.5 rounded-full"
+          style={{
+            backgroundColor: isSidebar
+              ? "var(--sidebar-bullet-color, black)"
+              : "black",
+          }}
+        ></div>
+      </div>
+      <div className="flex-1 print:pl-2" data-item-content="true">
         <EditableField
           value={value}
           onChange={onChange}
           multiline={multiline}
-          className={templateStyles.input}
+          className={`${inputStyleClass} print:border-none print:px-0 print:py-0 print:shadow-none print:focus:ring-0`}
           isSidebar={isSidebar}
           templateName={templateName}
         />

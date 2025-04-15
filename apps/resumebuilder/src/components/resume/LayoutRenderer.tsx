@@ -89,10 +89,27 @@ export const LayoutRenderer = ({
     );
 
     const sidebarClasses = `${templateStyles.sidebar ?? "w-1/3 p-6"} sidebar-content`;
-    const mainClasses = `flex-1 p-6 space-y-6 main-content ${templateName === "creative" ? "text-gray-900" : ""}`;
+    const mainClasses = `flex-1 p-6 space-y-6 main-content`;
+
+    // Determine sidebar text color variable
+    let sidebarTextColorVar = templateStyles.textColor || "#1f2937";
+    // Define sidebar bullet color, default black, override for modern
+    let sidebarBulletColorVar = "#000000"; // Default black
+    if (templateName === "modern") {
+      sidebarTextColorVar = "#ffffff"; // Force white text for modern theme sidebar
+      sidebarBulletColorVar = "#ffffff"; // Force white bullets for modern theme sidebar
+    }
+    const sidebarInlineStyles = {
+      "--sidebar-text-color": sidebarTextColorVar,
+      "--sidebar-bullet-color": sidebarBulletColorVar, // Added bullet color variable
+    } as React.CSSProperties;
 
     const sidebarContent = (
-      <div className={sidebarClasses} data-content-type="sidebar">
+      <div
+        className={sidebarClasses}
+        style={sidebarInlineStyles}
+        data-content-type="sidebar"
+      >
         <div className="mb-6">
           <ResumeHeader
             data={headerData}
@@ -147,7 +164,7 @@ export const LayoutRenderer = ({
 
     return (
       <div
-        className="mx-auto flex max-w-3xl"
+        className={`mx-auto flex max-w-3xl flex-1`}
         data-layout-type={`sidebar-${position}`}
       >
         {position === "left" ? (
@@ -165,75 +182,10 @@ export const LayoutRenderer = ({
     );
   };
 
-  // Split layout with personal info on top, and content below in two columns
+  // Split layout - Updated to use CSS Columns for Masonry effect
   const renderSplitLayout = () => {
-    const leftSectionIds = ["experience"];
-    const rightSectionIds = ["education", "skills", "interests"];
-
-    const leftSections = sections.filter((section) =>
-      leftSectionIds.includes(section.id),
-    );
-
-    const rightSections = sections.filter((section) =>
-      rightSectionIds.includes(section.id),
-    );
-
-    const otherSections = sections.filter(
-      (section) =>
-        !leftSectionIds.includes(section.id) &&
-        !rightSectionIds.includes(section.id),
-    );
-
-    // Apply to leftSections
-    const leftContent = leftSections.map((section) => (
-      <div key={section.id} className="resume-section">
-        <SortableSection
-          title={section.title}
-          items={section.items}
-          onItemsChange={(items) => onSectionChange(section.id, items)}
-          multiline={section.id === "experience" || section.id === "education"}
-          templateName={templateName}
-          onDelete={
-            !["experience", "education"].includes(section.id)
-              ? () => onDeleteSection(section.id)
-              : undefined
-          }
-        />
-      </div>
-    ));
-
-    // Apply to rightSections
-    const rightContent = rightSections.map((section) => (
-      <div key={section.id} className="resume-section">
-        <SortableSection
-          title={section.title}
-          items={section.items}
-          onItemsChange={(items) => onSectionChange(section.id, items)}
-          multiline={section.id === "experience" || section.id === "education"}
-          templateName={templateName}
-          onDelete={
-            !["education", "skills"].includes(section.id)
-              ? () => onDeleteSection(section.id)
-              : undefined
-          }
-        />
-      </div>
-    ));
-
-    // Apply to otherSections
-    const otherContent = otherSections.map((section) => (
-      <div key={section.id} className="resume-section">
-        <SortableSection
-          title={section.title}
-          items={section.items}
-          onItemsChange={(items) => onSectionChange(section.id, items)}
-          multiline={section.id === "experience" || section.id === "education"}
-          templateName={templateName}
-          onDelete={() => onDeleteSection(section.id)}
-        />
-      </div>
-    ));
-
+    // ... (keep existing renderSplitLayout implementation)
+    const allSections = sections;
     return (
       <div className="mx-auto max-w-3xl space-y-8 p-8" data-layout-type="split">
         <ResumeHeader
@@ -241,28 +193,36 @@ export const LayoutRenderer = ({
           onChange={onHeaderChange}
           templateStyles={templateStyles}
         />
-
-        <div className="flex gap-8" data-section-row="split">
-          <div className="flex-1 space-y-6" data-column="left">
-            {leftContent}
-          </div>
-
-          <div className="flex-1 space-y-6" data-column="right">
-            {rightContent}
-          </div>
+        <div className="columns-2 gap-x-8" data-section-row="masonry">
+          {allSections.map((section) => (
+            <div
+              key={section.id}
+              className="resume-section mb-8 break-inside-avoid"
+            >
+              <SortableSection
+                title={section.title}
+                items={section.items}
+                onItemsChange={(items) => onSectionChange(section.id, items)}
+                multiline={
+                  section.id === "experience" || section.id === "education"
+                }
+                templateName={templateName}
+                onDelete={
+                  !["experience", "education", "skills"].includes(section.id)
+                    ? () => onDeleteSection(section.id)
+                    : undefined
+                }
+              />
+            </div>
+          ))}
         </div>
-
-        {otherSections.length > 0 && (
-          <div className="mt-8 space-y-6" data-section-row="other">
-            {otherContent}
-          </div>
-        )}
       </div>
     );
   };
 
   // Minimalist layout with clean, centered design
   const renderMinimalistLayout = () => {
+    // ... (keep existing renderMinimalistLayout implementation)
     return (
       <div className="mx-auto max-w-2xl space-y-8 p-8">
         <ResumeHeader
@@ -270,7 +230,6 @@ export const LayoutRenderer = ({
           onChange={onHeaderChange}
           templateStyles={templateStyles}
         />
-
         {sections.map((section) => (
           <div key={section.id} className="resume-section">
             <SortableSection

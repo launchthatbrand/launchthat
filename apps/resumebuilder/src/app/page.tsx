@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import dynamic from "next/dynamic";
 // Need to create these components
 import { Sidebar } from "@/components/layout/Sidebar";
-import { downloadAsPdf } from "@/lib/utils";
 import {
   HeaderData,
   SectionItem,
@@ -83,10 +82,6 @@ export default function Home() {
     updateHeaderData(data);
   };
 
-  const handleExportPdf = () => {
-    downloadAsPdf("resume-content", "my-resume");
-  };
-
   const handleTemplateChange = (templateName: string) => {
     // Format template name with first letter capitalized for logging
     const templateName1stCap =
@@ -123,7 +118,6 @@ export default function Home() {
         onHeaderChange={handleHeaderChange}
         onSectionChange={handleSectionChange}
         onDeleteSection={handleDeleteSection}
-        onExportPdf={handleExportPdf}
       />
     </main>
   );

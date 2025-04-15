@@ -23,15 +23,18 @@ export const modernTemplate: Template = {
 
     // Header styling
     header: "mb-8 pb-4 flex flex-row items-center gap-6",
-    headerName: "text-3xl font-bold text-gray-900",
-    headerTitle: "text-xl text-gray-600",
+    headerName:
+      "text-3xl font-bold text-white bg-transparent focus:bg-transparent",
+    headerTitle: "text-lg text-white bg-transparent focus:bg-transparent",
+    headerContact: "text-sm text-gray-200 bg-transparent focus:bg-transparent",
 
     // Sidebar styling
-    sidebar: "bg-[#1e3a8a] text-white p-6 w-1/4",
+    sidebar: "bg-[#1e3a8a] text-white p-6 w-1/3",
     sidebarSection: "mb-8",
     sidebarTitle:
       "uppercase text-sm tracking-wider mb-3 font-semibold border-b border-[#f59e0b] pb-1",
     sidebarItem: "py-1",
+    sidebarInput: "text-sm text-white bg-transparent focus:bg-transparent",
 
     // Skill display
     skillDisplay: "bars",

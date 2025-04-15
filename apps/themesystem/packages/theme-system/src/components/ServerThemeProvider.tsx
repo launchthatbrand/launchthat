@@ -6,10 +6,12 @@ import {
   BaseTheme,
   THEME_STYLE_KEY,
 } from "./theme-constants";
+import type { ReactElement, ReactNode } from "react";
 import { ThemeConfig, UnifiedThemeProvider } from "./UnifiedThemeProvider";
 
-import type { ReactNode } from "react";
+import React from "react";
 import Script from "next/script";
+import { ThemeSwitcher } from "./FloatingThemeSwitcher";
 import { cookies } from "next/headers";
 
 // Helper to parse JSON safely
@@ -27,12 +29,12 @@ const parseJson = (value: string | null) => {
 const criticalCss = `
   /* Block rendering until custom properties are available */
   html.theme-initializing {
-    display: none;
+    display: none !important;
   }
   
   /* Fallback for browsers that disable JS */
   html.theme-initializing:not(:has(script[data-theme-init-executed])) {
-    display: block;
+    display: block !important;
   }
 `;
 
@@ -40,13 +42,15 @@ const criticalCss = `
 function createThemeScript() {
   return `
     (function() {
+      // Add initialization class immediately to block rendering
       document.documentElement.classList.add('theme-initializing');
       
       try {
         console.log("[ThemeSystem] Starting theme initialization");
         
         // Mark the script as executed for browsers with JS disabled
-        document.currentScript.setAttribute('data-theme-init-executed', 'true');
+        // This line is now redundant since we're adding the attribute directly to the script tag
+        // document.currentScript.setAttribute('data-theme-init-executed', 'true');
         
         // Utility functions
         function getCookie(name) {
@@ -124,13 +128,15 @@ function createThemeScript() {
           root.classList.add(themeStyle);
           console.log("[ThemeSystem] Applied theme style:", themeStyle);
           
-          // Remove the initializing class to allow rendering
-          root.classList.remove('theme-initializing');
-          
           // Add a completed class for potential CSS targeting
           root.classList.add('theme-initialized');
           
-          console.log("[ThemeSystem] Theme initialization complete");
+          // Remove the initializing class to allow rendering
+          // This is done at the very end to ensure the theme is fully applied
+          setTimeout(() => {
+            root.classList.remove('theme-initializing');
+            console.log("[ThemeSystem] Theme initialization complete");
+          }, 0);
         }
         
         // Apply the theme synchronously to avoid flash
@@ -153,31 +159,30 @@ function createThemeScript() {
   `;
 }
 
-// ServerThemeProvider props
-export interface ServerThemeProviderProps {
-  children: ReactNode;
-  config: ThemeConfig;
-  userRole?: string;
-  initialDebugMode?: boolean;
-}
-
-// Component for injecting theme-related scripts and styles
-function ThemeInjector() {
+/**
+ * Internal component that injects theme initialization scripts and styles
+ */
+function ThemeInitScripts() {
   return (
     <>
       {/* Critical CSS to prevent flash */}
-      <style dangerouslySetInnerHTML={{ __html: criticalCss }} />
+      <style
+        id="theme-critical-css"
+        dangerouslySetInnerHTML={{ __html: criticalCss }}
+      />
 
-      {/* Inline script for immediate theme application */}
+      {/* Main script for immediate theme application */}
       <script
+        id="theme-init-script"
+        data-theme-init-executed="true"
         dangerouslySetInnerHTML={{
           __html: createThemeScript(),
         }}
       />
 
-      {/* Fallback script with next/script for better reliability */}
+      {/* Fallback script for reliability */}
       <Script
-        id="theme-fallback"
+        id="theme-fallback-script"
         strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html: `
@@ -192,17 +197,71 @@ function ThemeInjector() {
   );
 }
 
+// ServerThemeProvider props
+export interface ServerThemeProviderProps {
+  children: ReactNode;
+  config: ThemeConfig;
+  userRole?: string;
+  initialDebugMode?: boolean;
+
+  /**
+   * Whether to show the theme switcher
+   * @default true
+   */
+  showThemeSwitcher?: boolean;
+
+  /**
+   * Position of the theme switcher
+   * @default "bottom-right"
+   */
+  themeSwitcherPosition?:
+    | "bottom-right"
+    | "bottom-left"
+    | "top-right"
+    | "top-left";
+
+  /**
+   * Additional CSS class for the theme switcher
+   */
+  themeSwitcherClassName?: string;
+}
+
 /**
- * ServerThemeProvider - A server component that reads cookies server-side
+ * ServerThemeProvider - A comprehensive server component that:
+ * 1. Reads cookies server-side for theme preferences
+ * 2. Injects theme initialization scripts to prevent flashing
+ * 3. Can wrap the entire HTML document to provide theme context
+ * 4. Optionally includes a ThemeSwitcher component
  *
- * This component should be used in app/ directory layouts or pages
- * to enable server-side cookie reading for theme preferences.
+ * This component should be used in app/ directory layouts to wrap the
+ * HTML element, enabling server-side cookie reading and proper theme
+ * initialization.
+ *
+ * Example:
+ * ```tsx
+ * export default function RootLayout({ children }) {
+ *   return (
+ *     <ServerThemeProvider
+ *       config={{ themes, defaultTheme: "system" }}
+ *       showThemeSwitcher={true}
+ *       themeSwitcherPosition="bottom-right"
+ *     >
+ *       <html lang="en">
+ *         <body>{children}</body>
+ *       </html>
+ *     </ServerThemeProvider>
+ *   );
+ * }
+ * ```
  */
 export async function ServerThemeProvider({
   children,
   config,
   userRole = "user",
   initialDebugMode = false,
+  showThemeSwitcher = true,
+  themeSwitcherPosition = "bottom-right",
+  themeSwitcherClassName,
 }: ServerThemeProviderProps) {
   // Read cookies on the server side
   const cookieStore = cookies();
@@ -219,19 +278,78 @@ export async function ServerThemeProvider({
     cookieStore.get(APP_EXTENSION_THEMES_KEY)?.value || null;
   const initialExtensions = parseJson(extensionsRaw);
 
-  // Pass these initial values to the unified theme provider
+  // Process the children to inject scripts and ThemeSwitcher properly
+  let processedChildren: ReactNode = children;
+
+  // Check if children is a valid React element (the html element)
+  if (React.isValidElement(children) && children.type === "html") {
+    const htmlElement = children as ReactElement;
+    const htmlChildren = React.Children.toArray(htmlElement.props.children);
+
+    let headElement: ReactElement | null = null;
+    let bodyElement: ReactElement | null = null;
+    const otherElements: ReactNode[] = [];
+
+    // Find and process the head and body elements
+    htmlChildren.forEach((child) => {
+      if (React.isValidElement(child)) {
+        if (child.type === "head") {
+          // Add our scripts to the head
+          headElement = React.cloneElement(
+            child,
+            {},
+            <>
+              <ThemeInitScripts />
+              {child.props.children}
+            </>,
+          );
+        } else if (child.type === "body") {
+          // Add ThemeSwitcher to the body if enabled
+          if (showThemeSwitcher) {
+            bodyElement = React.cloneElement(
+              child,
+              {},
+              <>
+                {child.props.children}
+                <ThemeSwitcher
+                  position={themeSwitcherPosition}
+                  className={themeSwitcherClassName}
+                />
+              </>,
+            );
+          } else {
+            bodyElement = child;
+          }
+        } else {
+          otherElements.push(child);
+        }
+      } else {
+        otherElements.push(child);
+      }
+    });
+
+    // Recreate the HTML structure
+    const newHtmlChildren = [headElement, bodyElement, ...otherElements].filter(
+      Boolean,
+    );
+
+    processedChildren = React.cloneElement(
+      htmlElement,
+      htmlElement.props,
+      newHtmlChildren,
+    );
+  }
+
+  // Provide the theme context to the entire document
   return (
-    <>
-      <ThemeInjector />
-      <UnifiedThemeProvider
-        children={children}
-        config={config}
-        userRole={userRole}
-        initialDebugMode={initialDebugMode}
-        serverBaseTheme={initialBaseTheme}
-        serverThemeStyle={initialThemeStyle}
-        serverExtensions={initialExtensions}
-      />
-    </>
+    <UnifiedThemeProvider
+      children={processedChildren}
+      config={config}
+      userRole={userRole}
+      initialDebugMode={initialDebugMode}
+      serverBaseTheme={initialBaseTheme}
+      serverThemeStyle={initialThemeStyle}
+      serverExtensions={initialExtensions}
+    />
   );
 }

@@ -1,31 +1,25 @@
 "use client";
 
+import type { DragEndEvent } from "@dnd-kit/core";
+import { getTemplateStyles } from "@/config/templates";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import {
+  closestCenter,
   DndContext,
   KeyboardSensor,
   PointerSensor,
-  closestCenter,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
-  SortableContext,
   arrayMove,
+  SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-
-import type { DragEndEvent } from "@dnd-kit/core";
-import { SortableItemsList } from "./sortable/SortableItemsList";
 import { Trash2 } from "lucide-react";
-import { getTemplateStyles } from "@/config/templates";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+
+import { SortableItemsList } from "./sortable/SortableItemsList";
 
 export interface SortableItem {
   id: string;
@@ -40,7 +34,6 @@ interface SortableSectionProps {
   multiline?: boolean;
   templateName: string;
   onDelete?: () => void;
-  defaultOpen?: boolean;
   isSidebar?: boolean;
 }
 
@@ -52,7 +45,6 @@ export const SortableSection = ({
   multiline = false,
   templateName,
   onDelete,
-  defaultOpen = true,
   isSidebar = false,
 }: SortableSectionProps) => {
   const sensors = useSensors(
@@ -96,9 +88,6 @@ export const SortableSection = ({
   // Get template styles directly using the helper function
   const templateStyle = getTemplateStyles(templateName);
 
-  // For print view or pdf export, we need to ensure all sections are expanded
-  const accordionValue = defaultOpen ? "section-content" : undefined;
-
   // Use sidebar styling if available and in sidebar mode
   const sectionClass =
     isSidebar && templateStyle.sidebarSection
@@ -117,67 +106,56 @@ export const SortableSection = ({
       data-section-type={title.toLowerCase().replace(/\s+/g, "-")}
       data-is-sidebar={isSidebar.toString()}
     >
-      <Accordion
-        type="single"
-        collapsible
-        defaultValue={accordionValue}
-        className="w-full print:border-none"
-      >
-        <AccordionItem value="section-content" className="border-none">
-          <div className="mb-3 flex items-center justify-between">
-            <AccordionTrigger
-              className={`section-title relative transition-all duration-200 hover:no-underline ${titleClass} px-0 py-1 ${
-                !isSidebar && templateName === "creative" ? "text-gray-900" : ""
-              }`}
-              data-title-text={title}
-            >
-              {title}
-            </AccordionTrigger>
-            {onDelete && (
-              <button
-                onClick={onDelete}
-                className="rounded-full p-1 text-red-500 hover:bg-red-50 hover:text-red-700 print:hidden"
-                aria-label={`Delete ${title} section`}
-              >
-                <Trash2 size={isSidebar ? 14 : 16} />
-              </button>
-            )}
-          </div>
-          <AccordionContent
-            className="section-content pb-0 pt-2"
-            data-content-type="section-items"
+      <div className="mb-3 flex items-center justify-between">
+        <h3
+          className={`section-title relative transition-all duration-200 ${titleClass} ${
+            !isSidebar && templateName === "creative" ? "text-gray-900" : ""
+          }`}
+          data-title-text={title}
+        >
+          {title}
+        </h3>
+        {onDelete && (
+          <button
+            onClick={onDelete}
+            className="rounded-full p-1 text-red-500 hover:bg-red-50 hover:text-red-700 print:hidden"
+            aria-label={`Delete ${title} section`}
           >
-            <DndContext
-              sensors={sensors}
-              collisionDetection={closestCenter}
-              onDragEnd={handleDragEnd}
-              modifiers={[restrictToVerticalAxis]}
-            >
-              <SortableContext
-                items={items}
-                strategy={verticalListSortingStrategy}
-              >
-                <SortableItemsList
-                  items={items}
-                  multiline={multiline}
-                  templateStyle={templateStyle}
-                  templateName={templateName}
-                  onItemChange={handleItemChange}
-                  onRemoveItem={handleRemoveItem}
-                  isSidebar={isSidebar}
-                />
-              </SortableContext>
-            </DndContext>
+            <Trash2 size={isSidebar ? 14 : 16} />
+          </button>
+        )}
+      </div>
 
-            <button
-              onClick={handleAddItem}
-              className="mt-3 text-sm text-gray-500 hover:text-gray-700 print:hidden"
-            >
-              + Add item
-            </button>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+      <div
+        className="section-content pb-0 pt-2"
+        data-content-type="section-items"
+      >
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+          modifiers={[restrictToVerticalAxis]}
+        >
+          <SortableContext items={items} strategy={verticalListSortingStrategy}>
+            <SortableItemsList
+              items={items}
+              multiline={multiline}
+              templateStyle={templateStyle}
+              templateName={templateName}
+              onItemChange={handleItemChange}
+              onRemoveItem={handleRemoveItem}
+              isSidebar={isSidebar}
+            />
+          </SortableContext>
+        </DndContext>
+
+        <button
+          onClick={handleAddItem}
+          className="mt-3 text-sm text-gray-500 hover:text-gray-700 print:hidden"
+        >
+          + Add item
+        </button>
+      </div>
     </div>
   );
 };

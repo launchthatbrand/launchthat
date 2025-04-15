@@ -1,116 +1,94 @@
 @media print {
-  /* Reset all margins and remove background */
+  /* Define page size and remove default margins */
   @page {
+    size: letter; /* Standard US letter size */
     margin: 0;
-    size: letter portrait;
   }
 
-  /* Hide everything initially */
+  /* Ensure html and body allow content flow */
+  html,
+  body {
+    height: auto;
+    overflow: visible; /* Allow content to overflow for multi-page */
+  }
+
+  /* Hide everything by default */
   body * {
     visibility: hidden;
   }
 
-  /* Show and position only the resume content */
+  /* Show only the resume content area and its children */
+  /* Target the ID we kept on the printable div */
   #resume-content,
   #resume-content * {
     visibility: visible;
   }
 
+  /* Style the printable area for flow */
   #resume-content {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    padding: 48px;
-    margin: 0;
+    width: 100%; /* Ensure it takes full page width */
+    min-height: 100vh; /* Ensure it fills at least one page vertically */
+    margin: 0; /* Remove margin */
+    padding: 0; /* Remove padding - apply padding inside if needed */
     box-sizing: border-box;
-    overflow: visible !important;
+    background-color: white; /* Ensure white background for PDF */
+    /* Apply the font family from the theme using the CSS variable */
+    font-family: var(--template-font-family, sans-serif);
+    /* Use flex column to help manage content within min-height */
+    display: flex;
+    flex-direction: column;
   }
 
-  /* Preserve template colors and styling */
-  #resume-content * {
+  /* Force colors, backgrounds, borders, etc. to print */
+  * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     color-adjust: exact !important;
   }
 
-  /* Ensure template-specific colors are preserved */
-  .text-primary,
-  h1,
-  h2,
-  h3,
-  [class*="text-"],
-  [class*="bg-"],
-  [style*="color"],
-  [style*="background"] {
-    print-color-adjust: exact !important;
-    -webkit-print-color-adjust: exact !important;
-    color-adjust: exact !important;
-  }
-
-  /* Preserve borders and other decorative elements */
-  [class*="border"],
-  [class*="shadow"],
-  [class*="rounded"],
-  [style*="border"],
-  [style*="box-shadow"],
-  [style*="border-radius"] {
-    print-color-adjust: exact !important;
-    -webkit-print-color-adjust: exact !important;
-  }
-
-  /* Hide all interactive elements */
+  /* Hide interactive elements specifically */
   button,
   [role="button"],
   .interactive-only,
-  .print:hidden {
+  .print\:hidden /* Ensure Tailwind print:hidden works */ {
     display: none !important;
   }
 
-  /* Remove any unwanted decorations */
+  /* Remove link underlines if desired */
   a {
     text-decoration: none !important;
   }
 
-  /* Force page breaks where needed */
+  /* Attempt to prevent sections from breaking across pages */
+  /* Targeting the .section class inside the printable area */
+  #resume-content .section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    /* --- Force Display --- */
+    display: block !important;
+    visibility: visible !important;
+  }
+
+  /* Apply theme text color to main content children */
+  #resume-content [data-content-type="main"] *,
+  #resume-content [data-content-type="main"] {
+    color: var(--template-text-color, black) !important;
+    visibility: visible !important;
+  }
+
+  /* Apply specific sidebar text color to sidebar children */
+  #resume-content [data-content-type="sidebar"] *,
+  #resume-content [data-content-type="sidebar"] {
+    color: var(--sidebar-text-color, black) !important;
+    visibility: visible !important;
+  }
+
+  /* Add explicit page break helpers if needed elsewhere */
   .page-break-before {
     page-break-before: always;
   }
 
   .page-break-after {
     page-break-after: always;
-  }
-
-  /* Preserve font styles */
-  * {
-    font-family: inherit !important;
-  }
-
-  /* Ensure template fonts and sizes are preserved */
-  [class*="font-"],
-  [class*="text-"],
-  [style*="font"],
-  [style*="text"] {
-    font-weight: inherit !important;
-    font-size: inherit !important;
-    font-family: inherit !important;
-  }
-
-  /* Ensure the workplace-styled components print correctly */
-  .workforce-header,
-  .workforce-footer,
-  .workforce-sidebar-item,
-  .workforce-button,
-  .workforce-card {
-    print-color-adjust: exact !important;
-    -webkit-print-color-adjust: exact !important;
-  }
-
-  /* Ensure resume sections are correctly displayed */
-  #resume-content .section,
-  #resume-content [class*="section"] {
-    break-inside: avoid;
-    page-break-inside: avoid;
   }
 }

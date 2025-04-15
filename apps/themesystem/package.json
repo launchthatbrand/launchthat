@@ -35,13 +35,13 @@
     "@trpc/client": "catalog:",
     "@trpc/server": "catalog:",
     "@trpc/tanstack-react-query": "catalog:",
+    "commander": "^9.4.1",
     "geist": "catalog:",
     "next": "^14.2.23",
     "react": "catalog:react18",
     "react-dom": "catalog:react18",
     "superjson": "2.2.2",
-    "zod": "catalog:",
-    "commander": "^9.4.1"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@acme/eslint-config": "workspace:*",

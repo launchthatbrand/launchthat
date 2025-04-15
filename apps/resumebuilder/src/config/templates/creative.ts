@@ -23,10 +23,11 @@ export const creativeTemplate: Template = {
     input: "text-gray-800",
 
     // Header styling (right side)
-    header: "mb-12",
-    headerName:
-      "text-4xl font-bold mb-1 relative pb-2 inline-block text-gray-900", // Explicitly set dark text
-    headerTitle: "text-gray-600 text-lg font-light", // Slightly darker than before for better contrast
+    header:
+      "text-center mb-8 py-6 bg-gradient-to-r from-purple-500 to-indigo-600 text-white",
+    headerName: "text-4xl font-extrabold tracking-tight",
+    headerTitle: "text-xl mt-2 text-indigo-100",
+    headerContact: "text-sm text-indigo-200 mt-3", // Added style for contact info
 
     // Sidebar styling (left side)
     sidebar: "bg-[#1c1c1c] text-white p-8 w-1/3",
