@@ -72,6 +72,7 @@ export default function RootLayout(props: {
             sidebar={props.sidebar}
             appName="RepoReader"
             className="items-center justify-center"
+            header={false}
           >
             {props.children}
           </StandardLayout>
