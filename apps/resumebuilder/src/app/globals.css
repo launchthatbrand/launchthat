@@ -122,3 +122,13 @@
     @apply text-[var(--workforce-blue)] transition-colors hover:text-[var(--workforce-light-blue)];
   }
 }
+
+body.tour-active {
+  overflow: hidden !important;
+  /* The !important might be needed to override other potential overflow styles */
+}
+
+main.tour-active {
+  overflow: hidden !important;
+  /* The !important might be needed to override other potential overflow styles */
+}

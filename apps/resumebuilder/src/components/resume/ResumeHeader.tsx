@@ -45,6 +45,7 @@ export const ResumeHeader = ({
 
   return (
     <div
+      id="resume-header"
       className={`${compactMode ? "mb-4" : "mb-6"} ${templateStyles.header}`}
     >
       <div
@@ -164,8 +165,6 @@ export const ResumeHeader = ({
             <ProfileImage
               profileImage={data.profileImage}
               fullName={data.fullName}
-              // Apply custom class if defined in template, otherwise defaults handled in ProfileImage
-              className={templateStyles.customClasses?.profileImage}
               onImageChange={(newImageUrl: string) =>
                 handleChange("profileImage", newImageUrl)
               }

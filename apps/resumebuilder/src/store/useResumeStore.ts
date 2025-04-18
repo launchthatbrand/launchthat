@@ -1,7 +1,7 @@
 import type { TemplateName, TemplateStyles } from "@/config/templates";
 import { getTemplateStyles, templates } from "@/config/templates";
 import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 // Define the types
 export interface HeaderData {
@@ -173,16 +173,33 @@ export const useResumeStore = create<ResumeState>()(
 
         // Reset to defaults
         resetToDefaults: () => {
+          const defaultTemplateName = "classic";
+          const defaultTemplate = getTemplateStyles(defaultTemplateName);
           set({
-            selectedTemplate: "professional",
-            currentTemplate: getTemplateStyles("professional"),
-            headerData: initialHeaderData,
+            selectedTemplate: defaultTemplateName as TemplateName,
+            currentTemplate: defaultTemplate,
+            headerData: {
+              fullName: "Robert Johnson",
+              title: "Civil Engineer & Project Manager",
+              email: "robert.johnson@email.com",
+              phone: "(555) 123-4567",
+              location: "Anytown, USA",
+              website: "linkedin.com/in/robertjohnson",
+            },
             sections: initialSections,
           });
         },
       }),
       {
-        name: "resume-builder-storage-construction-v2", // Updated storage key to reset cached data with professional template
+        name: "resume-builder-store-v2",
+        storage: createJSONStorage(() => localStorage),
+        // Only persist resume data, not transient tour command state
+        partialize: (state) => ({
+          selectedTemplate: state.selectedTemplate,
+          currentTemplate: state.currentTemplate,
+          headerData: state.headerData,
+          sections: state.sections,
+        }),
       },
     ),
   ),

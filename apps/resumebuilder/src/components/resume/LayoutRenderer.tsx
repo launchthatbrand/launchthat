@@ -73,26 +73,27 @@ export const LayoutRenderer = ({
           onChange={onHeaderChange}
           templateStyles={templateStyles}
         />
-
-        {sections.map((section) => (
-          <div key={section.id} className="resume-section">
-            <SortableSection
-              title={section.title}
-              items={section.items}
-              onItemsChange={(items) => onSectionChange(section.id, items)}
-              multiline={
-                section.id === "experience" || section.id === "education"
-              }
-              templateName={templateName}
-              onDelete={
-                !["experience", "education", "skills"].includes(section.id)
-                  ? () => onDeleteSection(section.id)
-                  : undefined
-              }
-              instructions={sectionInstructions[section.id]}
-            />
-          </div>
-        ))}
+        <div id="sections-container" className="space-y-8">
+          {sections.map((section) => (
+            <div key={section.id} className="resume-section">
+              <SortableSection
+                title={section.title}
+                items={section.items}
+                onItemsChange={(items) => onSectionChange(section.id, items)}
+                multiline={
+                  section.id === "experience" || section.id === "education"
+                }
+                templateName={templateName}
+                onDelete={
+                  !["experience", "education", "skills"].includes(section.id)
+                    ? () => onDeleteSection(section.id)
+                    : undefined
+                }
+                instructions={sectionInstructions[section.id]}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     );
   };
@@ -140,49 +141,52 @@ export const LayoutRenderer = ({
             compactMode={true}
           />
         </div>
-
-        {sidebarSections.map((section) => (
-          <div key={section.id} className="resume-section">
-            <SortableSection
-              title={section.title}
-              items={section.items}
-              onItemsChange={(items) => onSectionChange(section.id, items)}
-              multiline={false}
-              templateName={templateName}
-              onDelete={
-                !["skills"].includes(section.id)
-                  ? () => onDeleteSection(section.id)
-                  : undefined
-              }
-              isSidebar={true}
-              instructions={sectionInstructions[section.id]}
-            />
-          </div>
-        ))}
+        <div id="sidebar-sections-container" className="space-y-6">
+          {sidebarSections.map((section) => (
+            <div key={section.id} className="resume-section">
+              <SortableSection
+                title={section.title}
+                items={section.items}
+                onItemsChange={(items) => onSectionChange(section.id, items)}
+                multiline={false}
+                templateName={templateName}
+                onDelete={
+                  !["skills"].includes(section.id)
+                    ? () => onDeleteSection(section.id)
+                    : undefined
+                }
+                isSidebar={true}
+                instructions={sectionInstructions[section.id]}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     );
 
     const mainContent = (
       <div className={mainClasses} data-content-type="main">
-        {mainSections.map((section) => (
-          <div key={section.id} className="resume-section">
-            <SortableSection
-              title={section.title}
-              items={section.items}
-              onItemsChange={(items) => onSectionChange(section.id, items)}
-              multiline={
-                section.id === "experience" || section.id === "education"
-              }
-              templateName={templateName}
-              onDelete={
-                !["experience", "education"].includes(section.id)
-                  ? () => onDeleteSection(section.id)
-                  : undefined
-              }
-              instructions={sectionInstructions[section.id]}
-            />
-          </div>
-        ))}
+        <div id="main-sections-container" className="space-y-6">
+          {mainSections.map((section) => (
+            <div key={section.id} className="resume-section">
+              <SortableSection
+                title={section.title}
+                items={section.items}
+                onItemsChange={(items) => onSectionChange(section.id, items)}
+                multiline={
+                  section.id === "experience" || section.id === "education"
+                }
+                templateName={templateName}
+                onDelete={
+                  !["experience", "education"].includes(section.id)
+                    ? () => onDeleteSection(section.id)
+                    : undefined
+                }
+                instructions={sectionInstructions[section.id]}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     );
 
@@ -208,7 +212,6 @@ export const LayoutRenderer = ({
 
   // Split layout - Updated to use CSS Columns for Masonry effect
   const renderSplitLayout = () => {
-    // ... (keep existing renderSplitLayout implementation)
     const allSections = sections;
     return (
       <div className="mx-auto max-w-3xl space-y-8 p-8" data-layout-type="split">
@@ -217,7 +220,11 @@ export const LayoutRenderer = ({
           onChange={onHeaderChange}
           templateStyles={templateStyles}
         />
-        <div className="columns-2 gap-x-8" data-section-row="masonry">
+        <div
+          id="sections-container"
+          className="columns-2 gap-x-8"
+          data-section-row="masonry"
+        >
           {allSections.map((section) => (
             <div
               key={section.id}
@@ -247,7 +254,6 @@ export const LayoutRenderer = ({
 
   // Minimalist layout with clean, centered design
   const renderMinimalistLayout = () => {
-    // ... (keep existing renderMinimalistLayout implementation)
     return (
       <div className="mx-auto max-w-2xl space-y-8 p-8">
         <ResumeHeader
@@ -255,25 +261,27 @@ export const LayoutRenderer = ({
           onChange={onHeaderChange}
           templateStyles={templateStyles}
         />
-        {sections.map((section) => (
-          <div key={section.id} className="resume-section">
-            <SortableSection
-              title={section.title}
-              items={section.items}
-              onItemsChange={(items) => onSectionChange(section.id, items)}
-              multiline={
-                section.id === "experience" || section.id === "education"
-              }
-              templateName={templateName}
-              onDelete={
-                !["experience", "education", "skills"].includes(section.id)
-                  ? () => onDeleteSection(section.id)
-                  : undefined
-              }
-              instructions={sectionInstructions[section.id]}
-            />
-          </div>
-        ))}
+        <div id="sections-container" className="space-y-8">
+          {sections.map((section) => (
+            <div key={section.id} className="resume-section">
+              <SortableSection
+                title={section.title}
+                items={section.items}
+                onItemsChange={(items) => onSectionChange(section.id, items)}
+                multiline={
+                  section.id === "experience" || section.id === "education"
+                }
+                templateName={templateName}
+                onDelete={
+                  !["experience", "education", "skills"].includes(section.id)
+                    ? () => onDeleteSection(section.id)
+                    : undefined
+                }
+                instructions={sectionInstructions[section.id]}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     );
   };

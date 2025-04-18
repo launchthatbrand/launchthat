@@ -1,0 +1,12 @@
+/* Existing global styles... */
+
+/* Prevent body scroll when NextStep tour is active */
+body.tour-active {
+  overflow: hidden !important;
+  /* The !important might be needed to override other potential overflow styles */
+}
+
+/* Prevent main element scroll when NextStep tour is active */
+main.tour-active {
+  overflow: hidden !important;
+}
