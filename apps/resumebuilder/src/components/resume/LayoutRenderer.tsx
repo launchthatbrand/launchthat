@@ -15,6 +15,27 @@ interface LayoutRendererProps {
   onDeleteSection: (sectionId: string) => void;
 }
 
+// Define instructions for common sections
+const sectionInstructions: { [key: string]: string } = {
+  profile:
+    "Provide a brief summary of your professional background and career objectives.",
+  experience:
+    "List your relevant work experience, including job titles, companies, dates, and key responsibilities or achievements.",
+  education:
+    "Detail your educational qualifications, including degrees, institutions, and graduation dates.",
+  skills: "List your relevant technical and soft skills. Be specific.",
+  certifications:
+    "Include any professional certifications, licenses, or accreditations relevant to your field.",
+  projects:
+    "Highlight significant personal or professional projects, detailing your role and outcomes.",
+  references: "Provide references upon request or list them if required.",
+  languages:
+    "List languages you speak and your proficiency level (e.g., Native, Fluent, Conversational).",
+  interests:
+    "Briefly mention relevant hobbies or interests that showcase personality or additional skills.",
+  // Add more as needed
+};
+
 export const LayoutRenderer = ({
   headerData,
   sections,
@@ -68,6 +89,7 @@ export const LayoutRenderer = ({
                   ? () => onDeleteSection(section.id)
                   : undefined
               }
+              instructions={sectionInstructions[section.id]}
             />
           </div>
         ))}
@@ -133,6 +155,7 @@ export const LayoutRenderer = ({
                   : undefined
               }
               isSidebar={true}
+              instructions={sectionInstructions[section.id]}
             />
           </div>
         ))}
@@ -156,6 +179,7 @@ export const LayoutRenderer = ({
                   ? () => onDeleteSection(section.id)
                   : undefined
               }
+              instructions={sectionInstructions[section.id]}
             />
           </div>
         ))}
@@ -212,6 +236,7 @@ export const LayoutRenderer = ({
                     ? () => onDeleteSection(section.id)
                     : undefined
                 }
+                instructions={sectionInstructions[section.id]}
               />
             </div>
           ))}
@@ -245,6 +270,7 @@ export const LayoutRenderer = ({
                   ? () => onDeleteSection(section.id)
                   : undefined
               }
+              instructions={sectionInstructions[section.id]}
             />
           </div>
         ))}

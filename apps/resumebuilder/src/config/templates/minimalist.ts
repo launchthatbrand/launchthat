@@ -19,8 +19,8 @@ export const minimalistTemplate: Template = {
     section: "mb-8 px-2",
     sectionTitle:
       "text-base font-medium uppercase tracking-wide mb-4 text-gray-700 relative",
-    item: "mb-5 border-l-2 border-gray-200 pl-4 py-1 hover:border-gray-400 transition-colors",
-    input: "text-gray-800",
+    item: "mb-5 border-l-2 border-gray-200 pl-4 py-1 hover:border-gray-400 transition-colors text-sm",
+    input: "text-sm text-gray-800 focus:ring-1 focus:ring-gray-300 rounded",
 
     // Header styling
     header: "mb-10 flex flex-col items-start",
@@ -32,7 +32,9 @@ export const minimalistTemplate: Template = {
     sidebarSection: "mb-8",
     sidebarTitle:
       "text-gray-700 font-semibold text-xl mb-4 pb-2 border-b border-gray-300",
-    sidebarItem: "py-1 text-gray-600",
+    sidebarItem: "py-1 text-gray-600 text-xs",
+    sidebarInput:
+      "text-xs text-gray-700 focus:ring-1 focus:ring-gray-400 rounded",
 
     // Skill display
     skillDisplay: "text",

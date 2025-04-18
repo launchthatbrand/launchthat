@@ -17,7 +17,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Trash2 } from "lucide-react";
+import { Info, Trash2 } from "lucide-react";
 
 import { SortableItemsList } from "./sortable/SortableItemsList";
 
@@ -35,6 +35,7 @@ interface SortableSectionProps {
   templateName: string;
   onDelete?: () => void;
   isSidebar?: boolean;
+  instructions?: string;
 }
 
 export const SortableSection = ({
@@ -46,6 +47,7 @@ export const SortableSection = ({
   templateName,
   onDelete,
   isSidebar = false,
+  instructions,
 }: SortableSectionProps) => {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -106,7 +108,7 @@ export const SortableSection = ({
       data-section-type={title.toLowerCase().replace(/\s+/g, "-")}
       data-is-sidebar={isSidebar.toString()}
     >
-      <div className="mb-3 flex items-center justify-between">
+      <div className="mb-1 flex items-center justify-between">
         <h3
           className={`section-title relative transition-all duration-200 ${titleClass} ${
             !isSidebar && templateName === "creative" ? "text-gray-900" : ""
@@ -125,6 +127,27 @@ export const SortableSection = ({
           </button>
         )}
       </div>
+
+      {instructions && (
+        <div
+          className={`mb-3 mt-1 flex items-start gap-x-2 rounded border border-dashed p-3 print:hidden ${
+            isSidebar
+              ? "border-[var(--sidebar-text-color,black)]/[.4]"
+              : "border-gray-300"
+          }`}
+        >
+          <Info
+            size={16}
+            className={`mt-0.5 flex-shrink-0 ${isSidebar ? "text-[var(--sidebar-text-color,black)]" : "text-gray-400"}`}
+            aria-hidden="true"
+          />
+          <p
+            className={`text-sm ${isSidebar ? "text-[var(--sidebar-text-color,black)]" : "text-gray-500"}`}
+          >
+            {instructions}
+          </p>
+        </div>
+      )}
 
       <div
         className="section-content pb-0 pt-2"

@@ -28,17 +28,17 @@ export const professionalTemplate: Template = {
     section: "mb-8 pr-6 md:pr-8 pt-6", // Main content area styles
     sectionTitle:
       "text-base font-semibold text-gray-700 border-b border-gray-200 pb-2 mb-4", // Style for titles like 'EXPERIENCE'
-    item: "mb-1 text-gray-700", // Default item styling
-    input: "text-gray-800 focus:ring-1 focus:ring-gray-300 rounded", // Basic input style
+    item: "mb-1 text-gray-700 text-sm", // Added text-sm
+    input: "text-sm text-gray-800 focus:ring-1 focus:ring-gray-300 rounded", // Added text-sm
 
     // --- Sidebar Styles (Right Column - 1/3) ---
     sidebar: "w-1/3 pl-6 md:pl-8 pt-6 border-l border-gray-200", // Width, padding, border for right sidebar
     sidebarSection: "mb-6",
     sidebarTitle:
       "text-sm uppercase tracking-[0.1em] text-gray-500 mb-3 font-semibold border-b border-gray-200 pb-1", // Style for titles like 'EDUCATION', 'SKILLS'
-    sidebarItem: "mb-1 text-sm text-gray-700", // Sidebar item text
+    sidebarItem: "mb-1 text-gray-700 text-xs", // Changed to text-xs
     sidebarInput:
-      "text-sm text-gray-700 focus:ring-1 focus:ring-gray-300 rounded", // Sidebar input text
+      "text-xs text-gray-700 focus:ring-1 focus:ring-gray-300 rounded", // Changed to text-xs
 
     // --- Skill Display ---
     skillDisplay: "text",

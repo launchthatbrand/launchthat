@@ -18,8 +18,8 @@ export const modernTemplate: Template = {
     // Main content styling
     section: "mb-6",
     sectionTitle: "text-lg font-semibold border-b pb-1 mb-3 text-gray-800",
-    item: "hover:bg-gray-50 rounded-md p-1 transition-colors",
-    input: "text-gray-800",
+    item: "hover:bg-gray-50 rounded-md p-1 transition-colors text-sm",
+    input: "text-sm text-gray-800 focus:ring-1 focus:ring-blue-300 rounded",
 
     // Header styling
     header: "mb-8 pb-4 flex flex-row items-center gap-6",
@@ -33,8 +33,9 @@ export const modernTemplate: Template = {
     sidebarSection: "mb-8",
     sidebarTitle:
       "uppercase text-sm tracking-wider mb-3 font-semibold border-b border-[#f59e0b] pb-1",
-    sidebarItem: "py-1",
-    sidebarInput: "text-sm text-white bg-transparent focus:bg-transparent",
+    sidebarItem: "py-1 text-xs",
+    sidebarInput:
+      "text-xs text-white bg-transparent focus:bg-transparent focus:ring-1 focus:ring-white rounded",
 
     // Skill display
     skillDisplay: "bars",

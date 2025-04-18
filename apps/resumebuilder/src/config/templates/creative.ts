@@ -16,11 +16,10 @@ export const creativeTemplate: Template = {
     fontFamily: "Poppins, sans-serif",
 
     // Main content styling (right side)
-    section: "mb-8 px-6",
-    sectionTitle:
-      "text-lg uppercase tracking-widest mb-4 font-light relative border-b border-gray-200 pb-2 text-gray-900", // Explicitly set dark text
-    item: "mb-6 text-gray-800", // Explicitly set dark text
-    input: "text-gray-800",
+    section: "mb-8",
+    sectionTitle: "text-2xl font-bold text-gray-800 mb-4 relative",
+    item: "mb-3 pl-4 border-l-2 border-indigo-200 text-sm",
+    input: "text-sm text-gray-800 focus:ring-1 focus:ring-indigo-300 rounded",
 
     // Header styling (right side)
     header:
@@ -30,11 +29,12 @@ export const creativeTemplate: Template = {
     headerContact: "text-sm text-indigo-200 mt-3", // Added style for contact info
 
     // Sidebar styling (left side)
-    sidebar: "bg-[#1c1c1c] text-white p-8 w-1/3",
+    sidebar: "w-1/3 bg-gradient-to-b from-gray-800 to-gray-900 text-white p-8",
     sidebarSection: "mb-8",
-    sidebarTitle:
-      "text-[#ffd500] uppercase tracking-widest text-base mb-4 font-light", // Yellow headings in sidebar
-    sidebarItem: "mb-2 text-white", // Explicitly white text for sidebar items
+    sidebarTitle: "text-lg font-semibold border-b border-gray-600 pb-2 mb-4",
+    sidebarItem: "mb-2 text-xs",
+    sidebarInput:
+      "text-xs text-gray-200 bg-gray-700 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-400",
 
     // Skill display
     skillDisplay: "bars",
